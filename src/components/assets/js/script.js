@@ -80,9 +80,6 @@ function closeMenu() {
     $(".header__nav-list").css({
         left: "-100%"
     });
-    // $(".main").css({
-    //     marginLeft: "0px"
-    // });
 
     mobileMenuisHidden = true;
     searchWrapper.style.backgroundColor = null;
@@ -117,7 +114,7 @@ for (var i = 0; i < items.length - 2; i++) {
 }
 
 
-function removeFromCart(e){
+function removeFromCart(e) {
     e.preventDefault();
     var addButton = e.target;
     var parent = addButton.parentNode.parentNode;
@@ -135,10 +132,10 @@ function fncaddToCart(e) {
     var productName = parent.querySelector(".item__label").textContent;
     var productNames = document.querySelector(".cart-list").querySelectorAll(".item__label");
     console.log(productNames);
-    for(var i=0; i<productNames.length;i++){
-        if(productName === productNames[i].textContent){
+    for (var i = 0; i < productNames.length; i++) {
+        if (productName === productNames[i].textContent) {
             var item = productNames[i].parentNode;
-            item.querySelector(".quantity-field").value = parseInt(item.querySelector(".quantity-field").value) +1;
+            item.querySelector(".quantity-field").value = parseInt(item.querySelector(".quantity-field").value) + 1;
             updateBagCount();
             return;
         }
@@ -171,7 +168,7 @@ function fncaddToCart(e) {
     div.querySelector(".quantity-field").addEventListener("focusout", function (e) {
         updateBagCount();
     })
-    
+
     document.querySelector(".cart-list").append(div);
     // addPlusMinusEvent();
 

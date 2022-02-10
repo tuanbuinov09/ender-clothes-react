@@ -2,20 +2,33 @@ import {
     Link
 } from "react-router-dom";
 import Icon from "react-hero-icon";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useEffect } from "react/cjs/react.development";
+const categoriesArray = [
+    "Top",
+    "Bottom",
+    "Set",
+    "Shoes",
+    "Accessories"
+]
 function Header() {
-    const [categories, setCategories] = useState([]);
-    useEffect(function () {
-        fetch('https://fakestoreapi.com/products/categories')
-            .then(res => res.json())
-            .then(json => setCategories(json));
-    }, []);
+    const [categories, setCategories] = useState(categoriesArray);
+    // useEffect(function () {
+    //     fetch('https://fakestoreapi.com/products/categories')
+    //         .then(res => res.json())
+    //         .then(json => setCategories(json));
+    // }, []);
+    const mobileMenuButton = useRef();
+    const handleMenuButton = () => {
+        console.log(mobileMenuButton.current.classList.toggle("active"));
+
+    }
+
     return (
         <div>
             <header className="header row bg-dark p-x-32">
                 <div className="header__logo-container">
-                    <div className="mobile-menu-button test-ani">
+                    <div className="mobile-menu-button test-ani" ref={mobileMenuButton} onClick={() => { handleMenuButton() }}>
                         <div className="bar-top">
 
                         </div>

@@ -2,7 +2,7 @@ import {
     Link
 } from "react-router-dom";
 import legalImage from './assets/img/dang-ky-website-thuong-mai-dien-tu-1024x388-1024x388.png';
-
+import Icon from "react-hero-icon";
 function Footer() {
     return (
         <footer className="container footer">
@@ -11,7 +11,7 @@ function Footer() {
                     <h2 className="footer__title">SUBSCRIBE TO OUR NEWS</h2>
                     <div className="footer__intput-container">
                         <input type="text" placeholder="Type your email" />
-                        <a href="#"><i className="far fa-envelope"></i></a>
+                        <Link to="/subscribe"><Icon icon="mail"></Icon></Link>
 
                     </div>
                     <p>
@@ -28,28 +28,28 @@ function Footer() {
                         <li><i className="fa fa-instagram-square"></i></li>
                         <li><i className="fa fa-twitter-square"></i></li>
                     </ul>
-                    <a href="#" className="footer__img-container"><img
-                        src={legalImage} alt="legal" /></a>
+                    <Link to="/nowhere" className="footer__img-container"><img
+                        src={legalImage} alt="legal" /></Link>
                 </div>
                 <div className="footer__right">
                     <div className="col-third">
                         <h3 className="footer__title">COMPANY</h3>
                         <ul>
-                            <li><a href="#"><span>-</span>Introduction</a></li>
-                            <li><a href="#"><span>-</span>Hiring</a></li>
-                            <li><a href="#"><span>-</span>News</a></li>
-                            <li><a href="#"><span>-</span>Customer Services</a></li>
-                            <li><a href="#"><span>-</span>Contact</a></li>
+                            <li><Link to="/nowhere"><span>-</span>Introduction</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>Hiring</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>News</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>Customer Services</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>Contact</Link></li>
                         </ul>
                     </div>
                     <div className="col-third">
                         <h3 className="footer__title">CUSTOMER SERVICES</h3>
                         <ul>
-                            <li><a href="#"><span>-</span>Loyalty</a></li>
-                            <li><a href="#"><span>-</span>Return Product</a></li>
-                            <li><a href="#"><span>-</span>Guarantee</a></li>
-                            <li><a href="#"><span>-</span>Privacy</a></li>
-                            <li><a href="#"><span>-</span>Question</a></li>
+                            <li><Link to="/nowhere"><span>-</span>Loyalty</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>Return Product</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>Guarantee</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>Privacy</Link></li>
+                            <li><Link to="/nowhere"><span>-</span>Question</Link></li>
                         </ul>
                     </div>
                     <div className="col-third">
