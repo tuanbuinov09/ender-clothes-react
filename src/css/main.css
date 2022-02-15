@@ -355,7 +355,7 @@ body {
     color: black;
 }
 
-.section-title {
+/* .section-title {
     margin: 16px 0;
     padding: 20px 12px 20px 12px;
     border-left: 4px solid var(--dark);
@@ -363,7 +363,7 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
-}
+} */
 
 .new-arrivals {
     flex-wrap: wrap;
