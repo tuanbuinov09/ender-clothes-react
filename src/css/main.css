@@ -46,35 +46,8 @@ ul {
 .bg-dark {
     background-color: var(--dark);
 }
-.header {
-    height: 60px;
-    align-items: center;
-    justify-content: space-between;
-    /* overflow: hidden; */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
-}
 
-.header__logo {
-    font-size: 2.8rem;
-    font-weight: 500;
-    letter-spacing: 2px;
-    color: var(--light);
-    padding: 0 12px;
-    border: 3px solid var(--light);
-}
-.header__logo span {
-    /* font-size: 28px; */
-    color: var(--info);
-    /* text-shadow: 0px 0px 8px var(--gray); */
-}
-.mobile-menu-button {
-    display: none;
-}
-.nav__item {
+/* .nav__item {
     position: relative;
 }
 .nav__item a {
@@ -158,33 +131,10 @@ ul {
 .submenu li:hover a {
     color: var(--light);
 }
-.header__right {
-    align-items: center;
-}
-/* .header__right i {
-    display: block;
-    line-height: 60px;
-} */
-.header__right .header-icon:hover {
-    color: var(--light);
-}
-.header__right .header-icon {
-    cursor: pointer;
-    transition: all 0.3s ease-out;
-}
-.header-icon {
-    color: #999999;
-}
-.header-icon-svg {
-    width: 28px;
-    height: 28px;
-}
-.header-icon + .header-icon {
-    margin-left: 8px;
-}
-.shopping-bag-icon {
+
+/* .shopping-bag-icon {
     position: relative;
-}
+} */
 @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 .bag__count {
     font-family: "Raleway", sans-serif;
@@ -196,7 +146,7 @@ ul {
     text-align: center;
     bottom: 5px;
 }
-.side-bar-container {
+*/ .side-bar-container {
     position: fixed;
     right: 0;
     top: 0;
@@ -325,7 +275,7 @@ body {
     padding: 16px 0;
     margin: 16px 0;
 }
-.cover {
+/* .cover {
     height: 90vh;
     justify-content: center;
     overflow: hidden;
@@ -335,20 +285,19 @@ body {
 
 .cover img {
     width: 440px;
-    /* height: auto; */
 }
 .cover .d-flex-col {
     justify-content: center;
 }
 .cover__img-container {
     text-align: center;
-}
-.sub-title {
+} */
+/* .sub-title {
     font-size: 1.6rem;
     font-weight: 200;
     text-align: center;
     letter-spacing: 2px;
-}
+} */
 .title {
     font-size: 7rem;
     text-align: center;
@@ -609,54 +558,7 @@ body {
     font-size: 1.4rem;
     margin-bottom: 4px;
 }
-.test-ani {
-    background-color: var(--dark);
-    height: 60px;
-    width: 60px;
-    /* padding: 12px; */
-    /* display: flex;
-    align-items: center; */
-    position: relative;
-}
-.bar-middle {
-    top: 28px;
-    left: 12px;
-    height: 4px;
-    width: 36px;
-    background-color: white;
-    position: absolute;
-    transition: 0.3s;
-}
-.bar-top {
-    position: absolute;
-    top: 16px;
-    left: 12px;
-    height: 4px;
-    width: 36px;
-    background-color: white;
-    transition: 0.3s;
-}
-.bar-bottom {
-    position: absolute;
-    height: 4px;
-    width: 36px;
-    bottom: 16px;
-    left: 12px;
-    background-color: white;
-    transition: 0.3s;
-}
-.test-ani.active .bar-top {
-    top: 28px;
-    transform: rotate(135deg);
-}
-.test-ani.active .bar-middle {
-    top: 28px;
-    transform: translateX(-200%);
-}
-.test-ani.active .bar-bottom {
-    top: 28px;
-    transform: rotate(-135deg);
-}
+
 .socials {
     margin-bottom: 12px;
 }

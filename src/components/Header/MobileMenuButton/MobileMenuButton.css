@@ -1,0 +1,57 @@
+.mobile-menu-button {
+    display: none;
+}
+.bar-top {
+    position: absolute;
+    top: 16px;
+    left: 12px;
+    height: 4px;
+    width: 36px;
+    background-color: white;
+    transition: 0.3s;
+}
+.bar-middle {
+    top: 28px;
+    left: 12px;
+    height: 4px;
+    width: 36px;
+    background-color: white;
+    position: absolute;
+    transition: 0.3s;
+}
+.bar-bottom {
+    position: absolute;
+    height: 4px;
+    width: 36px;
+    bottom: 16px;
+    left: 12px;
+    background-color: white;
+    transition: 0.3s;
+}
+.mobile-button-animate {
+    background-color: var(--dark);
+    height: 60px;
+    width: 60px;
+    position: relative;
+}
+
+.mobile-button-animate.active .bar-top {
+    top: 28px;
+    transform: rotate(135deg);
+}
+.mobile-button-animate.active .bar-middle {
+    top: 28px;
+    transform: translateX(-200%);
+}
+.mobile-button-animate.active .bar-bottom {
+    top: 28px;
+    transform: rotate(-135deg);
+}
+
+@media (max-width: 1023px) {
+    .mobile-menu-button {
+        display: block;
+        color: white;
+        cursor: pointer;
+    }
+}

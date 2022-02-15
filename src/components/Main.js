@@ -1,5 +1,5 @@
-import Header from "./Header";
-import Content from "./Content";
+import Header from "./Header/Header";
+import Content from "./Content/Content";
 import Footer from "./Footer";
 function Main() {
     return (
