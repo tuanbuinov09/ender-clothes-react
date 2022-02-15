@@ -1,0 +1,195 @@
+.header {
+    height: 60px;
+
+    padding-left: 32px;
+    padding-right: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    background-color: #222222;
+}
+.logo {
+    font-size: 2.8rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: var(--light);
+    padding: 0 12px;
+    border: 3px solid var(--light);
+}
+.logo span {
+    color: #17a2b8;
+}
+.right {
+    display: flex;
+    align-items: center;
+}
+/* .header__right i {
+    display: block;
+    line-height: 60px;
+} */
+.right .iconWrapper:hover {
+    color: var(--light);
+}
+.right .iconWrapper {
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+.right .iconWrapper {
+    color: #999999;
+}
+.iconSvg {
+    width: 28px;
+    height: 28px;
+}
+.iconWrapper + .iconWrapper {
+    margin-left: 8px;
+}
+
+.bagIcon {
+    position: relative;
+}
+.nav {
+    display: flex;
+}
+.navItem {
+    position: relative;
+}
+.navItem a {
+    color: #999999;
+    font-size: 1.6rem;
+    font-weight: 500;
+    padding: 0 12px;
+    width: 100%;
+    line-height: 60px;
+    display: block;
+    transition: all 0.3s ease-out;
+}
+.navItem:hover {
+    background-color: #333333;
+}
+.navItem:hover > a {
+    color: var(--light);
+}
+.navItem::after {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 0;
+    bottom: 0;
+    background-color: var(--light);
+    height: 4px;
+    transition: width 0.3s;
+}
+
+.navItem:hover::after {
+    width: 100%;
+}
+.submenuContainer a {
+    display: flex;
+    align-items: center;
+}
+.navItem .chevron-down-icon {
+    transition: all 0.3s ease-out;
+    margin-left: 4px;
+    width: 20px;
+}
+
+.navItem:hover .chevron-down-icon {
+    transform: rotate(-180deg);
+}
+.submenuContainer {
+    position: relative;
+}
+
+.submenu {
+    width: 180px;
+    position: absolute;
+    left: 0;
+    padding: 0;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
+    visibility: hidden;
+    opacity: 0;
+    z-index: 3;
+    transition: all 0.2s ease-out;
+    background-color: #222222;
+}
+.submenu a {
+    padding: 0 44px 0 16px;
+    line-height: 52px;
+}
+.navItem:hover .submenu {
+    visibility: visible;
+    opacity: 1;
+}
+.navItem .submenu a {
+    transform: translateY(50%);
+    transition: transform 0.7s ease-out;
+}
+.navItem:hover .submenu a {
+    transform: translateY(0%);
+}
+.submenu li:hover {
+    background-color: #333333;
+}
+.submenu li:hover a {
+    color: var(--light);
+}
+
+/* .shopping-bag-icon {
+    position: relative;
+} */
+@import url("https:fonts.googleapis.com/css2?family=Raleway&display=swap");
+.bagCount {
+    font-family: "Raleway", sans-serif;
+    display: block;
+    width: 28px;
+    font-size: 16px;
+    font-weight: 600;
+    position: absolute;
+    text-align: center;
+    bottom: 5px;
+}
+@media (max-width: 1023px) {
+    .header {
+        padding-left: 0px;
+        /* max-width: 100%; */
+    }
+    .logo_Container {
+        display: flex;
+        align-items: center;
+        flex: 1;
+        /* padding-left: 60px; */
+        /* position: relative; */
+    }
+    .logo {
+        font-size: 2.2rem;
+        border-width: 2px;
+    }
+    .navList {
+        display: block;
+        width: 500px;
+        position: fixed;
+        top: 60px;
+        right: 0;
+        bottom: 0;
+        left: -100%;
+        background-color: var(--dark);
+        transition: 0.3s;
+        overflow-y: scroll;
+    }
+}
+@media (max-width: 740px) {
+    .navList {
+        width: 100%;
+    }
+}

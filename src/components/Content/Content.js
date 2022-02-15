@@ -1,8 +1,9 @@
 import {
     Link
 } from "react-router-dom";
-import bannerImage from './assets/img/slider/xmodel_3.png.pagespeed.ic.IuWWDLqA4l.webp';
+import bannerImage from '../assets/img/slider/xmodel_3.png.pagespeed.ic.IuWWDLqA4l.webp';
 import { useState } from "react";
+import Banner from './Banner/Banner';
 // import { useEffect } from "react/cjs/react.development";
 import Icon from "react-hero-icon";
 
@@ -277,7 +278,7 @@ function Content() {
 
     return (
         <div className="container">
-            <div className="cover row section">
+            {/* <div className="cover row section">
                 <div className="cover__img-container col-half">
                     <img src={bannerImage} alt="" />
                 </div>
@@ -290,8 +291,8 @@ function Content() {
                     </h1>
                     <Link to="nowhere" className="btn bg-dark">SHOP NOW</Link>
                 </div>
-            </div>
-
+            </div> */}
+            <Banner />
             <h1 className="section section-title">NEW ARRIVALS</h1>
 
             <div className="section">

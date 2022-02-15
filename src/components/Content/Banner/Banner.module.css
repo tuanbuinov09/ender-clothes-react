@@ -1,0 +1,121 @@
+.cover {
+    background-color: white;
+    padding: 16px 0;
+    margin: 16px 0;
+    display: flex;
+    height: 90vh;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 60px;
+    max-height: 600px;
+}
+
+.cover img {
+    width: 440px;
+    /* height: auto; */
+}
+/* .cover .d-flex-col {
+    justify-content: center;
+} */
+.imgContainer {
+    text-align: center;
+    width: 50%;
+}
+.right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+.subTitle {
+    font-size: 1.6rem;
+    font-weight: 200;
+    text-align: center;
+    letter-spacing: 2px;
+}
+.title {
+    font-size: 7rem;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.btn {
+    display: inline-block;
+    position: relative;
+    font-size: 1.3rem;
+    padding: 12px 28px;
+    color: var(--light);
+    border: 1px solid transparent;
+    text-align: center;
+    background-color: #222222;
+    transition: all 0.3s ease-out;
+}
+.btn:hover {
+    color: var(--light);
+    border: 1px solid var(--dark);
+}
+.btn:before {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    content: "";
+    width: 0%;
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+    background-color: rgb(255, 255, 255);
+}
+.btn:after {
+    position: absolute;
+    text-align: center;
+    top: 0;
+    left: 0;
+    content: "SHOP NOW";
+    width: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+.btn:hover:before {
+    width: 100%;
+}
+.btn:hover::after {
+    color: black;
+}
+@media (max-width: 740px) {
+    .cover {
+        /* flex-direction: column; */
+        justify-content: center;
+        position: relative;
+    }
+    .right {
+        color: white;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        position: absolute;
+        bottom: 20px;
+        text-shadow: 0px 0px 4px #333;
+    }
+    .title {
+        font-size: 4rem;
+    }
+    .subTitle {
+        /* font-size: 1.6rem; */
+        letter-spacing: normal;
+    }
+    .imgContainer {
+        /* align-items: flex-start;
+         */
+        width: 80%;
+    }
+    .imgContainer img {
+        width: 100%;
+    }
+}
