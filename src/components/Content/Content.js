@@ -1,11 +1,13 @@
 import {
     Link
 } from "react-router-dom";
-import bannerImage from '../assets/img/slider/xmodel_3.png.pagespeed.ic.IuWWDLqA4l.webp';
+// import bannerImage from '../assets/img/slider/xmodel_3.png.pagespeed.ic.IuWWDLqA4l.webp';
 import { useState } from "react";
+import Item from './Item/Item';
 import Banner from './Banner/Banner';
 // import { useEffect } from "react/cjs/react.development";
 import Icon from "react-hero-icon";
+import SectionTitle from "./SectionTitle/SectionTitle";
 
 const productsArray = [
     {
@@ -278,135 +280,25 @@ function Content() {
 
     return (
         <div className="container">
-            {/* <div className="cover row section">
-                <div className="cover__img-container col-half">
-                    <img src={bannerImage} alt="" />
-                </div>
-                <div className="cover__right col-half d-flex-col align-items-center">
-                    <h3 className="sub-title">
-                        #NEW SUMMER COLLECTION 2022
-                    </h3>
-                    <h1 className="title">
-                        ARRIVALS SALES
-                    </h1>
-                    <Link to="nowhere" className="btn bg-dark">SHOP NOW</Link>
-                </div>
-            </div> */}
             <Banner />
-            <h1 className="section section-title">NEW ARRIVALS</h1>
-
+            <SectionTitle title="new arrivals" />
             <div className="section">
                 <div className="new-arrivals item__list row">
                     {products.map((product, index) => {
-                        return (<div key={index} className="item col-1per5 p-x-16">
-                            <Link to={`/products/${product.id}`} className="item__img-container">
-                                <img src={product.image} alt="item" />
-                            </Link>
-                            <Link to={`/products/${product.id}`} className="item__label">{product.title}</Link>
-                            <div className="bottom-of-item-container">
-                                <div className="bottom-of-item"><p className="item__price"><span>{product.price} $</span> <Link to={`/add-to-bag?productId=${product.id}`} className="header-icon shopping-bag-icon"><Icon icon="shopping-bag" className="header-icon-svg" /><b className="plus-text">+</b></Link></p>
-                                    {/* <div className="add-to-cart-button">Add to cart</div> */}
-                                </div>
-                            </div>
-                        </div>);
+                        return (<Item key={index} product={product} type={1} />);
                     })}
-                    <>{/* <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-1.webp" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 1</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-2.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 2</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-3.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 3</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-4.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 4</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-5.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 5</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-6.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 6</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-7.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 7</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-8.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 8</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-9.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 9</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>
-                    <div className="item col-1per5 p-x-16">
-                        <Link to="nowhere" className="item__img-container">
-                            <img src="./assets/img/item-10.jpg" alt="item" />
-                        </Link>
-                        <Link to="nowhere" className="item__label">Product Name 10</Link>
-                        <p className="item__price">300,000₫</p>
-                    </div>*/}</>
-
                 </div>
-                <div className="section__btn-container"><Link to="nowhere" className="btn bg-dark">SHOP NOW</Link></div>
+                <div className="section__btn-container"><Link to="/new-arrivals" className="btn bg-dark">SHOP NOW</Link></div>
             </div>
-            <h1 className="section section-title">HIGH RATING</h1>
+            <SectionTitle title="hot deals" />
+            {/* <h1 className="section section-title">HIGH RATING</h1> */}
             <div className="section">
                 <div className="sale-off item__list row">
                     {top2products.map((product, index) => {
                         if (index === 0 || index === 2) {
-                            return (<div key={index} className="item sale-off__img-container col-third">
-                                <Link to={`/products/${product.id}`} className="item__img-container">
-                                    <img src={product.image} alt="item" />
-                                </Link>
-                            </div>)
+                            return (<Item key={index} product={product} type={2} />)
                         } else {
-                            return (<div key={index} className="item col-1per5 p-x-16">
-                                <Link to={`/products/${product.id}`} className="item__img-container">
-                                    <img src={product.image} alt="item" />
-                                </Link>
-                                <Link to={`/products/${product.id}`} className="item__label">{product.title}</Link>
-                                <div className="bottom-of-item-container">
-                                    <div className="bottom-of-item"><p className="item__price"><span>{product.price} $</span> <Link to={`/add-to-bag?productId=${product.id}`} className="header-icon shopping-bag-icon"><Icon icon="shopping-bag" className="header-icon-svg" /><b className="plus-text">+</b></Link></p>
-                                        {/* <div className="add-to-cart-button">Add to cart</div> */}
-                                    </div>
-                                </div>
-                                <Link to={`/products/${product.id}`} className="btn bg-dark">SEE DETAILS</Link>
-                            </div>)
+                            return (<Item key={index} product={product} type={3} />)
                         }
                     })}
                     <>{/* <div className="sale-off__img-container col-third">
