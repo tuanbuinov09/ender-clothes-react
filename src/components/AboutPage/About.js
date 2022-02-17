@@ -5,7 +5,7 @@ import {
 import { useState } from "react";
 // import { useEffect } from "react/cjs/react.development";
 import Icon from "react-hero-icon";
-import SectionTitle from "../Content/SectionTitle/SectionTitle";
+import SectionTitle from "../HomePage/SectionTitle/SectionTitle";
 
 const productsArray = [
     {
@@ -252,11 +252,9 @@ const productsArray = [
 function About() {
     return (
         <div className="container">
-
             <SectionTitle title="About" />
-            );
         </div>
-    )
+    );
 }
 
 export default About;

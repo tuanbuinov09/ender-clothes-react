@@ -41,7 +41,7 @@ function Item({ product, type }) {
                 <div>
                     <p className={clsx(style.price)}><span>{product.price} $</span></p>
                     {/* <div className="add-to-cart-button">Add to cart</div> */}
-                    <Link to={`/products/${product.id}`} className="btn bg-dark">SEE DETAILS</Link>
+
                 </div>
 
             </div>
