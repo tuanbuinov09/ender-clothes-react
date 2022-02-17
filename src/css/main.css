@@ -459,12 +459,12 @@ body {
     opacity: 0.8;
 }
 
-.sale-off {
+/* .sale-off {
     padding-left: 16px;
 }
 .sale-off .btn:after {
     content: "SEE DETAILS";
-}
+} */
 .subscribe {
     width: 500px;
     max-width: 40%;

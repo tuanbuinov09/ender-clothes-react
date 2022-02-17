@@ -5,7 +5,7 @@ import legalImage from './assets/img/dang-ky-website-thuong-mai-dien-tu-1024x388
 import Icon from "react-hero-icon";
 function Footer() {
     return (
-        <footer className="container footer">
+        <footer className="footer">
             <div className="footer__wrapper">
                 <div className="subscribe">
                     <h2 className="footer__title">SUBSCRIBE TO OUR NEWS</h2>

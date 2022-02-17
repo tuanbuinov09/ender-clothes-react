@@ -50,14 +50,16 @@
     width: 23%;
     padding: 0 16px;
 }
-@media (max-width: 1023px) {
+@media (max-width: 900px) {
     .item2 {
         display: none;
+    }
+    .item3 {
         flex: 1;
     }
-}
-@media (max-width: 740px) {
     .item {
         width: 50%;
     }
+}
+@media (max-width: 740px) {
 }

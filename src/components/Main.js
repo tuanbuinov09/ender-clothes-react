@@ -1,5 +1,5 @@
 import Header from "./Header/Header";
-import Content from "./Content/Content";
+import Content from "./HomePage/Home";
 import Footer from "./Footer";
 import About from "./AboutPage/About"
 import {
@@ -10,12 +10,15 @@ function Main() {
         <BrowserRouter>
             <div className="main">
                 <Header />
-                <Routes>
-                    <Route path="" element={<Content />} />
-                    <Route path="/about" element={<About />} />
-                </Routes>
+                <div className="container">
+                    <Routes>
+                        <Route path="" element={<Content />} />
+                        <Route path="/home" element={<Content />} />
+                        <Route path="/about" element={<About />} />
+                    </Routes>
+                    <Footer />
+                </div>
 
-                <Footer />
 
             </div>
         </BrowserRouter>

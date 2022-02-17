@@ -92,7 +92,7 @@
 .navItem:hover::after {
     width: 100%;
 }
-:global(.linkActive)::after {
+.navItem.active::after {
     width: 100%;
 }
 .submenuContainer a {
