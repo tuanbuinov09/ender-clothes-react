@@ -92,6 +92,9 @@
 .navItem:hover::after {
     width: 100%;
 }
+:global(.linkActive)::after {
+    width: 100%;
+}
 .submenuContainer a {
     display: flex;
     align-items: center;

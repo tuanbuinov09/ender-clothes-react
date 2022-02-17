@@ -21,7 +21,15 @@ function Header() {
     //         .then(res => res.json())
     //         .then(json => setCategories(json));
     // }, []);
-
+    const navbar = useRef();
+    const activeLinkStyle = (e) => {
+        console.log(navbar.current);
+        const links = navbar.current.childNodes;
+        for (var i = 0; i < links.length; i++) {
+            links[i].classList.remove("linkActive");
+        }
+        e.target.parentNode.classList.add("linkActive");
+    }
     return (
         <div>
             <header className={clsx(style.header)}>
@@ -30,7 +38,7 @@ function Header() {
                     <Link to="" className={style.logo}>CLO<span>T</span>HES</Link>
                 </div>
 
-                <ul className={clsx(style.nav, style.navList)}>
+                <ul className={clsx(style.nav, style.navList)} ref={navbar}>
                     <li className={clsx(style.navItem, style.submenuContainer)}><Link to="/product">Products<Icon icon="chevron-down" className="chevron-down-icon" />
                     </Link>
                         <ul className={clsx(style.submenu)}>
@@ -40,10 +48,10 @@ function Header() {
                             <li><Link to="/all">All products</Link></li>
                         </ul>
                     </li>
-                    <li className={clsx(style.navItem)}><Link to="/new-arrivals">New Arrivals</Link></li>
-                    <li className={clsx(style.navItem)}><Link to="/helps">Helps</Link></li>
-                    <li className={clsx(style.navItem)}><Link to="/collection">Collection</Link></li>
-                    <li className={clsx(style.navItem)}><Link to="/about">About Us</Link></li>
+                    <li className={clsx(style.navItem)}><Link to="/new-arrivals" onClick={activeLinkStyle}>New Arrivals</Link></li>
+                    <li className={clsx(style.navItem)}><Link to="/helps" onClick={activeLinkStyle}>Helps</Link></li>
+                    <li className={clsx(style.navItem)}><Link to="/collection" onClick={activeLinkStyle}>Collection</Link></li>
+                    <li className={clsx(style.navItem)}><Link to="/about" onClick={activeLinkStyle}>About Us</Link></li>
                 </ul >
 
                 <div className={clsx(style.right)}>

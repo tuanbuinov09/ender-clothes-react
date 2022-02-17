@@ -26,12 +26,15 @@
     .main {
         overflow: hidden;
     }
-    .sale-off__img-container {
+    .sale-off {
+        padding-left: 0;
+    }
+    /* .sale-off__img-container {
         display: none;
     }
     .sale-off .item {
         flex: 1;
-    }
+    } */
     /* .header__nav-list {
         display: block;
         width: 500px;
@@ -71,9 +74,6 @@
     }
     .header__nav-list .nav__item:not(:first-child) {
         transition: 0.3s;
-    }
-    .sale-off {
-        padding-left: 0;
     }
     .translateX-0 {
         transform: translateX(0) !important;
