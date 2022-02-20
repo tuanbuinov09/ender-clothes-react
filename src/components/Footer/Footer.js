@@ -1,19 +1,26 @@
 import {
     Link
 } from "react-router-dom";
-import legalImage from './assets/img/dang-ky-website-thuong-mai-dien-tu-1024x388-1024x388.png';
+import legalImage from './dang-ky-website-thuong-mai-dien-tu-1024x388-1024x388.png';
 import Icon from "react-hero-icon";
+import style from "./Footer.module.css";
+import clsx from "clsx";
 function Footer() {
     return (
         <footer className="footer">
             <div className="footer__wrapper">
                 <div className="subscribe">
-                    <h2 className="footer__title">SUBSCRIBE TO OUR NEWS</h2>
+                    <h2 className={clsx(style.title)}>SUBSCRIBE TO OUR NEWS</h2>
                     <div className="footer__intput-container">
                         <input type="text" placeholder="Type your email" />
                         <Link to="/subscribe"><Icon icon="mail"></Icon></Link>
 
                     </div>
+                    <ul className={clsx(style.socials)}>
+                        <li><a href="https://www.facebook.com/enderclothes/" target="_blank" rel="noreferrer"><i className={clsx(style.icon, "fab fa-facebook-square")}></i></a></li>
+                        <li><a href="https://www.instagram.com/enderclothes/" target="_blank" rel="noreferrer"><i className={clsx(style.icon, "fab fa-instagram-square")}></i></a></li>
+                        <li><a href="https://www.twitter.com/enderclothes/" target="_blank" rel="noreferrer"><i className={clsx(style.icon, "fab fa-twitter-square")}></i></a></li>
+                    </ul>
                     <p>
                         CLOTHES CO,. LTD
                     </p>
@@ -23,17 +30,13 @@ function Footer() {
                     <p>
                         Office: 16 SomeWhere, SomeWhere District, SomeWhere City
                     </p>
-                    <ul className="socials row">
-                        <li><i className="fa fa-facebook-square"></i></li>
-                        <li><i className="fa fa-instagram-square"></i></li>
-                        <li><i className="fa fa-twitter-square"></i></li>
-                    </ul>
-                    <Link to="/nowhere" className="footer__img-container"><img
-                        src={legalImage} alt="legal" /></Link>
+
+                    {/* <Link to="/nowhere" className="footer__img-container"><img
+                        src={legalImage} alt="legal" /></Link> */}
                 </div>
-                <div className="footer__right">
+                <div className={clsx(style.right)}>
                     <div className="col-third">
-                        <h3 className="footer__title">COMPANY</h3>
+                        <h3 className={clsx(style.title)}>COMPANY</h3>
                         <ul>
                             <li><Link to="/nowhere"><span>-</span>Introduction</Link></li>
                             <li><Link to="/nowhere"><span>-</span>Hiring</Link></li>
@@ -43,7 +46,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="col-third">
-                        <h3 className="footer__title">CUSTOMER SERVICES</h3>
+                        <h3 className={clsx(style.title)}>CUSTOMER SERVICES</h3>
                         <ul>
                             <li><Link to="/nowhere"><span>-</span>Loyalty</Link></li>
                             <li><Link to="/nowhere"><span>-</span>Return Product</Link></li>
@@ -53,7 +56,7 @@ function Footer() {
                         </ul>
                     </div>
                     <div className="col-third">
-                        <h3 className="footer__title">STORES INFORMATION</h3>
+                        <h3 className={clsx(style.title)}>STORES INFORMATION</h3>
                         <h3 className="footer__sub-title">STORE Nth</h3>
                         <p>16 SomeWhere, SomeWhere District, SomeWhere City</p>
                         <h3 className="footer__sub-title">STORE Nth</h3>

@@ -62,7 +62,11 @@
 .navItem {
     position: relative;
 }
-.navItem a {
+.nowhere {
+    cursor: pointer;
+}
+
+.navLink {
     color: #999999;
     font-size: 1.6rem;
     font-weight: 500;
@@ -75,7 +79,7 @@
 .navItem:hover {
     background-color: #333333;
 }
-.navItem:hover > a {
+.navItem:hover > .navLink {
     color: var(--light);
 }
 .navItem::after {
@@ -95,17 +99,17 @@
 .navItem.active::after {
     width: 100%;
 }
-.submenuContainer a {
+.submenuContainer .navLink {
     display: flex;
     align-items: center;
 }
-.navItem .chevron-down-icon {
+.navItem .chevronDown {
     transition: all 0.3s ease-out;
     margin-left: 4px;
     width: 20px;
 }
 
-.navItem:hover .chevron-down-icon {
+.navItem:hover .chevronDown {
     transform: rotate(-180deg);
 }
 .submenuContainer {

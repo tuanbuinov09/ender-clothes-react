@@ -1,6 +1,6 @@
 import Header from "./Header/Header";
 import Content from "./HomePage/Home";
-import Footer from "./Footer";
+import Footer from "./Footer/Footer";
 import About from "./AboutPage/About"
 import {
     BrowserRouter, Route, Routes,
@@ -18,8 +18,6 @@ function Main() {
                     </Routes>
                     <Footer />
                 </div>
-
-
             </div>
         </BrowserRouter>
     );
