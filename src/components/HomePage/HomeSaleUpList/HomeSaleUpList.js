@@ -1,26 +1,13 @@
 import React from 'react';
-import products from '../../products';
-import { useState } from 'react';
 import Item from '../Item/Item';
 import { Link } from 'react-router-dom';
 import style from './HomeSaleUpList.module.css';
 import clsx from 'clsx';
-const productsArray = products;
-function HomeSaleUpList(props) {
-    function compareByRate(a, b) {
-        if (a.rating.rate < b.rating.rate) {
-            return -1;
-        }
-        if (a.rating.rate > b.rating.rate) {
-            return 1;
-        }
-        return 0;
-    }
-    const [top4products, setTop4products] = useState(productsArray.sort(compareByRate).slice(0, 4));
+function HomeSaleUpList({ products }) {
     return (
         <div className="section">
-            <div className={clsx(style.saleOff)}>
-                {top4products.map((product, index) => {
+            <div className={clsx(style.itemList)}>
+                {products.map((product, index) => {
                     if (index === 0 || index === 2) {
                         return (<Item key={index} product={product} type={2} />)
                     } else {

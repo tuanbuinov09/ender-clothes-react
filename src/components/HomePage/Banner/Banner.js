@@ -18,7 +18,7 @@ function Banner() {
                 <h1 className={clsx(style.title)}>
                     ARRIVALS SALES
                 </h1>
-                <Link to="nowhere" className={clsx(style.btn)}>SHOP NOW</Link>
+                <Link to="/new-arrivals" className={clsx(style.btn)}>SHOP NOW</Link>
             </div>
         </div>
     );
