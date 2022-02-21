@@ -23,9 +23,9 @@
         font-size: 2.2rem;
         border-width: 2px;
     } */
-    .main {
+    /* .main {
         overflow: hidden;
-    }
+    } */
 
     /* .sale-off__img-container {
         display: none;
@@ -47,26 +47,24 @@
         overflow-y: scroll;
     } */
 
-    .submenu li {
+    /* .submenu li {
         padding-left: 36px;
-    }
+    } */
 
-    .nav__item:hover i {
+    /* .nav__item:hover i {
         transform: rotate(0);
         pointer-events: none;
-    }
+    } */
 
-    .header ul .submenu {
+    /* .header ul .submenu {
         display: block;
         width: 100%;
         position: absolute;
         visibility: visible;
         overflow: visible;
-        /* bottom: 0; */
-        /* z-index: 1; */
         transform: translateX(-100%);
         opacity: 1;
-    }
+    } */
     .nav__item .submenu a {
         transform: translateY(0%);
     }

@@ -1,9 +1,9 @@
 import React from 'react';
 import Item from '../Item/Item';
 import { Link } from 'react-router-dom';
-import style from './NewArrivalList.module.css';
+import style from './NewArrivalsList.module.css';
 import clsx from 'clsx';
-function NewArrivalList({ products }) {
+function NewArrivalsList({ products }) {
     return (<div className="section">
         <div className={style.itemList}>
             {products.map((product, index) => {
@@ -14,4 +14,4 @@ function NewArrivalList({ products }) {
     </div>);
 }
 
-export default NewArrivalList;
+export default NewArrivalsList;

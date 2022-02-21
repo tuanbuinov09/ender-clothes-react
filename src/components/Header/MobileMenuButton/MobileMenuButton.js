@@ -1,11 +1,15 @@
 import { useRef } from 'react';
 import './MobileMenuButton.css';
-function MobileMenuButton({ props }) {
+function MobileMenuButton(props) {
     const mobileMenuButton = useRef();
     const handleMenuButton = (e) => {
-        console.log(mobileMenuButton.current.classList.toggle("active"));
-
+        // console.log(
+        mobileMenuButton.current.classList.toggle("active")
+        // );
+        props.showNavListResponsive();
+        props.activeOverCoat();
     }
+    console.log("rerender")
     return (
         <div className="mobile-menu-button mobile-button-animate" onClick={handleMenuButton} ref={mobileMenuButton}>
             <div className="bar-top">

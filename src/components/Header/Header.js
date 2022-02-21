@@ -7,13 +7,14 @@ import { useRef, useState } from "react";
 // import { useEffect } from "react/cjs/react.development";
 import MobileMenuButton from "./MobileMenuButton/MobileMenuButton";
 import clsx from "clsx";
+
 const categoriesArray = [
     "Top",
     "Bottom",
     "Set",
     "Accessories"
 ]
-function Header() {
+function Header(props) {
     const [categories, setCategories] = useState(categoriesArray);
     // useEffect(function () {
     //     fetch('https://fakestoreapi.com/products/categories')
@@ -29,27 +30,25 @@ function Header() {
         }
         e.target.parentNode.classList.add(style.active);
     }
-    // const handleLogoClick = (e) => {
-    //     const links = navbar.current.childNodes;
-    //     links[0].classList.add(style.active);
 
-    //     for (var i = 1; i < links.length; i++) {
-    //         links[i].classList.remove(style.active);
-    //     }
-    // }
+    const [showNavListResponsive, setShowNavListResponsive] = useState(false);
+    const toggleShowNavListResponsive = () => {
+        setShowNavListResponsive(!showNavListResponsive);
+    }
+
     return (
         <div>
             <header className={clsx(style.header)}>
                 <div className={clsx(style.logo_Container)}>
-                    <MobileMenuButton />
+                    <MobileMenuButton showNavListResponsive={toggleShowNavListResponsive} activeOverCoat={props.activeOverCoat} />
                     <Link to="" className={style.logo} onClick={activeLinkStyle}>CLO<span>T</span>HES</Link>
                 </div>
 
-                <ul className={clsx(style.nav, style.navList)} ref={navbar}>
+                <ul className={clsx(style.nav, style.navList, { [style.active]: showNavListResponsive })} ref={navbar}>
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
                     <li className={clsx(style.navItem, style.submenuContainer)}><div className={clsx(style.navLink, style.nowhere)}>Products<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                     </div>
-                        <ul className={clsx(style.submenu)}>
+                        <ul className={clsx(style.submenu)} >
                             {categories.map((category, index) => {
                                 return (<li key={index}><Link to={"/category/" + index} className={clsx(style.navLink)}>{category.substring(0, 1).toUpperCase() + category.substring(1, category.length)}</Link></li>)
                             })}
