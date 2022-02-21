@@ -4,8 +4,7 @@
     align-items: center;
     margin-bottom: 20px;
     justify-content: space-between;
-    width: 20%;
-    padding: 0 16px;
+    padding-right: 16px;
     /* position: relative; */
 }
 /* .imgContainer {
@@ -39,25 +38,25 @@
 .label:hover {
     color: #009eb6;
 }
-
-.item2 {
+.type1 {
+    width: 20%;
+}
+.type2 {
     margin: 0;
     width: 27%;
-    padding: 0;
 }
-.item3 {
+.type3 {
     margin: 0;
     width: 23%;
-    padding: 0 16px;
 }
 @media (max-width: 900px) {
-    .item2 {
+    .type2 {
         display: none;
     }
-    .item3 {
+    .type3 {
         flex: 1;
     }
-    .item {
+    .type1 {
         width: 50%;
     }
 }

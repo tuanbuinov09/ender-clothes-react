@@ -1,16 +1,16 @@
-import {
-    Link
-} from "react-router-dom";
+// import {
+//     Link
+// } from "react-router-dom";
 // import bannerImage from '../assets/img/slider/xmodel_3.png.pagespeed.ic.IuWWDLqA4l.webp';
 import { useState } from "react";
-import Item from './Item/Item';
 import Banner from './Banner/Banner';
 // import { useEffect } from "react/cjs/react.development";
-import Icon from "react-hero-icon";
 import SectionTitle from "./SectionTitle/SectionTitle";
 import products from "../products";
 import HomeSaleUpList from "./HomeSaleUpList/HomeSaleUpList";
+import NewArrivalList from "./NewArrivalList/NewArrivalList";
 const productsArray = products;
+
 function Home() {
     const [products, setProducts] = useState(productsArray);
     // useEffect(function () {
@@ -27,22 +27,25 @@ function Home() {
     //         });
     // }, []);
     // console.log(top2products);
-
+    function compareByRate(a, b) {
+        if (a.rating.rate < b.rating.rate) {
+            return -1;
+        }
+        if (a.rating.rate > b.rating.rate) {
+            return 1;
+        }
+        return 0;
+    }
+    const [top4products, setTop4products] = useState(productsArray.sort(compareByRate).slice(0, 4));
     return (
+
         <div className="">
             <Banner />
             <SectionTitle title="new arrivals" />
-            <div className="section">
-                <div className="new-arrivals item__list row">
-                    {products.map((product, index) => {
-                        return (<Item key={index} product={product} type={1} />);
-                    })}
-                </div>
-                <div className="section__btn-container"><Link to="/new-arrivals" className="btn bg-dark">SHOP NOW</Link></div>
-            </div>
+            <NewArrivalList products={products} />
             <SectionTitle title="Sale up" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
-            <HomeSaleUpList />
+            <HomeSaleUpList products={top4products} />
         </div >
     );
 }

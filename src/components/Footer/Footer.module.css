@@ -1,51 +1,106 @@
+.colThird {
+    width: 33.33333%;
+}
+.wrapper {
+    padding: 16px 0;
+    display: flex;
+    background-color: white;
+}
+.socials {
+    margin: 8px 0 12px 0;
+    display: flex;
+}
 .icon {
-    color: #666;
+    color: #555;
     font-size: 24px;
     transition: all 0.3s ease-in-out;
     margin-right: 8px;
 }
 .icon:hover {
-    color: #333;
+    color: #222;
 }
-.socials {
-    margin: 8px 0;
-    display: flex;
+p {
+    font-size: 16px;
+}
+
+.title {
+    font-size: 18px;
+    padding: 0 12px 12px 0;
+}
+.subscribe {
+    width: 500px;
+    max-width: 40%;
+    padding: 0 16px;
+}
+.form {
+    position: relative;
+    margin-bottom: 12px;
+}
+.form .input {
+    width: 100%;
+    appearance: none;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #333333;
+    padding: 12px 40px 12px 0;
+    font-size: 14px;
+}
+.btn {
+    border: none;
+    background-color: transparent;
+    color: #333;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    font-size: 28px;
+    cursor: pointer;
 }
 .right {
     padding: 0 16px;
     display: flex;
     flex: 1;
 }
-.title {
-    font-size: 18px;
-    padding: 0 12px 12px 0;
-}
 .right ul li:not(:last-child) {
     margin-bottom: 10px;
 }
 .right a,
-.right p {
-    color: #333333;
-    font-size: 1.4rem;
+.right p,
+.subscribe p:not(:first-of-type) {
+    color: #333;
+    font-size: 14px;
     transition: 0.3s;
+    margin: 8px 0;
 }
-.right ul li a:hover {
+
+.right .navLink:hover {
     position: relative;
     padding-left: 12px;
     color: #17a2b8;
 }
 
-.right ul li a span {
+.right .navLink span {
     position: absolute;
     display: none;
-    /* bottom: -8px; */
 }
-.right ul li a:hover span {
+.right .navLink:hover span {
     left: 0;
     transition: all 0.3s ease-in-out;
     color: #17a2b8;
     display: inline-block;
 }
-.right p {
+/* .right p {
     margin-bottom: 12px;
+} */
+.right .subTitle {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+
+.footer__img-container {
+    width: 100px;
+}
+.footer__img-container {
+    display: block;
+    width: 160px;
 }

@@ -2,13 +2,13 @@ import {
     Link
 } from "react-router-dom";
 import React from 'react';
-import Icon from 'react-hero-icon';
+// import Icon from 'react-hero-icon';
 import style from './Item.module.css';
 import clsx from "clsx";
 function Item({ product, type }) {
     if (type === 1) {
         return (
-            <div className={clsx(style.item)} >
+            <div className={clsx(style.item, style.type1)} >
                 <div>
                     <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>
                         <img src={product.image} alt={`product:${product.id}`} />
@@ -22,7 +22,7 @@ function Item({ product, type }) {
     }
     if (type === 2) {
         return (
-            <div className={clsx(style.item, style.item2)} >
+            <div className={clsx(style.item, style.type2)} >
                 <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>
                     <img src={product.image} alt="item" />
                 </Link>
@@ -31,7 +31,7 @@ function Item({ product, type }) {
     }
     if (type === 3) {
         return (
-            <div className={clsx(style.item, style.item3)}>
+            <div className={clsx(style.item, style.type3)}>
                 <div>
                     <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>
                         <img src={product.image} alt="item" />

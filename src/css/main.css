@@ -431,17 +431,17 @@ body {
 .bottom-of-item {
     text-align: center;
 } */
-.col-1per5 {
+/* .col-1per5 {
     width: 20%;
     display: flex;
-}
-.section__btn-container {
+} */
+/* .section__btn-container {
     margin-top: 16px;
     text-align: center;
-}
-.item .btn {
+} */
+/* .item .btn {
     width: 100%;
-}
+} */
 .add-to-cart-button {
     /* position: absolute; */
     margin-bottom: 28px;
@@ -465,22 +465,22 @@ body {
 .sale-off .btn:after {
     content: "SEE DETAILS";
 } */
-.subscribe {
+/* .subscribe {
     width: 500px;
     max-width: 40%;
     padding: 0 16px;
 }
 .subscribe p {
     margin-top: 4px;
-}
-.footer__img-container {
+} */
+/* .footer__img-container {
     width: 100px;
 }
 .footer__img-container {
     display: block;
     width: 160px;
-}
-.footer__intput-container input {
+} */
+/* .footer__intput-container input {
     width: 100%;
     appearance: none;
     outline: none;
@@ -488,12 +488,12 @@ body {
     border-bottom: 2px solid #333333;
     padding: 12px 40px 12px 0;
     font-size: 1.4rem;
-}
-.footer__intput-container {
+} */
+/* .footer__intput-container {
     position: relative;
     margin-bottom: 32px;
-}
-.footer__intput-container a {
+} */
+/* .footer__intput-container a {
     color: #333;
     position: absolute;
     top: 50%;
@@ -501,21 +501,21 @@ body {
     transform: translateY(-50%);
     font-size: 2.8rem;
     cursor: pointer;
-}
-.footer__wrapper {
+} */
+/* .footer__wrapper {
     padding: 16px 0;
     display: flex;
     background-color: white;
-}
+} */
 /* .footer__title {
     font-size: 2.2rem;
     margin-bottom: 16px;
 } */
-.footer p {
+/* .footer p {
     font-size: 1.6rem;
-}
+} */
 
-.footer__right {
+/* .footer__right {
     padding: 0 16px;
     display: flex;
     flex: 1;
@@ -536,25 +536,22 @@ body {
     position: relative;
     padding-left: 12px;
     color: var(--orange);
-}
+} */
 
-.footer__right ul li a span {
+/* .footer__right ul li a span {
     position: absolute;
     display: none;
-    /* bottom: -8px; */
-}
-.footer__right ul li a:hover span {
-    /* bottom: 0; */
+} */
+/* .footer__right ul li a:hover span {
     left: 0;
     transition: all 0.3s ease-in-out;
     color: var(--orange);
-    /* margin-right: 4px; */
     display: inline-block;
-}
-.footer__right p {
+} */
+/* .footer__right p {
     margin-bottom: 12px;
-}
-.footer__sub-title {
+} */
+/* .footer__sub-title {
     font-size: 1.4rem;
     margin-bottom: 4px;
-}
+} */
