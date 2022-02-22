@@ -135,7 +135,7 @@ ul {
 /* .shopping-bag-icon {
     position: relative;
 } */
-@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 .bag__count {
     font-family: "Raleway", sans-serif;
     display: block;
@@ -145,7 +145,7 @@ ul {
     position: absolute;
     text-align: center;
     bottom: 5px;
-}
+} */
 
 /* .overCoat {
     position: fixed;
@@ -165,7 +165,6 @@ ul {
 .search-box,
 .bag-box {
     width: 400px;
-    /* height: 100vh; */
     background-color: var(--white);
     padding: 40px 40px;
     position: fixed;
@@ -190,17 +189,17 @@ ul {
     display: flex;
     justify-content: space-between;
 }
-.search-bar-wrapper {
+/* .search-bar-wrapper {
     margin-top: 24px;
-}
-.search-bar-wrapper input {
+} */
+/* .search-bar-wrapper input {
     width: 100%;
     appearance: none;
     outline: none;
     border: none;
     padding: 16px;
     background-color: #343a4021;
-}
+} */
 .cart-list {
     margin-top: 40px;
     max-height: 444px;
@@ -263,14 +262,13 @@ input[type="number"] {
     padding: 8px;
     width: fit-content;
 }
-.main {
+/* .main {
     padding-top: 60px;
     width: 100%;
     overflow: hidden;
     transition: 0.3s;
-    /* margin-left: -400px; */
     background-color: rgb(233, 233, 233);
-}
+} */
 body {
     overflow-x: hidden;
 }

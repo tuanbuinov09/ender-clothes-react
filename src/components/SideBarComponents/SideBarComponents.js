@@ -2,15 +2,7 @@ import React from 'react';
 function SideBarComponents(props) {
     return (
         <>
-            <div className="search-box">
-                <div className="top">
-                    <h3>SEARCH</h3>
-                    <i className="fas fa-times search-close"></i>
-                </div>
-                <div className="search-bar-wrapper">
-                    <input type="text" placeholder="Search for product..." />
-                </div>
-            </div>
+
             <div className="bag-box">
                 <div className="top">
                     <h3>SHOPPING BAG</h3>

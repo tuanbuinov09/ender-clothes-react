@@ -37,7 +37,7 @@ function Header(props) {
     }
 
     return (
-        <div>
+        <>
             <header className={clsx(style.header)}>
                 <div className={clsx(style.logo_Container)}>
                     <MobileMenuButton showNavListResponsive={toggleShowNavListResponsive} activeOverCoat={props.activeOverCoat} />
@@ -63,12 +63,22 @@ function Header(props) {
 
                 <div className={clsx(style.right)}>
                     <Link to="/users" className={clsx(style.iconWrapper)}><Icon icon="user-circle" className={clsx(style.iconSvg)} /></Link>
-                    <Link to="/search" className={clsx(style.iconWrapper)}><Icon icon="search" className={clsx(style.iconSvg)} /></Link>
-                    <Link to="/shopping-bag" className={clsx(style.iconWrapper, style.bagIcon)}><Icon icon="shopping-bag" className={clsx(style.iconSvg)} /><span className={clsx(style.bagCount)}>0</span></Link>
+                    <button className={clsx(style.iconWrapper, style.searchIcon)}
+                        onClick={() => {
+                            props.openSearchBox();
+                            props.pushMain();
+                            props.activeOverCoat();
+                        }}>
+                        <Icon icon="search" className={clsx(style.iconSvg)} />
+                    </button>
+                    <button className={clsx(style.iconWrapper, style.bagIcon)}>
+                        <Icon icon="shopping-bag" className={clsx(style.iconSvg)} />
+                        <span className={clsx(style.bagCount)}>0</span>
+                    </button>
                 </div>
 
             </header >
-        </div >
+        </>
     );
 }
 

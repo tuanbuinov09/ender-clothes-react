@@ -1,0 +1,10 @@
+.main {
+    padding-top: 60px;
+    width: 100%;
+    overflow: hidden;
+    transition: margin-left 0.3s;
+    background-color: rgb(233, 233, 233);
+}
+.main.active {
+    margin-left: -400px;
+}
