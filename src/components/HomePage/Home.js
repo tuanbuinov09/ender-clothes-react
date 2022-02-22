@@ -8,7 +8,7 @@ import Banner from './Banner/Banner';
 import SectionTitle from "./SectionTitle/SectionTitle";
 import products from "../products";
 import HomeSaleUpList from "./HomeSaleUpList/HomeSaleUpList";
-import NewArrivalList from "./NewArrivalList/NewArrivalList";
+import NewArrivalsList from "./NewArrivalsList/NewArrivalsList";
 const productsArray = products;
 
 function Home() {
@@ -42,7 +42,7 @@ function Home() {
         <div className="">
             <Banner />
             <SectionTitle title="new arrivals" />
-            <NewArrivalList products={products} />
+            <NewArrivalsList products={products} />
             <SectionTitle title="Sale up" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
             <HomeSaleUpList products={top4products} />
