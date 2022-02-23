@@ -1,17 +1,26 @@
-import { useRef, forwardRef } from 'react';
+import { useRef, forwardRef, useImperativeHandle } from 'react';
 import './MobileMenuButton.css';
 function MobileMenuButton(props, ref) {
-    // const mobileButton = useRef();
+    const mobileButton = useRef();
     const handleMenuButton = () => {
         // console.log(
-        ref.current.classList.toggle("active")
+        mobileButton.current.classList.toggle("active")
         // );
         props.showNavListResponsive();
         props.toggleOverCoat();
     }
+
+    useImperativeHandle(ref, () => {
+        return {
+            toggleActive() {
+                mobileButton.current.classList.toggle("active");
+            }
+        }
+    })
+
     console.log("rerender")
     return (
-        <div className="mobile-menu-button mobile-button-animate" onClick={handleMenuButton} ref={ref}>
+        <div className="mobile-menu-button mobile-button-animate" onClick={handleMenuButton} ref={mobileButton}>
             <div className="bar-top">
 
             </div>
