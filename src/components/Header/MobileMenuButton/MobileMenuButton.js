@@ -1,17 +1,17 @@
-import { useRef } from 'react';
+import { useRef, forwardRef } from 'react';
 import './MobileMenuButton.css';
-function MobileMenuButton(props) {
-    const mobileMenuButton = useRef();
-    const handleMenuButton = (e) => {
+function MobileMenuButton(props, ref) {
+    // const mobileButton = useRef();
+    const handleMenuButton = () => {
         // console.log(
-        mobileMenuButton.current.classList.toggle("active")
+        ref.current.classList.toggle("active")
         // );
         props.showNavListResponsive();
-        props.activeOverCoat();
+        props.toggleOverCoat();
     }
     console.log("rerender")
     return (
-        <div className="mobile-menu-button mobile-button-animate" onClick={handleMenuButton} ref={mobileMenuButton}>
+        <div className="mobile-menu-button mobile-button-animate" onClick={handleMenuButton} ref={ref}>
             <div className="bar-top">
 
             </div>
@@ -24,4 +24,4 @@ function MobileMenuButton(props) {
         </div>
     );
 }
-export default MobileMenuButton;
+export default forwardRef(MobileMenuButton);

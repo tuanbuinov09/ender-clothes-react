@@ -1,5 +1,5 @@
 .box {
-    width: 400px;
+    width: 500px;
     background-color: var(--white);
     padding: 40px 40px;
     position: fixed;
@@ -35,19 +35,6 @@ h3 {
 .iconSvg path {
     stroke-width: 3;
 }
-.form {
-    position: relative;
-    margin-top: 12px;
-}
-.form .input {
-    width: 100%;
-    appearance: none;
-    outline: none;
-    border: none;
-    border-bottom: 2px solid #333333;
-    padding: 12px 40px 12px 0;
-    font-size: 14px;
-}
 .btn {
     border: none;
     background-color: transparent;
@@ -58,4 +45,9 @@ h3 {
     transform: translateY(-50%);
     font-size: 28px;
     cursor: pointer;
+}
+@media (max-width: 740px) {
+    .box {
+        width: 100%;
+    }
 }

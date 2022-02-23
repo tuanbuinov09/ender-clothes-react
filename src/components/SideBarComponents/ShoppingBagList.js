@@ -1,15 +1,11 @@
+import clsx from 'clsx';
 import React from 'react';
-function SideBarComponents(props) {
+import style from './ShoppingBagList.module.css';
+import Icon from 'react-hero-icon';
+function ShoppingBagList(props) {
     return (
-        <>
-
-            <div className="bag-box">
-                <div className="top">
-                    <h3>SHOPPING BAG</h3>
-                    <i className="fas fa-times bag-close"></i>
-                </div>
-                <div className="cart-list">
-                    <>{/* <!-- <div className="cart-list__item">
+        <div className={clsx(style.list)}>
+            <>{/* <!-- <div className="cart-list__item">
                         <a href="#" className="item__img-container">
                             <img src="./assets/img/item-9.jpg" alt="item">
                         </a>
@@ -40,10 +36,8 @@ function SideBarComponents(props) {
                                                 <a href="#" className="btn--danger">Remove</a>
                                             </div>
                                     </div> --> */}</>
-                </div>
-            </div>
-        </>
+        </div>
     );
 }
 
-export default SideBarComponents;
+export default ShoppingBagList;

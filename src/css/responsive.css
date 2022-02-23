@@ -116,11 +116,11 @@
     .cover img {
         width: 100%;
     }
-    .search-box,
+    /* .search-box,
     .bag-box {
         width: 100%;
-    }
-    .footer__wrapper {
+    } */
+    /* .footer__wrapper {
         flex-direction: column;
     }
     .subscribe {
@@ -128,5 +128,5 @@
     }
     .footer__right {
         margin-top: 16px;
-    }
+    } */
 }

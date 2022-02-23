@@ -7,8 +7,7 @@ import { useState } from "react";
 import {
     BrowserRouter, Route, Routes,
 } from "react-router-dom";
-import SideBarComponents from "./SideBarComponents/SideBarComponents";
-import SearchBox from "./SideBarComponents/SearchBox";
+import SideBox from "./SideBarComponents/SideBox";
 import clsx from "clsx";
 import style from "./Main.module.css"
 function Main() {
@@ -26,21 +25,36 @@ function Main() {
     }
     const mountSearchBox = function () {
         if (openSearchBox === true) {
-            return <SearchBox
-                activeOverCoat={toggleOverCoat}
+            return <SideBox
+                toggleOverCoat={toggleOverCoat}
                 pushMain={togglePushMain}
-                openSearchBox={handleOpenSearchBox} />;
+                toggleSearchBox={handleOpenSearchBox}
+                type={"searchBox"} />;
+        }
+    }
+
+    const [openShoppingBag, setOopenShoppingBag] = useState(false);
+    const handleOpenShoppingBag = () => {
+        setOopenShoppingBag(!openShoppingBag);
+    }
+    const mountShoppingBag = function () {
+        if (openShoppingBag === true) {
+            return <SideBox
+                toggleOverCoat={toggleOverCoat}
+                pushMain={togglePushMain}
+                toggleShoppingBag={handleOpenShoppingBag} type={"shoppingBag"} />;
         }
     }
     return (
         <BrowserRouter>
             <div className={clsx(style.main, { [style.active]: pushMain })}>
                 <Header
-                    activeOverCoat={toggleOverCoat}
-                    openSearchBox={handleOpenSearchBox}
+                    toggleOverCoat={toggleOverCoat}
+                    toggleSearchBox={handleOpenSearchBox}
+                    toggleShoppingBag={handleOpenShoppingBag}
                     pushMain={togglePushMain}
                 />
-                <div className="container">
+                <div className={clsx(style.container)}>
                     <Routes>
                         <Route path="" element={<Content />} />
                         {/* <Route path="/home" element={<Content />} /> */}
@@ -50,7 +64,7 @@ function Main() {
                 </div>
                 <OverCoat active={activeOverCoat} />
                 {mountSearchBox()}
-                <SideBarComponents />
+                {mountShoppingBag()}
             </div>
         </BrowserRouter>
     );
