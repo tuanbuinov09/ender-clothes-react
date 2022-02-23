@@ -96,11 +96,22 @@ p {
     font-size: 1.4rem;
     margin-bottom: 4px;
 }
-
-.footer__img-container {
+@media (max-width: 740px) {
+    .wrapper {
+        flex-direction: column;
+    }
+    .subscribe {
+        width: 100%;
+        max-width: 100%;
+    }
+    .right {
+        margin-top: 16px;
+    }
+}
+/* .footer__img-container {
     width: 100px;
 }
 .footer__img-container {
     display: block;
     width: 160px;
-}
+} */

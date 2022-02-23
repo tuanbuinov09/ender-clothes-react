@@ -269,9 +269,9 @@ input[type="number"] {
     transition: 0.3s;
     background-color: rgb(233, 233, 233);
 } */
-body {
+/* body {
     overflow-x: hidden;
-}
+} */
 .section {
     background-color: white;
     padding: 16px 0;

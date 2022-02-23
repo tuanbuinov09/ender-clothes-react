@@ -35,12 +35,17 @@ function Header(props) {
     const toggleShowNavListResponsive = () => {
         setShowNavListResponsive(!showNavListResponsive);
     }
+    const mobileButton = useRef();
 
     return (
         <>
             <header className={clsx(style.header)}>
                 <div className={clsx(style.logo_Container)}>
-                    <MobileMenuButton showNavListResponsive={toggleShowNavListResponsive} activeOverCoat={props.activeOverCoat} />
+                    <MobileMenuButton
+                        showNavListResponsive={toggleShowNavListResponsive}
+                        toggleOverCoat={props.toggleOverCoat}
+                        ref={mobileButton}
+                    />
                     <Link to="" className={style.logo} onClick={activeLinkStyle}>CLO<span>T</span>HES</Link>
                 </div>
 
@@ -65,13 +70,31 @@ function Header(props) {
                     <Link to="/users" className={clsx(style.iconWrapper)}><Icon icon="user-circle" className={clsx(style.iconSvg)} /></Link>
                     <button className={clsx(style.iconWrapper, style.searchIcon)}
                         onClick={() => {
-                            props.openSearchBox();
+                            //neu menu header dang mo thi dong lai
+                            if (showNavListResponsive) {
+                                mobileButton.current.classList.toggle("active");
+                                toggleShowNavListResponsive();
+                            } else {
+                                //neu khong thi moi tat overcoat vi ca menu va search, bag deu dung overcoat
+                                props.toggleOverCoat();
+                            }
+                            props.toggleSearchBox();
                             props.pushMain();
-                            props.activeOverCoat();
                         }}>
                         <Icon icon="search" className={clsx(style.iconSvg)} />
                     </button>
-                    <button className={clsx(style.iconWrapper, style.bagIcon)}>
+                    <button className={clsx(style.iconWrapper, style.bagIcon)}
+                        onClick={() => {
+                            if (showNavListResponsive) {
+                                mobileButton.current.classList.toggle("active");
+                                toggleShowNavListResponsive();
+                            } else {
+                                props.toggleOverCoat();
+                            }
+                            props.toggleShoppingBag();
+                            props.pushMain();
+
+                        }}>
                         <Icon icon="shopping-bag" className={clsx(style.iconSvg)} />
                         <span className={clsx(style.bagCount)}>0</span>
                     </button>
