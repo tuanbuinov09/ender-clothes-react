@@ -2,7 +2,6 @@ import Header from "./Header/Header";
 import Content from "./HomePage/Home";
 import Footer from "./Footer/Footer";
 import About from "./AboutPage/About"
-import OverCoat from "./SideBarComponents/OverCoat";
 import { useState } from "react";
 import {
     BrowserRouter, Route, Routes,
@@ -11,10 +10,6 @@ import SideBox from "./SideBarComponents/SideBox";
 import clsx from "clsx";
 import style from "./Main.module.css"
 function Main() {
-    const [activeOverCoat, setActiveOverCoat] = useState(false);
-    const toggleOverCoat = () => {
-        setActiveOverCoat(!activeOverCoat);
-    }
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
         setPushMain(!pushMain);
@@ -26,7 +21,6 @@ function Main() {
     const mountSearchBox = function () {
         if (openSearchBox === true) {
             return <SideBox
-                toggleOverCoat={toggleOverCoat}
                 pushMain={togglePushMain}
                 toggleSearchBox={handleOpenSearchBox}
                 type={"searchBox"} />;
@@ -40,7 +34,6 @@ function Main() {
     const mountShoppingBag = function () {
         if (openShoppingBag === true) {
             return <SideBox
-                toggleOverCoat={toggleOverCoat}
                 pushMain={togglePushMain}
                 toggleShoppingBag={handleOpenShoppingBag} type={"shoppingBag"} />;
         }
@@ -49,7 +42,6 @@ function Main() {
         <BrowserRouter>
             <div className={clsx(style.main, { [style.active]: pushMain })}>
                 <Header
-                    toggleOverCoat={toggleOverCoat}
                     toggleSearchBox={handleOpenSearchBox}
                     toggleShoppingBag={handleOpenShoppingBag}
                     pushMain={togglePushMain}
@@ -62,7 +54,6 @@ function Main() {
                     </Routes>
                     <Footer />
                 </div>
-                <OverCoat active={activeOverCoat} />
                 {mountSearchBox()}
                 {mountShoppingBag()}
             </div>
