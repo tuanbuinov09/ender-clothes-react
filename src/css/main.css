@@ -1,4 +1,4 @@
-.row {
+/* .row {
     display: flex;
 }
 .justify-content-center {
@@ -18,8 +18,8 @@
 .p-x-16 {
     padding-left: 16;
     padding-right: 16;
-}
-.container {
+} */
+/* .container {
     padding: 0 64px;
 }
 .col-third {
@@ -30,7 +30,7 @@
 }
 .col-half {
     width: 50%;
-}
+} */
 img {
     width: 100%;
     height: auto;

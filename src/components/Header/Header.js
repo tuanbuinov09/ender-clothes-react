@@ -3,10 +3,11 @@ import {
 } from "react-router-dom";
 import style from './Header.module.css';
 import Icon from "react-hero-icon";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { useEffect } from "react/cjs/react.development";
 import MobileMenuButton from "./MobileMenuButton/MobileMenuButton";
 import clsx from "clsx";
+import OverCoat from "../SideBarComponents/OverCoat";
 
 const categoriesArray = [
     {
@@ -25,12 +26,17 @@ const categoriesArray = [
     }
 ]
 function Header(props) {
-    const [categories, setCategories] = useState(categoriesArray);
-    // useEffect(function () {
-    //     fetch('https://fakestoreapi.com/products/categories')
-    //         .then(res => res.json())
-    //         .then(json => setCategories(json));
-    // }, []);
+    const [categories, setCategories] = useState([]);
+    useEffect(function () {
+        // fetch('https://fakestoreapi.com/products/categories')
+        //     .then(res => res.json())
+        //     .then(json => setCategories(json));
+        setCategories(categoriesArray);
+    }, []);
+    const [overActive, setOverActive] = useState(false);
+    const toggleOverActive = () => {
+        setOverActive(!overActive);
+    }
     const navbar = useRef();
     const activeLinkStyle = (e) => {
         // console.log(navbar.current);
@@ -45,6 +51,13 @@ function Header(props) {
     const toggleShowNavListResponsive = () => {
         setShowNavListResponsive(!showNavListResponsive);
     }
+    const right = useRef();
+    useEffect(() => {
+        if (showNavListResponsive) { right.current.classList.add(style.hide); }
+        else {
+            right.current.classList.remove(style.hide);
+        }
+    }, [showNavListResponsive])
 
     const mobileButton = useRef();
 
@@ -54,7 +67,7 @@ function Header(props) {
                 <div className={clsx(style.logo_Container)}>
                     <MobileMenuButton
                         showNavListResponsive={toggleShowNavListResponsive}
-                        toggleOverCoat={props.toggleOverCoat}
+                        toggleOverCoat={toggleOverActive}
                         ref={mobileButton}
                     />
                     <Link to="" className={style.logo} onClick={activeLinkStyle}>CLO<span>T</span>HES</Link>
@@ -94,18 +107,15 @@ function Header(props) {
                     <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li>
                 </ul >
 
-                <div className={clsx(style.right)}>
+                <div className={clsx(style.right)} ref={right}>
                     <Link to="/users" className={clsx(style.iconWrapper)}><Icon icon="user-circle" className={clsx(style.iconSvg)} /></Link>
                     <button className={clsx(style.iconWrapper, style.searchIcon)}
                         onClick={() => {
-                            //neu menu header dang mo thi dong lai
-                            if (showNavListResponsive) {
-                                mobileButton.current.toggleActive();
-                                toggleShowNavListResponsive();
-                            } else {
-                                //neu khong thi moi tat overcoat vi ca menu va search, bag deu dung overcoat
-                                props.toggleOverCoat();
-                            }
+                            // //neu menu header dang mo thi dong lai
+                            // if (showNavListResponsive) {
+                            //     mobileButton.current.toggleActive();
+                            //     toggleShowNavListResponsive();
+                            // }
                             props.toggleSearchBox();
                             props.pushMain();
                         }}>
@@ -113,15 +123,12 @@ function Header(props) {
                     </button>
                     <button className={clsx(style.iconWrapper, style.bagIcon)}
                         onClick={() => {
-                            if (showNavListResponsive) {
-                                mobileButton.current.toggleActive();
-                                toggleShowNavListResponsive();
-                            } else {
-                                props.toggleOverCoat();
-                            }
+                            // if (showNavListResponsive) {
+                            //     mobileButton.current.toggleActive();
+                            //     toggleShowNavListResponsive();
+                            // }
                             props.toggleShoppingBag();
                             props.pushMain();
-
                         }}>
                         <Icon icon="shopping-bag" className={clsx(style.iconSvg)} />
                         <span className={clsx(style.bagCount)}>0</span>
@@ -129,6 +136,8 @@ function Header(props) {
                 </div>
 
             </header >
+
+            <OverCoat active={overActive} ofNavList={true} />
         </>
     );
 }
