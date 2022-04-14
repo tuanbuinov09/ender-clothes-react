@@ -10,8 +10,8 @@ function Item({ product, type }) {
         return (
             <div className={clsx(style.item, style.type1)} >
                 <div className={clsx(style.itemMenu)}>
-                    <div className={clsx(style.iconContainer)}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
-                    <div className={clsx(style.iconContainer)}><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
+                    <div className={clsx(style.iconContainer)} title="Add to bag" ><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
+                    <div className={clsx(style.iconContainer)} title="Add to favourites" ><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
                 </div>
                 <div>
                     <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>

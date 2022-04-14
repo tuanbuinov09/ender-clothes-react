@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import MobileMenuButton from "./MobileMenuButton/MobileMenuButton";
 import clsx from "clsx";
 import OverCoat from "../SideBarComponents/OverCoat";
+import { NavLink } from "react-router-dom";
 
 const categoriesArray = [
     {
@@ -76,35 +77,29 @@ function Header(props) {
                 <ul className={clsx(style.nav, style.navList, { [style.active]: showNavListResponsive })}
                     ref={navbar}>
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
-                    <li className={clsx(style.navItem, style.submenuContainer)}><div className={clsx(style.navLink, style.nowhere)}>Products<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
-                    </div>
+                    <li className={clsx(style.navItem, style.submenuContainer)}>
+                        <div className={clsx(style.nowhere)}>Products<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
+                        </div>
                         <ul className={clsx(style.submenu)} >
                             {categories.map((category, index) => {
                                 return (
-                                    <li key={category.id}>
-                                        <Link to={"/category/" + category.id} className={clsx(style.navLink, style.submenuContainer)}>
-                                            {category.name.substring(0, 1).toUpperCase() + category.name.substring(1, category.name.length)}
-                                        </Link>
-                                        {/* {category.subCategories ?
-                                            <ul className={clsx(style.subSubmenu)} >
-                                                {category.subCategories.map((subCategory, index) => {
-                                                    return (<li key={subCategory.id}>
-                                                        <Link to={"/category/" + category.id + "/" + subCategory.id}
-                                                            className={clsx(style.navLink, style.submenuContainer)}>
-                                                            {subCategory.name.substring(0, 1).toUpperCase() + subCategory.name.substring(1, subCategory.name.length)}
-                                                        </Link></li>)
-                                                })}
-                                            </ul>
-                                            : <></>} */}
-                                    </li>)
+                                    <Link to={"/category/" + category.id} className={clsx(style.navLink)}>
+                                        {category.name.substring(0, 1).toUpperCase() + category.name.substring(1, category.name.length)}
+                                    </Link>
+                                )
                             })}
-                            <li><Link to="/all" className={clsx(style.navLink)}>All products</Link></li>
+                            <Link to="/all" className={clsx(style.navLink)}>All products</Link>
                         </ul>
                     </li>
-                    <li className={clsx(style.navItem)}><Link to="/new-arrivals" className={clsx(style.navLink)} onClick={activeLinkStyle}>New Arrivals</Link></li>
+                    {/* <li className={clsx(style.navItem)}><Link to="/new-arrivals" className={clsx(style.navLink)} onClick={activeLinkStyle}>New Arrivals</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/sale-up" className={clsx(style.navLink)} onClick={activeLinkStyle}>Sale Up</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/helps" className={clsx(style.navLink)} onClick={activeLinkStyle}>Helps</Link></li>
-                    <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li>
+                    <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li> */}
+
+                    <NavLink to="/new-arrivals" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>New arrivals</NavLink>
+                    <NavLink to="/sale-up" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Sale Up</NavLink>
+                    <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Helps</NavLink>
+                    <NavLink to="/about" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>About Me</NavLink>
                 </ul >
 
                 <div className={clsx(style.right)} ref={right}>
