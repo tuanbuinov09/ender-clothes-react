@@ -6,7 +6,7 @@ import { useState } from "react";
 import Banner from './Banner/Banner';
 // import { useEffect } from "react/cjs/react.development";
 import SectionTitle from "./SectionTitle/SectionTitle";
-import products from "../products";
+import products from "../../products.js";
 import HomeSaleUpList from "./HomeSaleUpList/HomeSaleUpList";
 import NewArrivalsList from "./NewArrivalsList/NewArrivalsList";
 const productsArray = products;

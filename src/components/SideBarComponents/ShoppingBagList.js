@@ -2,10 +2,27 @@ import clsx from 'clsx';
 import React from 'react';
 import style from './ShoppingBagList.module.css';
 import Icon from 'react-hero-icon';
+import { PlusIcon } from '../../icons';
+import Item from '../HomePage/Item/Item';
+import { useSelector } from 'react-redux';
 function ShoppingBagList(props) {
-    return (
-        <div className={clsx(style.list)}>
-            <>{/* <!-- <div className="cart-list__item">
+    const { bagProducts, amount, total } = useSelector((store) => {
+        return store.shoppingBag;
+    })
+    console.log(bagProducts, amount, total);
+    if (amount < 1) {
+        return (
+            <div className={clsx(style.list)}>
+                <h1>Your bag is currently empty.</h1>
+            </div>
+        );
+    } else if (amount >= 1) {
+        return (
+            <div className={clsx(style.list)}>
+                {bagProducts.map((product, index) => {
+                    return (<Item key={index} product={product} type={"bag-item"} />);
+                })}
+                <>{/* <!-- <div className="cart-list__item">
                         <a href="#" className="item__img-container">
                             <img src="./assets/img/item-9.jpg" alt="item">
                         </a>
@@ -36,8 +53,9 @@ function ShoppingBagList(props) {
                                                 <a href="#" className="btn--danger">Remove</a>
                                             </div>
                                     </div> --> */}</>
-        </div>
-    );
+            </div>
+        );
+    }
 }
 
 export default ShoppingBagList;

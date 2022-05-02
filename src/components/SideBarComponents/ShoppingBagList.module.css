@@ -1,9 +1,9 @@
 .list {
     margin-top: 40px;
     max-height: 444px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
-.item {
+/* .item {
     display: flex;
     margin-bottom: 12px;
     max-height: 120px;
@@ -28,7 +28,6 @@ input::-webkit-inner-spin-button {
 .input-group input[type="button"] {
     cursor: pointer;
     background-color: #eeeeee;
-    /* transition: all 300ms ease; */
 }
 .input-group input[type="button"]:hover {
     color: #777777;
@@ -59,4 +58,4 @@ input[type="number"] {
     margin-top: 11px;
     padding: 8px;
     width: fit-content;
-}
+} */

@@ -82,6 +82,69 @@
     margin: 0;
     width: 23%;
 }
+.typeBagItem{
+    display: flex;
+    margin-bottom: 12px;
+    max-height: 120px;
+}
+.typeBagItem .imgContainer{
+    max-width: 120px;
+}
+.typeBagItem .itemDetail{
+    margin-left: 16px;
+}
+.typeBagItem .label{
+    text-align: left;
+}
+.typeBagItem .price{
+    text-align: left;
+}
+/* fix later */
+.inputGroupWrapper{
+    width: 100%;
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.inputGroup{
+    display: flex;
+    align-items: center;
+}
+
+input[type="number"]{
+    border: 1px solid #eeeeee;
+}
+
+.inputGroup .buttonMinus,
+.inputGroup .buttonPlus{
+    cursor: pointer;
+    color: #333;
+    width: 24px;
+    height: 24px;
+
+}
+
+.inputGroup .quantityField {
+    height: 30px;
+    width: 30px;
+    font-size: 13px;
+    text-align: center;
+}
+.btnDanger {
+    cursor: pointer;
+    background-color: rgba(240, 25, 68, 0.87);
+    font-size: 13px;
+    padding: 8px;
+    margin-right: 12px;
+    color: white;
+    border: none;
+    transition: all .3s ease-in-out;
+}
+.btnDanger:hover{
+    opacity: 0.8;
+}
 @media (max-width: 900px) {
     .type2 {
         display: none;
