@@ -9,7 +9,8 @@ import MobileMenuButton from "./MobileMenuButton/MobileMenuButton";
 import clsx from "clsx";
 import OverCoat from "../SideBarComponents/OverCoat";
 import { NavLink } from "react-router-dom";
-
+import { useSelector } from "react-redux";
+import { store } from "../../store";
 const categoriesArray = [
     {
         id: "C01",
@@ -27,6 +28,13 @@ const categoriesArray = [
     }
 ]
 function Header(props) {
+    const amount = useSelector((store) => {
+        console.log(store.shoppingBag); // we named shoppingBag for the shoppingBagReducer, see at store.js
+        return store.shoppingBag.amount;
+    });
+    //destructuring is ok too
+    // const {amount} = useSelector((store) => store.shoppingBag)
+
     const [categories, setCategories] = useState([]);
     useEffect(function () {
         // fetch('https://fakestoreapi.com/products/categories')
@@ -126,7 +134,7 @@ function Header(props) {
                             props.pushMain();
                         }}>
                         <Icon icon="shopping-bag" className={clsx(style.iconSvg)} />
-                        <span className={clsx(style.bagCount)}>0</span>
+                        <span className={clsx(style.bagCount)}>{amount}</span>
                     </button>
                 </div>
 
