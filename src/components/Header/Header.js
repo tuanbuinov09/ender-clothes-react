@@ -9,7 +9,8 @@ import MobileMenuButton from "./MobileMenuButton/MobileMenuButton";
 import clsx from "clsx";
 import OverCoat from "../SideBarComponents/OverCoat";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { caculateTotalAmountAndPrice } from "../../features/shoppingBag/shoppingBagSlice";
 import { store } from "../../store";
 const categoriesArray = [
     {
@@ -32,6 +33,10 @@ function Header(props) {
         console.log(store.shoppingBag); // we named shoppingBag for the shoppingBagReducer, see at store.js
         return store.shoppingBag.amount;
     });
+    const bagProducts = useSelector((store) => {
+        return store.shoppingBag.bagProducts;
+    })
+    const dispatch = useDispatch();
     //destructuring is ok too
     // const {amount} = useSelector((store) => store.shoppingBag)
 
@@ -42,6 +47,10 @@ function Header(props) {
         //     .then(json => setCategories(json));
         setCategories(categoriesArray);
     }, []);
+    useEffect(() => {
+        dispatch(caculateTotalAmountAndPrice());
+    }, [bagProducts]);
+
     const [overActive, setOverActive] = useState(false);
     const toggleOverActive = () => {
         setOverActive(!overActive);

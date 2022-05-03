@@ -123,18 +123,29 @@ input[type="number"]{
 
 .inputGroup .buttonMinus,
 .inputGroup .buttonPlus{
+    padding: 0;
     cursor: pointer;
     color: #333;
-    width: 24px;
-    height: 24px;
-
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    outline: none;
+    border: none;
 }
-
+.inputGroup .buttonMinus svg,
+.inputGroup .buttonPlus svg{
+    width: 30px;
+    height: 30px;
+}
 .inputGroup .quantityField {
     height: 30px;
     width: 30px;
     font-size: 13px;
+    font-weight: bold;
     text-align: center;
+    line-height: 30px;
+    border: 1px solid #eee;
+    margin: 0 4px;
 }
 .btnDanger {
     cursor: pointer;
