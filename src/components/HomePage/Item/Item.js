@@ -22,7 +22,7 @@ function Item({ product, type }) {
                     <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.title}</Link>
                 </div>
 
-                <p className={clsx(style.price)}><span>{product.price} $</span></p>
+                <p className={clsx(style.price)}><span>$ {product.price}</span></p>
             </div >
         );
     }
@@ -53,7 +53,7 @@ function Item({ product, type }) {
                     <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.title}</Link>
                 </div>
                 <div>
-                    <p className={clsx(style.price)}><span>{product.price} $</span></p>
+                    <p className={clsx(style.price)}><span>$ {product.price}</span></p>
                     {/* <div className="add-to-cart-button">Add to cart</div> */}
 
                 </div>
@@ -62,29 +62,31 @@ function Item({ product, type }) {
         );
     }
     if (type === "bag-item") {
-        return (<div className={clsx(style.typeBagItem)}>
-            <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>
-                <img src={product.image} alt="item" />
-            </Link>
-            <div className={clsx(style.itemDetail)}>
-                <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.title}</Link>
-                <p className={clsx(style.price)}><span>{product.price} $</span></p>
-                <div className={clsx(style.inputGroupWrapper)}>
-                    <div className={clsx(style.inputGroup)}>
-                        <div className={clsx(style.buttonMinus)}>
-                            <MinusIcon />
-
-                        </div>
-                        <input type="number" step="1" max="" min="1" value="1" name="quantity" className={clsx(style.quantityField)} />
-                        <div className={clsx(style.buttonPlus)}>
-                            <PlusIcon />
-                        </div>
+        return (
+            <div className={clsx(style.typeBagItem)}>
+                <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>
+                    <img src={product.image} alt="item" />
+                </Link>
+                <div className={clsx(style.itemDetail)}>
+                    <div>
+                        <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.title}</Link>
+                        <p className={clsx(style.price)}><span>$ {product.price}</span></p>
                     </div>
 
-                    <button className={clsx(style.btnDanger)}>Remove</button>
+                    <div className={clsx(style.inputGroupWrapper)}>
+                        <div className={clsx(style.inputGroup)}>
+                            <div className={clsx(style.buttonMinus)}>
+                                <MinusIcon />
+                            </div>
+                            <input type="number" step="1" max="" min="1" value="1" name="quantity" className={clsx(style.quantityField)} />
+                            <div className={clsx(style.buttonPlus)}>
+                                <PlusIcon />
+                            </div>
+                        </div>
+                        <button className={clsx(style.btnDanger)}>Remove</button>
+                    </div>
                 </div>
             </div>
-        </div>
         )
     }
 }
