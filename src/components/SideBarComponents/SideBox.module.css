@@ -1,7 +1,9 @@
 .box {
+    display: flex;
+    flex-direction: column;
     width: 500px;
     background-color: var(--white);
-    padding: 40px 40px;
+    padding: 28px 32px;
     position: fixed;
     top: 0px;
     bottom: 0;

@@ -1,7 +1,19 @@
 .list {
-    margin-top: 40px;
-    max-height: 444px;
+    margin-top: 28px;
+    flex: 1;
     overflow-y: auto;
+}
+.totalWrapper{
+    margin-top: 12px;
+    width: 100%;
+    padding-right: 12px;
+    font-size: 14px;
+    text-align: right;
+}
+.total{
+    font-size: 16px;
+    font-weight: bold;
+    color: #52A1B6;
 }
 /* .item {
     display: flex;
