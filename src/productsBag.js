@@ -10,7 +10,7 @@ const productsBag = [
             "rate": 3.9,
             "count": 120
         },
-        "quantity": 1
+        "amount": 1
     },
     {
         "id": 2,
@@ -23,7 +23,7 @@ const productsBag = [
             "rate": 4.1,
             "count": 259
         },
-        "quantity": 1
+        "amount": 1
     },
     {
         "id": 4,
@@ -36,7 +36,7 @@ const productsBag = [
             "rate": 2.1,
             "count": 430
         },
-        "quantity": 1
+        "amount": 1
     },
 
     {
@@ -50,7 +50,7 @@ const productsBag = [
             "rate": 3.9,
             "count": 70
         },
-        "quantity": 1
+        "amount": 1
     },
     {
         "id": 8,
@@ -63,7 +63,7 @@ const productsBag = [
             "rate": 1.9,
             "count": 100
         },
-        "quantity": 1
+        "amount": 1
     }
 ]
 export default productsBag;

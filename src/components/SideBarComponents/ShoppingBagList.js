@@ -1,11 +1,12 @@
 import clsx from 'clsx';
 import React from 'react';
+import { useEffect } from 'react';
 import style from './ShoppingBagList.module.css';
 import Icon from 'react-hero-icon';
 import { PlusIcon } from '../../icons';
 import Item from '../HomePage/Item/Item';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearBag } from '../../features/shoppingBag/shoppingBagSlice.js';
+import { clearBag, caculateTotalAmountAndPrice } from '../../features/shoppingBag/shoppingBagSlice.js';
 import { Button } from '../Button/Button';
 function ShoppingBagList(props) {
 
@@ -14,6 +15,11 @@ function ShoppingBagList(props) {
     const { bagProducts, amount, total } = useSelector((store) => {
         return store.shoppingBag;
     })
+
+    useEffect(() => {
+        dispatch(caculateTotalAmountAndPrice());
+    }, [bagProducts]);
+
     console.log(bagProducts, amount, total);
     if (amount < 1) {
         return (
@@ -63,11 +69,12 @@ function ShoppingBagList(props) {
                                         </div>
                                     </div> --> */}</>
                 </div>
-                <p className={clsx(style.totalWrapper)}>Total: <span className={clsx(style.total)}>{total} $</span></p>
-                <div>
-                    <Button text={"CLEAR ALL"} onClick={() => {
-                        dispatch(clearBag());
-                    }} />
+                <p className={clsx(style.totalWrapper)}><span>Total: </span><span className={clsx(style.total)}>$ {total}</span></p>
+                <div onClick={() => {
+                    dispatch(clearBag());
+                    dispatch(caculateTotalAmountAndPrice());
+                }}>
+                    <Button text={"CLEAR ALL"} />
                 </div>
             </>
         );

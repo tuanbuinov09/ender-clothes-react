@@ -1,14 +1,15 @@
 My personal reactjs project.
 Its still under development, because i've got a lot of things to do this semester
 but i'll finish this soon, and use it in my CV.
-
---redux toolkit
-
+# React
 # Redux Toolkit
 
 #### Docs
 
 [Redux Toolkit Docs](https://redux-toolkit.js.org/introduction/getting-started)
+#### link to the tutorial: https://www.youtube.com/watch?v=bbkBuqC1rU4&t=1801s
+
+#### Note: below code is just the example of the tutorial I follow, its modificated in my actual code
 
 #### Install Template
 
