@@ -16,6 +16,7 @@ function ShoppingBagList(props) {
         return store.shoppingBag;
     })
 
+    // calculate total amount and price every time you modify bagProducts
     useEffect(() => {
         dispatch(caculateTotalAmountAndPrice());
     }, [bagProducts]);

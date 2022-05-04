@@ -1,0 +1,33 @@
+.modalWrapper{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-color: rgba(51, 51, 51, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 80px;
+}
+.modal{
+    background-color: white;
+    width: 500px;
+    min-width: 300px;
+    padding: 44px;
+}
+.title{
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 32px;
+    text-align: center;
+}
+.buttonWrapper{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.buttonConfirm{
+    
+}

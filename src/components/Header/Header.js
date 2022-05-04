@@ -47,6 +47,8 @@ function Header(props) {
         //     .then(json => setCategories(json));
         setCategories(categoriesArray);
     }, []);
+
+    // calculate total amount and price every time you modify bagProducts
     useEffect(() => {
         dispatch(caculateTotalAmountAndPrice());
     }, [bagProducts]);

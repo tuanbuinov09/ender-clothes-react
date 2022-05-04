@@ -52,3 +52,27 @@
 .btn:hover::after {
     color: crimson;
 }
+
+.btnConfirm {
+    background-color: #009eb6;
+}
+.btnConfirm:hover {
+    color: var(--light);
+    border: 1px solid #009eb6;
+}
+.btnConfirm:after{
+    content: "CONFIRM";
+}
+.btnConfirm:hover::after {
+    color: #009eb6;
+}
+
+.btnCancel:after{
+    content: "CANCEL";
+}
+
+.btnClearAll:after{
+    content: "CLEAR ALL";
+}
+
+

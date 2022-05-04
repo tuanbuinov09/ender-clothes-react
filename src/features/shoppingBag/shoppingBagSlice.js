@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import bagProducts from '../../productsBag.js';
 
-
 //-------- in Header.js and ShoppingBagList.js I used useEffect to dispatch caculateTotalAmountAndPrice()
 // ------- so we don't have to cal it here
 // let totalAmount = 0;
