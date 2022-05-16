@@ -2,12 +2,11 @@ import clsx from 'clsx';
 import React from 'react';
 import { useEffect } from 'react';
 import style from './ShoppingBagList.module.css';
-import Icon from 'react-hero-icon';
-import { PlusIcon } from '../../icons';
 import Item from '../HomePage/Item/Item';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearBag, caculateTotalAmountAndPrice } from '../../features/shoppingBag/shoppingBagSlice.js';
+import { caculateTotalAmountAndPrice } from '../../features/shoppingBag/shoppingBagSlice.js';
 import { Button } from '../Button/Button';
+import { openModal } from '../../features/modal/modalSlice';
 function ShoppingBagList(props) {
 
     const dispatch = useDispatch();
@@ -72,8 +71,7 @@ function ShoppingBagList(props) {
                 </div>
                 <p className={clsx(style.totalWrapper)}><span>Total: </span><span className={clsx(style.total)}>$ {total}</span></p>
                 <div onClick={() => {
-                    dispatch(clearBag());
-                    dispatch(caculateTotalAmountAndPrice());
+                    dispatch(openModal());
                 }}>
                     <Button text={"CLEAR ALL"} />
                 </div>

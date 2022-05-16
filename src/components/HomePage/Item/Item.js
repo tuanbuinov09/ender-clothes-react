@@ -28,7 +28,7 @@ function Item({ product, type }) {
                         <img src={product.image} alt={`product:${product.id}`} />
 
                     </Link>
-                    <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.title}</Link>
+                    <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.name}</Link>
                 </div>
 
                 <p className={clsx(style.price)}><span>$ {product.price}</span></p>
@@ -63,7 +63,7 @@ function Item({ product, type }) {
                     <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>
                         <img src={product.image} alt="item" />
                     </Link>
-                    <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.title}</Link>
+                    <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.name}</Link>
                 </div>
                 <div>
                     <p className={clsx(style.price)}><span>$ {product.price}</span></p>
@@ -82,7 +82,7 @@ function Item({ product, type }) {
                 </Link>
                 <div className={clsx(style.itemDetail)}>
                     <div>
-                        <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.title}</Link>
+                        <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.name}</Link>
                         <p className={clsx(style.price)}><span>$ {product.price}</span></p>
                     </div>
 
