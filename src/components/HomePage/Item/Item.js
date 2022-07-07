@@ -24,14 +24,14 @@ function Item({ product, type }) {
                     <div className={clsx(style.iconContainer)} title="Add to favourites" ><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
                 </div>
                 <div>
-                    <Link to={`/products/${product.id}`} className={clsx(style.imgContainer)}>
-                        <img src={product.image} alt={`product:${product.id}`} />
+                    <Link to={`/products/${product.MaSp}`} className={clsx(style.imgContainer)}>
+                        <img src={product.HinhAnh} alt={`product:${product.MaSp}`} />
 
                     </Link>
-                    <Link to={`/products/${product.id}`} className={clsx(style.label)}>{product.name}</Link>
+                    <Link to={`/products/${product.MaSp}`} className={clsx(style.label)}>{product.TenSp}</Link>
                 </div>
 
-                <p className={clsx(style.price)}><span>$ {product.price}</span></p>
+                <p className={clsx(style.price)}><span>{product.ChiTietSanPham[0].Gia} đ</span></p>
             </div >
         );
     }
