@@ -12,6 +12,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { caculateTotalAmountAndPrice } from "../../features/shoppingBag/shoppingBagSlice";
 import { store } from "../../store";
+import axios from "axios";
 const categoriesArray = [
     {
         id: "C01",
@@ -41,11 +42,31 @@ function Header(props) {
     // const {amount} = useSelector((store) => store.shoppingBag)
 
     const [categories, setCategories] = useState([]);
+
     useEffect(function () {
-        // fetch('https://fakestoreapi.com/products/categories')
-        //     .then(res => res.json())
-        //     .then(json => setCategories(json));
-        setCategories(categoriesArray);
+        axios.get(`http://localhost:22081/api/TheLoai`).then(res => {
+            const categoriesFromAPI = res.data;
+            console.log(categoriesFromAPI);
+
+            categoriesFromAPI.map((category, index) => {
+                let subCategories;
+                subCategories = res.data.filter((subCategory, index) => {
+                    return subCategory.MaTlCha === category.MaTl;
+                });
+                category.subCategories = subCategories;
+            })
+
+            console.log(categoriesFromAPI);
+
+            let categoriesLevel1; // chỉ lấy thể loại cha, trong thể loại cha có thể loại con
+            categoriesLevel1 = categoriesFromAPI.filter((category, index) => {
+                return category.CapTl === 1;
+            });
+
+            console.log(categoriesLevel1);
+
+            setCategories(categoriesLevel1);
+        });
     }, []);
 
     // calculate total amount and price every time you modify bagProducts
@@ -92,7 +113,7 @@ function Header(props) {
                     />
                     <Link to="" className={style.logo} onClick={activeLinkStyle}>CLO<span>T</span>HES</Link>
                 </div>
-
+                {/* nested menu */}
                 <ul className={clsx(style.nav, style.navList, { [style.active]: showNavListResponsive })}
                     ref={navbar}>
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
@@ -100,14 +121,59 @@ function Header(props) {
                         <div className={clsx(style.nowhere)}>Products<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                         </div>
                         <ul className={clsx(style.submenu)} >
-                            {categories.map((category, index) => {
-                                return (
-                                    <Link to={"/category/" + category.id} className={clsx(style.navLink)}>
-                                        {category.name.substring(0, 1).toUpperCase() + category.name.substring(1, category.name.length)}
-                                    </Link>
-                                )
-                            })}
-                            <Link to="/all" className={clsx(style.navLink)}>All products</Link>
+                            {
+                                categories.map((category, index) => {
+                                    let isSubmenuContainer = false;
+                                    isSubmenuContainer = category.subCategories.length > 0;
+                                    // console.log(isSubmenuContainer);
+                                    return (
+                                        <Link key={index} to={"products/category/" + category.MaTl} className={clsx(style.navLink, { [style.submenuContainer]: isSubmenuContainer, [style.submenuContainer2]: isSubmenuContainer })}>
+                                            {category.TenTl.substring(0, 1).toUpperCase() + category.TenTl.substring(1, category.TenTl.length)}
+                                            {isSubmenuContainer
+                                                ?
+                                                <>
+                                                    <Icon icon="chevron-down" className={clsx(style.chevronDownToLeft)} />
+                                                    <ul className={clsx(style.submenu2)} >
+                                                        {
+                                                            category.subCategories.map((subCategory, index) => {
+                                                                return (
+                                                                    <Link key={index} to={"products/category/" + subCategory.MaTl} className={clsx(style.navLink)}>
+                                                                        {subCategory.TenTl.substring(0, 1).toUpperCase() + subCategory.TenTl.substring(1, subCategory.TenTl.length)}
+
+                                                                    </Link>
+                                                                )
+                                                            })}
+                                                        
+                                                    </ul>
+                                                </>
+                                                :
+                                                <></>}
+                                        </Link>
+                                    )
+                                })}
+
+<>
+{/* <Link to={"products/category/"} className={clsx(style.navLink, style.submenuContainer2)}>
+                                           qaaaaaaaaa
+                                                    <Icon icon="chevron-down" className={clsx(style.chevronDownToLeft)} />
+                                                    <ul className={clsx(style.submenu2)} >
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                        
+                                                    </ul>
+                                        </Link> */
+                                    }</>
+                            <Link to="/all" className={clsx(style.navLink, style.lastNavLink)}>Tất cả</Link>
                         </ul>
                     </li>
                     {/* <li className={clsx(style.navItem)}><Link to="/new-arrivals" className={clsx(style.navLink)} onClick={activeLinkStyle}>New Arrivals</Link></li>

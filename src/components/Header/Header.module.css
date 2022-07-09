@@ -93,6 +93,7 @@
     display: block;
     transition: all 0.3s ease-out;
 } 
+
 .navItem:hover {
     background-color: #333333;
     color: var(--light);
@@ -131,7 +132,8 @@
     align-items: center;
 }
 
-.navItem .chevronDown {
+.navItem .chevronDown
+,.navItem .chevronDownToLeft{
     transition: all 0.3s ease-out;
     margin-left: 4px;
     width: 20px;
@@ -143,25 +145,61 @@
 .navItem:hover .chevronDown {
     transform: rotate(-180deg);
 }
-.submenuContainer {
+
+.submenuContainer2{
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 16px !important;
+    overflow: hidden;
+}
+.submenuContainer2:hover{
+    overflow: visible;
+}
+.submenuContainer2:hover .chevronDownToLeft{
+    transform: rotate(-90deg);
 }
 
-.submenu {
+.submenu2 {
+    border-left: 1px solid #777777;
     width: 180px;
     position: absolute;
-    left: 0;
+    top: 0;
+    right: -180px;
     padding: 0;
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    overflow: hidden;
+    /* border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px; */
     visibility: hidden;
     opacity: 0;
     z-index: 3;
     transition: all 0.2s ease-out;
     background-color: #222222;
 }
-.submenu a {
+
+.submenuContainer {
+    position: relative;
+}
+
+.submenu {
+    width: 200px;
+    position: absolute;
+    left: 0;
+    padding: 0;
+    /* border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px; */
+    visibility: hidden;
+    opacity: 0;
+    z-index: 3;
+    transition: all 0.2s ease-out;
+    background-color: #222222;
+}
+.lastNavLink{
+    overflow: hidden;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+.submenu a, .submenu2 a {
     padding: 0 44px 0 16px;
     line-height: 52px;
 }
@@ -169,11 +207,17 @@
     visibility: visible;
     opacity: 1;
 }
-.navItem .submenu a {
+.submenuContainer2:hover .submenu2 {
+    visibility: visible;
+    opacity: 1;
+}
+.navItem .submenu a,
+.submenuContainer2 .submenu2 a{
     transform: translateY(50%);
     transition: transform 0.5s ease-out;
 }
-.navItem:hover .submenu a {
+.navItem:hover .submenu a,
+.submenuContainer2:hover .submenu2 a {
     transform: translateY(0%);
 }
 .submenu li:hover {

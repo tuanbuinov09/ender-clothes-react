@@ -41,9 +41,11 @@ function Home() {
 
         <div className="">
             <Banner />
-            <SectionTitle title="new arrivals" />
-            <NewArrivalsList products={products} />
-            <SectionTitle title="Sale up" />
+            <SectionTitle title="Hàng mới về" />
+            <NewArrivalsList products={products} type={'new-arrivals'} />
+            <SectionTitle title="Được xem nhiều" />
+            <NewArrivalsList products={products} type={'most-viewed'} />
+            <SectionTitle title="Khuyến mãi" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
             <HomeSaleUpList products={top4products} />
         </div >

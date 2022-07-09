@@ -31,7 +31,7 @@ function Item({ product, type }) {
                     <Link to={`/products/${product.MaSp}`} className={clsx(style.label)}>{product.TenSp}</Link>
                 </div>
 
-                <p className={clsx(style.price)}><span>{product.ChiTietSanPham[0].Gia} đ</span></p>
+                <p className={clsx(style.price)}><span>{product.ChiTietSanPham[0].Gia.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
             </div >
         );
     }
