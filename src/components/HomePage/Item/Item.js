@@ -13,6 +13,9 @@ function Item({ product, type }) {
     const dispatch = useDispatch();
 
     if (type === 1) {
+        let priceString = product.ChiTietSanPham[0].Gia.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+        priceString = priceString.substring(0, priceString.length-3);
+        priceString = `${priceString} - ${product.ChiTietSanPham[product.ChiTietSanPham.length-1].Gia.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}`;
         return (
             <div className={clsx(style.item, style.type1)} >
                 <div className={clsx(style.itemMenu)}>
@@ -31,7 +34,7 @@ function Item({ product, type }) {
                     <Link to={`/products/${product.MaSp}`} className={clsx(style.label)}>{product.TenSp}</Link>
                 </div>
 
-                <p className={clsx(style.price)}><span>{product.ChiTietSanPham[0].Gia.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}</span></p>
+                <p className={clsx(style.price)}><span>{priceString}</span></p>
             </div >
         );
     }

@@ -13,22 +13,113 @@ import { useDispatch, useSelector } from "react-redux";
 import { caculateTotalAmountAndPrice } from "../../features/shoppingBag/shoppingBagSlice";
 import { store } from "../../store";
 import axios from "axios";
-const categoriesArray = [
-    {
-        id: "C01",
-        name: "Top",
-        subCategories: [{ id: "C01S01", name: "Shirt" }, { id: "C01S02", name: "Jacket" }]
-    },
-    {
-        id: "C02",
-        name: "Bottom",
-        subCategories: [{ id: "C02S01", name: "Pant" }, { id: "C02S02", name: "Short" }]
-    },
-    {
-        id: "C03",
-        name: "Accessories"
-    }
-]
+// const input = [//this is what input look likes
+//     {
+//       "MaTl": "TL01",
+//       "TenTl": "Áo",
+//       "CapTl": 1,
+//       "MaTlCha": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL02",
+//       "TenTl": "Áo thun",
+//       "CapTl": 2,
+//       "MaTlCha": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL03",
+//       "TenTl": "Áo khoác",
+//       "CapTl": 2,
+//       "MaTlCha": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL04",
+//       "TenTl": "Quần",
+//       "CapTl": 1,
+//       "MaTlCha": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL05",
+//       "TenTl": "Quần kaki",
+//       "CapTl": 2,
+//       "MaTlCha": "TL04",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL06",
+//       "TenTl": "Quần âu",
+//       "CapTl": 2,
+//       "MaTlCha": "TL04",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL07",
+//       "TenTl": "Quần jean",
+//       "CapTl": 2,
+//       "MaTlCha": "TL04",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL08",
+//       "TenTl": "Giày - dép",
+//       "CapTl": 1,
+//       "MaTlCha": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL09",
+//       "TenTl": "Phụ kiện",
+//       "CapTl": 1,
+//       "MaTlCha": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL10",
+//       "TenTl": "Nón",
+//       "CapTl": 2,
+//       "MaTlCha": "TL09",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL11",
+//       "TenTl": "Thắt lưng",
+//       "CapTl": 2,
+//       "MaTlCha": "TL09",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL12",
+//       "TenTl": "Túi - balo",
+//       "CapTl": 2,
+//       "MaTlCha": "TL09",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL13",
+//       "TenTl": "Áo sơ mi",
+//       "CapTl": 2,
+//       "MaTlCha": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL14",
+//       "TenTl": "Áo polo",
+//       "CapTl": 2,
+//       "MaTlCha": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MaTl": "TL15",
+//       "TenTl": "Áo thu đông",
+//       "CapTl": 2,
+//       "MaTlCha": "TL01",
+//       "SanPham": []
+//     }
+// ]
 function Header(props) {
     const amount = useSelector((store) => {
         console.log(store.shoppingBag); // we named shoppingBag for the shoppingBagReducer, see at store.js
@@ -118,7 +209,7 @@ function Header(props) {
                     ref={navbar}>
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
                     <li className={clsx(style.navItem, style.submenuContainer)}>
-                        <div className={clsx(style.nowhere)}>Products<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
+                        <div className={clsx(style.nowhere)}>Sản phẩm<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                         </div>
                         <ul className={clsx(style.submenu)} >
                             {
@@ -181,9 +272,9 @@ function Header(props) {
                     <li className={clsx(style.navItem)}><Link to="/helps" className={clsx(style.navLink)} onClick={activeLinkStyle}>Helps</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li> */}
 
-                    <NavLink to="/new-arrivals" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>New arrivals</NavLink>
-                    <NavLink to="/sale-up" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Sale Up</NavLink>
-                    <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Helps</NavLink>
+                    <NavLink to="/new-arrivals" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Hàng mới về</NavLink>
+                    <NavLink to="/sale-up" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Khuyến mãi</NavLink>
+                    <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Trợ giúp</NavLink>
                     <NavLink to="/about" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>About Me</NavLink>
                 </ul >
 
