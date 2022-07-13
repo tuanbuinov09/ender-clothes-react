@@ -18,6 +18,17 @@
     position: relative;
     overflow: hidden;
 }
+.salePercentTag{
+    position: absolute;
+    top: 0;
+    left: 8px;
+    background-color: crimson;
+    color: white;
+    font-weight: bolder;
+    font-size: 13px;
+    padding: 8px 4px;
+    
+}
 .item .itemMenu {
     cursor: pointer;
     position: absolute;

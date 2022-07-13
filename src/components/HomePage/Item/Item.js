@@ -13,11 +13,18 @@ function Item({ product, type }) {
     const dispatch = useDispatch();
 
     if (type === 1) {
-        let priceString = product.ChiTietSanPham[0].Gia.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+        let priceString = product.CHI_TIET_SAN_PHAM[0].GIA.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
         priceString = priceString.substring(0, priceString.length-3);
-        priceString = `${priceString} - ${product.ChiTietSanPham[product.ChiTietSanPham.length-1].Gia.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}`;
+        priceString = `${priceString} - ${product.CHI_TIET_SAN_PHAM[product.CHI_TIET_SAN_PHAM.length-1].GIA.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}`;
+        if(product.CHI_TIET_KHUYEN_MAI.length>0){
+
+        }
         return (
             <div className={clsx(style.item, style.type1)} >
+                {product.CHI_TIET_KHUYEN_MAI.length>0?<div className={clsx(style.salePercentTag)}>
+                    {`- ${product.CHI_TIET_KHUYEN_MAI[0].PHAN_TRAM_GIAM}%`}
+                    </div>:<></>}
+                
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)} title="Add to bag"
                         onClick={() => {
@@ -27,11 +34,11 @@ function Item({ product, type }) {
                     <div className={clsx(style.iconContainer)} title="Add to favourites" ><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
                 </div>
                 <div>
-                    <Link to={`/products/${product.MaSp}`} className={clsx(style.imgContainer)}>
-                        <img src={product.HinhAnh} alt={`product:${product.MaSp}`} />
+                    <Link to={`/products/${product.MA_SP}`} className={clsx(style.imgContainer)}>
+                        <img src={product.HINH_ANH} alt={`product:${product.MA_SP}`} />
 
                     </Link>
-                    <Link to={`/products/${product.MaSp}`} className={clsx(style.label)}>{product.TenSp}</Link>
+                    <Link to={`/products/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
                 </div>
 
                 <p className={clsx(style.price)}><span>{priceString}</span></p>
@@ -41,6 +48,9 @@ function Item({ product, type }) {
     if (type === 2) {
         return (
             <div className={clsx(style.item, style.type2)} >
+                {/* {product.CHI_TIET_KHUYEN_MAI.length>0?<div className={clsx(style.salePercentTag)}>
+                    {`${product.CHI_TIET_KHUYEN_MAI.PHAN_TRAM_GIAM} %`}
+                    </div>:<></>} */}
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)}
                         onClick={() => {
@@ -58,6 +68,9 @@ function Item({ product, type }) {
     if (type === 3) {
         return (
             <div className={clsx(style.item, style.type3)}>
+                {/* {product.CHI_TIET_KHUYEN_MAI.length>0?<div className={clsx(style.salePercentTag)}>
+                    {`${product.CHI_TIET_KHUYEN_MAI.PHAN_TRAM_GIAM} %`}
+                    </div>:<></>} */}
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
                     <div className={clsx(style.iconContainer)}><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>

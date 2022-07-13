@@ -2,8 +2,35 @@ import React from 'react';
 import Item from '../Item/Item';
 import { Link } from 'react-router-dom';
 import style from './HomeSaleUpList.module.css';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
 function HomeSaleUpList({ products }) {
+    const [saleOff, setSaleOff] = useState([]);
+    useEffect(() => {
+        // axios.get(`http://localhost:8000/end-clothes/product/`)
+        //     .then(res => {
+        //         const productsFromApi = res.data;
+        //         console.log(productsFromApi);
+        //         setproducts2(productsFromApi);
+        //     });
+        
+            // try{
+            //     axios.get(`http://localhost:22081/api/KhuyenMai/product?offset=0&limit=4`).then(res => {
+            //         const saleOffFromApi = [res.data.KHUYEN_MAI.CHI_TIET_KHUYEN_MAI.];
+            //          console.log(saleOffFromApi);
+            //         setSaleOff(saleOffFromApi);
+            //     });
+            //     // let client = new SanPhamClient(undefined, axios);
+            //     // let result2 = client.newArrivals("0","10");
+            //     // console.log("1: ", result);
+            //     // console.log("2: ", result2);
+                
+            //             }catch(error){
+            //     console.error(error);
+            //             }
+        
+    }, []);
     return (
         <div className="section">
             <div className={clsx(style.itemList)}>

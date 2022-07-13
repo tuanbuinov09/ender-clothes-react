@@ -15,108 +15,108 @@ import { store } from "../../store";
 import axios from "axios";
 // const input = [//this is what input look likes
 //     {
-//       "MaTl": "TL01",
-//       "TenTl": "Áo",
-//       "CapTl": 1,
-//       "MaTlCha": null,
+//       "MA_TL": "TL01",
+//       "TEN_TL": "Áo",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL02",
-//       "TenTl": "Áo thun",
-//       "CapTl": 2,
-//       "MaTlCha": "TL01",
+//       "MA_TL": "TL02",
+//       "TEN_TL": "Áo thun",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL03",
-//       "TenTl": "Áo khoác",
-//       "CapTl": 2,
-//       "MaTlCha": "TL01",
+//       "MA_TL": "TL03",
+//       "TEN_TL": "Áo khoác",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL04",
-//       "TenTl": "Quần",
-//       "CapTl": 1,
-//       "MaTlCha": null,
+//       "MA_TL": "TL04",
+//       "TEN_TL": "Quần",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL05",
-//       "TenTl": "Quần kaki",
-//       "CapTl": 2,
-//       "MaTlCha": "TL04",
+//       "MA_TL": "TL05",
+//       "TEN_TL": "Quần kaki",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL04",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL06",
-//       "TenTl": "Quần âu",
-//       "CapTl": 2,
-//       "MaTlCha": "TL04",
+//       "MA_TL": "TL06",
+//       "TEN_TL": "Quần âu",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL04",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL07",
-//       "TenTl": "Quần jean",
-//       "CapTl": 2,
-//       "MaTlCha": "TL04",
+//       "MA_TL": "TL07",
+//       "TEN_TL": "Quần jean",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL04",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL08",
-//       "TenTl": "Giày - dép",
-//       "CapTl": 1,
-//       "MaTlCha": null,
+//       "MA_TL": "TL08",
+//       "TEN_TL": "Giày - dép",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL09",
-//       "TenTl": "Phụ kiện",
-//       "CapTl": 1,
-//       "MaTlCha": null,
+//       "MA_TL": "TL09",
+//       "TEN_TL": "Phụ kiện",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL10",
-//       "TenTl": "Nón",
-//       "CapTl": 2,
-//       "MaTlCha": "TL09",
+//       "MA_TL": "TL10",
+//       "TEN_TL": "Nón",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL09",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL11",
-//       "TenTl": "Thắt lưng",
-//       "CapTl": 2,
-//       "MaTlCha": "TL09",
+//       "MA_TL": "TL11",
+//       "TEN_TL": "Thắt lưng",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL09",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL12",
-//       "TenTl": "Túi - balo",
-//       "CapTl": 2,
-//       "MaTlCha": "TL09",
+//       "MA_TL": "TL12",
+//       "TEN_TL": "Túi - balo",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL09",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL13",
-//       "TenTl": "Áo sơ mi",
-//       "CapTl": 2,
-//       "MaTlCha": "TL01",
+//       "MA_TL": "TL13",
+//       "TEN_TL": "Áo sơ mi",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL14",
-//       "TenTl": "Áo polo",
-//       "CapTl": 2,
-//       "MaTlCha": "TL01",
+//       "MA_TL": "TL14",
+//       "TEN_TL": "Áo polo",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
 //       "SanPham": []
 //     },
 //     {
-//       "MaTl": "TL15",
-//       "TenTl": "Áo thu đông",
-//       "CapTl": 2,
-//       "MaTlCha": "TL01",
+//       "MA_TL": "TL15",
+//       "TEN_TL": "Áo thu đông",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
 //       "SanPham": []
 //     }
 // ]
@@ -142,7 +142,7 @@ function Header(props) {
             categoriesFromAPI.map((category, index) => {
                 let subCategories;
                 subCategories = res.data.filter((subCategory, index) => {
-                    return subCategory.MaTlCha === category.MaTl;
+                    return subCategory.MA_TL_CHA === category.MA_TL;
                 });
                 category.subCategories = subCategories;
             })
@@ -151,7 +151,7 @@ function Header(props) {
 
             let categoriesLevel1; // chỉ lấy thể loại cha, trong thể loại cha có thể loại con
             categoriesLevel1 = categoriesFromAPI.filter((category, index) => {
-                return category.CapTl === 1;
+                return category.CAP_TL === 1;
             });
 
             console.log(categoriesLevel1);
@@ -218,8 +218,8 @@ function Header(props) {
                                     isSubmenuContainer = category.subCategories.length > 0;
                                     // console.log(isSubmenuContainer);
                                     return (
-                                        <Link key={index} to={"products/category/" + category.MaTl} className={clsx(style.navLink, { [style.submenuContainer]: isSubmenuContainer, [style.submenuContainer2]: isSubmenuContainer })}>
-                                            {category.TenTl.substring(0, 1).toUpperCase() + category.TenTl.substring(1, category.TenTl.length)}
+                                        <Link key={index} to={"products/category/" + category.MA_TL} className={clsx(style.navLink, { [style.submenuContainer]: isSubmenuContainer, [style.submenuContainer2]: isSubmenuContainer })}>
+                                            {category.TEN_TL.substring(0, 1).toUpperCase() + category.TEN_TL.substring(1, category.TEN_TL.length)}
                                             {isSubmenuContainer
                                                 ?
                                                 <>
@@ -228,8 +228,8 @@ function Header(props) {
                                                         {
                                                             category.subCategories.map((subCategory, index) => {
                                                                 return (
-                                                                    <Link key={index} to={"products/category/" + subCategory.MaTl} className={clsx(style.navLink)}>
-                                                                        {subCategory.TenTl.substring(0, 1).toUpperCase() + subCategory.TenTl.substring(1, subCategory.TenTl.length)}
+                                                                    <Link key={index} to={"products/category/" + subCategory.MA_TL} className={clsx(style.navLink)}>
+                                                                        {subCategory.TEN_TL.substring(0, 1).toUpperCase() + subCategory.TEN_TL.substring(1, subCategory.TEN_TL.length)}
 
                                                                     </Link>
                                                                 )
