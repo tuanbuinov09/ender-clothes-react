@@ -15,26 +15,33 @@ function HomeSaleUpList({ products }) {
         //         setproducts2(productsFromApi);
         //     });
         
-            // try{
-            //     axios.get(`http://localhost:22081/api/KhuyenMai/product?offset=0&limit=4`).then(res => {
-            //         const saleOffFromApi = [res.data.KHUYEN_MAI.CHI_TIET_KHUYEN_MAI.];
-            //          console.log(saleOffFromApi);
-            //         setSaleOff(saleOffFromApi);
-            //     });
-            //     // let client = new SanPhamClient(undefined, axios);
-            //     // let result2 = client.newArrivals("0","10");
-            //     // console.log("1: ", result);
-            //     // console.log("2: ", result2);
+            try{
+                axios.get(`http://localhost:22081/api/SanPham/sale-off?offset=0&limit=4`).then(res => {
+                    const saleOffFromApi = res.data;
+                     console.log(saleOffFromApi);
+                    setSaleOff(saleOffFromApi);
+                });
+                // let client = new SanPhamClient(undefined, axios);
+                // let result2 = client.newArrivals("0","10");
+                // console.log("1: ", result);
+                // console.log("2: ", result2);
                 
-            //             }catch(error){
-            //     console.error(error);
-            //             }
+                        }catch(error){
+                console.error(error);
+                        }
         
     }, []);
     return (
         <div className="section">
             <div className={clsx(style.itemList)}>
-                {products.map((product, index) => {
+                {/* {products.map((product, index) => {
+                    if (index === 0 || index === 2) {
+                        return (<Item key={index} product={product} type={2} />)
+                    } else {
+                        return (<Item key={index} product={product} type={3} />)
+                    }
+                })} */}
+                  {saleOff.map((product, index) => {
                     if (index === 0 || index === 2) {
                         return (<Item key={index} product={product} type={2} />)
                     } else {
