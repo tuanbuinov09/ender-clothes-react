@@ -2,12 +2,46 @@ import React from 'react';
 import Item from '../Item/Item';
 import { Link } from 'react-router-dom';
 import style from './HomeSaleUpList.module.css';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import clsx from 'clsx';
 function HomeSaleUpList({ products }) {
+    const [saleOff, setSaleOff] = useState([]);
+    useEffect(() => {
+        // axios.get(`http://localhost:8000/end-clothes/product/`)
+        //     .then(res => {
+        //         const productsFromApi = res.data;
+        //         console.log(productsFromApi);
+        //         setproducts2(productsFromApi);
+        //     });
+        
+            try{
+                axios.get(`http://localhost:22081/api/SanPham/sale-off?offset=0&limit=4`).then(res => {
+                    const saleOffFromApi = res.data;
+                     console.log(saleOffFromApi);
+                    setSaleOff(saleOffFromApi);
+                });
+                // let client = new SanPhamClient(undefined, axios);
+                // let result2 = client.newArrivals("0","10");
+                // console.log("1: ", result);
+                // console.log("2: ", result2);
+                
+                        }catch(error){
+                console.error(error);
+                        }
+        
+    }, []);
     return (
         <div className="section">
             <div className={clsx(style.itemList)}>
-                {products.map((product, index) => {
+                {/* {products.map((product, index) => {
+                    if (index === 0 || index === 2) {
+                        return (<Item key={index} product={product} type={2} />)
+                    } else {
+                        return (<Item key={index} product={product} type={3} />)
+                    }
+                })} */}
+                  {saleOff.map((product, index) => {
                     if (index === 0 || index === 2) {
                         return (<Item key={index} product={product} type={2} />)
                     } else {

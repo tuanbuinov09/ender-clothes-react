@@ -12,22 +12,114 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { caculateTotalAmountAndPrice } from "../../features/shoppingBag/shoppingBagSlice";
 import { store } from "../../store";
-const categoriesArray = [
-    {
-        id: "C01",
-        name: "Top",
-        subCategories: [{ id: "C01S01", name: "Shirt" }, { id: "C01S02", name: "Jacket" }]
-    },
-    {
-        id: "C02",
-        name: "Bottom",
-        subCategories: [{ id: "C02S01", name: "Pant" }, { id: "C02S02", name: "Short" }]
-    },
-    {
-        id: "C03",
-        name: "Accessories"
-    }
-]
+import axios from "axios";
+// const input = [//this is what input look likes
+//     {
+//       "MA_TL": "TL01",
+//       "TEN_TL": "Áo",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL02",
+//       "TEN_TL": "Áo thun",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL03",
+//       "TEN_TL": "Áo khoác",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL04",
+//       "TEN_TL": "Quần",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL05",
+//       "TEN_TL": "Quần kaki",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL04",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL06",
+//       "TEN_TL": "Quần âu",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL04",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL07",
+//       "TEN_TL": "Quần jean",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL04",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL08",
+//       "TEN_TL": "Giày - dép",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL09",
+//       "TEN_TL": "Phụ kiện",
+//       "CAP_TL": 1,
+//       "MA_TL_CHA": null,
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL10",
+//       "TEN_TL": "Nón",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL09",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL11",
+//       "TEN_TL": "Thắt lưng",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL09",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL12",
+//       "TEN_TL": "Túi - balo",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL09",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL13",
+//       "TEN_TL": "Áo sơ mi",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL14",
+//       "TEN_TL": "Áo polo",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
+//       "SanPham": []
+//     },
+//     {
+//       "MA_TL": "TL15",
+//       "TEN_TL": "Áo thu đông",
+//       "CAP_TL": 2,
+//       "MA_TL_CHA": "TL01",
+//       "SanPham": []
+//     }
+// ]
 function Header(props) {
     const amount = useSelector((store) => {
         console.log(store.shoppingBag); // we named shoppingBag for the shoppingBagReducer, see at store.js
@@ -41,11 +133,31 @@ function Header(props) {
     // const {amount} = useSelector((store) => store.shoppingBag)
 
     const [categories, setCategories] = useState([]);
+
     useEffect(function () {
-        // fetch('https://fakestoreapi.com/products/categories')
-        //     .then(res => res.json())
-        //     .then(json => setCategories(json));
-        setCategories(categoriesArray);
+        axios.get(`http://localhost:22081/api/TheLoai`).then(res => {
+            const categoriesFromAPI = res.data;
+            console.log(categoriesFromAPI);
+
+            categoriesFromAPI.map((category, index) => {
+                let subCategories;
+                subCategories = res.data.filter((subCategory, index) => {
+                    return subCategory.MA_TL_CHA === category.MA_TL;
+                });
+                category.subCategories = subCategories;
+            })
+
+            console.log(categoriesFromAPI);
+
+            let categoriesLevel1; // chỉ lấy thể loại cha, trong thể loại cha có thể loại con
+            categoriesLevel1 = categoriesFromAPI.filter((category, index) => {
+                return category.CAP_TL === 1;
+            });
+
+            console.log(categoriesLevel1);
+
+            setCategories(categoriesLevel1);
+        });
     }, []);
 
     // calculate total amount and price every time you modify bagProducts
@@ -92,22 +204,67 @@ function Header(props) {
                     />
                     <Link to="" className={style.logo} onClick={activeLinkStyle}>CLO<span>T</span>HES</Link>
                 </div>
-
+                {/* nested menu */}
                 <ul className={clsx(style.nav, style.navList, { [style.active]: showNavListResponsive })}
                     ref={navbar}>
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
                     <li className={clsx(style.navItem, style.submenuContainer)}>
-                        <div className={clsx(style.nowhere)}>Products<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
+                        <div className={clsx(style.nowhere)}>Sản phẩm<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                         </div>
                         <ul className={clsx(style.submenu)} >
-                            {categories.map((category, index) => {
-                                return (
-                                    <Link to={"/category/" + category.id} className={clsx(style.navLink)}>
-                                        {category.name.substring(0, 1).toUpperCase() + category.name.substring(1, category.name.length)}
-                                    </Link>
-                                )
-                            })}
-                            <Link to="/all" className={clsx(style.navLink)}>All products</Link>
+                            {
+                                categories.map((category, index) => {
+                                    let isSubmenuContainer = false;
+                                    isSubmenuContainer = category.subCategories.length > 0;
+                                    // console.log(isSubmenuContainer);
+                                    return (
+                                        <Link key={index} to={"products/category/" + category.MA_TL} className={clsx(style.navLink, { [style.submenuContainer]: isSubmenuContainer, [style.submenuContainer2]: isSubmenuContainer })}>
+                                            {category.TEN_TL.substring(0, 1).toUpperCase() + category.TEN_TL.substring(1, category.TEN_TL.length)}
+                                            {isSubmenuContainer
+                                                ?
+                                                <>
+                                                    <Icon icon="chevron-down" className={clsx(style.chevronDownToLeft)} />
+                                                    <ul className={clsx(style.submenu2)} >
+                                                        {
+                                                            category.subCategories.map((subCategory, index) => {
+                                                                return (
+                                                                    <Link key={index} to={"products/category/" + subCategory.MA_TL} className={clsx(style.navLink)}>
+                                                                        {subCategory.TEN_TL.substring(0, 1).toUpperCase() + subCategory.TEN_TL.substring(1, subCategory.TEN_TL.length)}
+
+                                                                    </Link>
+                                                                )
+                                                            })}
+                                                        
+                                                    </ul>
+                                                </>
+                                                :
+                                                <></>}
+                                        </Link>
+                                    )
+                                })}
+
+<>
+{/* <Link to={"products/category/"} className={clsx(style.navLink, style.submenuContainer2)}>
+                                           qaaaaaaaaa
+                                                    <Icon icon="chevron-down" className={clsx(style.chevronDownToLeft)} />
+                                                    <ul className={clsx(style.submenu2)} >
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                                    <Link to={"products/category/"} className={clsx(style.navLink)}>
+                                                                       zzzzzzzzz
+                                                                    </Link>
+                                                        
+                                                    </ul>
+                                        </Link> */
+                                    }</>
+                            <Link to="/all" className={clsx(style.navLink, style.lastNavLink)}>Tất cả</Link>
                         </ul>
                     </li>
                     {/* <li className={clsx(style.navItem)}><Link to="/new-arrivals" className={clsx(style.navLink)} onClick={activeLinkStyle}>New Arrivals</Link></li>
@@ -115,9 +272,9 @@ function Header(props) {
                     <li className={clsx(style.navItem)}><Link to="/helps" className={clsx(style.navLink)} onClick={activeLinkStyle}>Helps</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li> */}
 
-                    <NavLink to="/new-arrivals" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>New arrivals</NavLink>
-                    <NavLink to="/sale-up" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Sale Up</NavLink>
-                    <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Helps</NavLink>
+                    <NavLink to="/new-arrivals" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Hàng mới về</NavLink>
+                    <NavLink to="/sale-up" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Khuyến mãi</NavLink>
+                    <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Trợ giúp</NavLink>
                     <NavLink to="/about" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>About Me</NavLink>
                 </ul >
 

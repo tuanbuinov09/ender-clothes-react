@@ -13,12 +13,12 @@ function Banner() {
             </div>
             <div className={clsx(style.right)}>
                 <h3 className={clsx(style.subTitle)}>
-                    #NEW SUMMER COLLECTION 2022
+                    #BỘ SƯU TẬP HÈ 2022
                 </h3>
                 <h1 className={clsx(style.title)}>
-                    ARRIVALS SALES
+                    HÀNG MỚI VỀ
                 </h1>
-                <Link to="/new-arrivals" className={clsx(style.btn)}>SHOP NOW</Link>
+                <Link to="/new-arrivals" className={clsx(style.btn)}>XEM CHI TIẾT</Link>
             </div>
         </div>
     );

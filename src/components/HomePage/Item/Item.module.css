@@ -18,6 +18,45 @@
     position: relative;
     overflow: hidden;
 }
+.salePercentTag{
+    width: 40px;
+    position: absolute;
+    top: 0;
+    left: 4px;
+    background-color: crimson;
+    color: white;
+    font-weight: bolder;
+    font-size: 13px;
+    padding: 12px 4px;
+}
+.salePercentTag::after{
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    left: 0;
+    position: absolute;
+    border: 20px solid crimson;
+    bottom: -20px;
+    border-left-color: crimson;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+.salePercentTag::before{
+    content: '';
+    display: block;
+    width: 0;
+    height: 0;
+    right: 0;
+    position: absolute;
+    border: 20px solid crimson;
+    bottom: -20px;
+    border-left-color: transparent;
+    border-right-color: crimson;
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
 .item .itemMenu {
     cursor: pointer;
     position: absolute;
@@ -63,12 +102,20 @@
 .price {
     margin: 8px 0;
     font-size: 1.4rem;
-    font-weight: 800;
+    font-weight: 500;
     color: #009eb6;
     width: 100%;
     text-align: center;
 }
-
+.oldPrice{
+    margin: 8px 0 -4px 0;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #777;
+    text-decoration: line-through;
+    width: 100%;
+    text-align: center;
+}
 .label:hover {
     color: #009eb6;
 }
