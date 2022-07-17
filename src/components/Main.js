@@ -9,6 +9,8 @@ import {
 import SideBox from "./SideBarComponents/SideBox";
 import clsx from "clsx";
 import style from "./Main.module.css"
+import ProductManagement from "./Admin/Product/ProductManagement";
+
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -49,6 +51,7 @@ function Main() {
                 <div className={clsx(style.container)}>
                     <Routes>
                         <Route path="" element={<Content />} />
+                        <Route path="/admin/product" element={<ProductManagement />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
                     </Routes>

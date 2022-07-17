@@ -16,7 +16,7 @@ function HomeSaleUpList({ products }) {
         //     });
         
             try{
-                axios.get(`http://localhost:22081/api/SanPham/sale-off?offset=0&limit=4`).then(res => {
+                axios.get(`http://localhost:22081/api/SanPham/sale-off?top=4`).then(res => {
                     const saleOffFromApi = res.data;
                      console.log(saleOffFromApi);
                     setSaleOff(saleOffFromApi);
@@ -75,7 +75,7 @@ function HomeSaleUpList({ products }) {
                         <Link to="nowhere" className="btn bg-dark">SEE DETAILS</Link>
                     </div> */}</>
             </div>
-            <div className={clsx(style.btnContainer)}><Link to={`/sale-up`} className={clsx(style.btn)}>SEE DETAILS</Link></div>
+            <div className={clsx(style.btnContainer)}><Link to={`/sale-up`} className={clsx(style.btn)}>XEM CHI TIẾT</Link></div>
 
         </div>
     );

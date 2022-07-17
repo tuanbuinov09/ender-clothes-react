@@ -11,23 +11,53 @@ import { useDispatch } from "react-redux";
 function Item({ product, type }) {
 
     const dispatch = useDispatch();
-    let priceString = product.CHI_TIET_SAN_PHAM[0].GIA.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
-    priceString = priceString.substring(0, priceString.length-4);
-    priceString = `${priceString} - ${product.CHI_TIET_SAN_PHAM[product.CHI_TIET_SAN_PHAM.length-1].GIA.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}`;
-    let reducedPriceString="";
-    if(product.CHI_TIET_KHUYEN_MAI.length>0){
-        let price1 = product.CHI_TIET_SAN_PHAM[0].GIA - product.CHI_TIET_SAN_PHAM[0].GIA*product.CHI_TIET_KHUYEN_MAI[0].PHAN_TRAM_GIAM/100;
-        price1 = price1.toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
-        price1 = price1.substring(0, price1.length-4);
-        let price2 = product.CHI_TIET_SAN_PHAM[product.CHI_TIET_SAN_PHAM.length-1].GIA - product.CHI_TIET_SAN_PHAM[product.CHI_TIET_SAN_PHAM.length-1].GIA*product.CHI_TIET_KHUYEN_MAI[0].PHAN_TRAM_GIAM/100;
-        reducedPriceString = `${price1} - ${price2.toLocaleString('it-IT', {style : 'currency', currency : 'VND'})}`;
+    let pricesString;
+    let discountPricesString;
+    let prices = product.GIA_STR.split(" - ");
+    prices = prices.map((price)=>{// 
+        return parseInt(price);// chuyenr sang int để dùng toLocaleString bên dưới
+    })
+    console.log(typeof(prices[0]))
+    if(!prices[1]){// nếu k có giá thứ 2 (bắt trường hợp sản phẩm chỉ có free size)
+        pricesString = prices[0].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+        pricesString = pricesString.substring(0, pricesString.length -4) +" ₫";
+    }else{
+        let prices1 = prices[0].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+        prices1 = prices1.substring(0, prices1.length -4);
+        let prices2 = prices[1].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+        prices2 = prices2.substring(0, prices2.length -4);
+        pricesString = prices1 
+            + " - " + prices2 + " ₫";
     }
+    let discountPrices;
+    
+    if(product.GIA_STR_DA_GIAM){
+        discountPrices = product.GIA_STR_DA_GIAM.split(" - ");
+        discountPrices = discountPrices.map((price)=>{
+            return parseInt(price);// chuyenr sang int để dùng toLocaleString bên dưới
+        })
+        if(!discountPrices[1]){// nếu k có giá thứ 2 (bắt trường hợp sản phẩm chỉ có free size)
+            discountPricesString = discountPrices[0].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+            discountPricesString = discountPricesString.substring(0, discountPricesString.length -4) +" ₫";
+        }else{
+
+            let discountPrices1 = discountPrices[0].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+            discountPrices1 = discountPrices1.substring(0, discountPrices1.length -4);
+            let discountPrices2 = discountPrices[1].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + "";
+            discountPrices2 = discountPrices2.substring(0, discountPrices2.length -4);
+            discountPricesString = discountPrices1 
+                + " - " + discountPrices2 + " ₫";
+
+            // discountPricesString = discountPrices[0].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + " - " + discountPrices[1].toLocaleString('it-IT', {style : 'currency', currency : 'VND'}) + " ₫";
+        }
+    }
+    
     if (type === 1) {
        
         return (
             <div className={clsx(style.item, style.type1)} >
-                {product.CHI_TIET_KHUYEN_MAI.length>0?<div className={clsx(style.salePercentTag)}>
-                    {`- ${product.CHI_TIET_KHUYEN_MAI[0].PHAN_TRAM_GIAM}%`}
+                {product.PHAN_TRAM_GIAM>0?<div className={clsx(style.salePercentTag)}>
+                    {`- ${product.PHAN_TRAM_GIAM}%`}
                     </div>:<></>}
                 
                 <div className={clsx(style.itemMenu)}>
@@ -45,11 +75,11 @@ function Item({ product, type }) {
                     </Link>
                     <Link to={`/products/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
                 </div>
-{reducedPriceString?
-<><p className={clsx(style.oldPrice)}><span>{priceString}</span></p>
-                <p className={clsx(style.price)}><span>{reducedPriceString}</span></p>
+{discountPricesString?
+<><p className={clsx(style.oldPrice)}><span>{pricesString}</span></p>
+                <p className={clsx(style.price)}><span>{discountPricesString}</span></p>
                 </>
-                :<p className={clsx(style.price)}><span>{priceString}</span></p>}
+                :<p className={clsx(style.price)}><span>{pricesString}</span></p>}
                 
             </div >
         );
@@ -57,8 +87,8 @@ function Item({ product, type }) {
     if (type === 2) {
         return (
             <div className={clsx(style.item, style.type2)} >
-                 {product.CHI_TIET_KHUYEN_MAI.length>0?<div className={clsx(style.salePercentTag)}>
-                    {`- ${product.CHI_TIET_KHUYEN_MAI[0].PHAN_TRAM_GIAM}%`}
+                 {product.PHAN_TRAM_GIAM>0?<div className={clsx(style.salePercentTag)}>
+                    {`- ${product.PHAN_TRAM_GIAM}%`}
                     </div>:<></>}
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)}
@@ -77,8 +107,8 @@ function Item({ product, type }) {
     if (type === 3) {
         return (
             <div className={clsx(style.item, style.type3)}>
-                 {product.CHI_TIET_KHUYEN_MAI.length>0?<div className={clsx(style.salePercentTag)}>
-                    {`- ${product.CHI_TIET_KHUYEN_MAI[0].PHAN_TRAM_GIAM}%`}
+                 {product.PHAN_TRAM_GIAM>0?<div className={clsx(style.salePercentTag)}>
+                    {`- ${product.PHAN_TRAM_GIAM}%`}
                     </div>:<></>}
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
@@ -91,7 +121,11 @@ function Item({ product, type }) {
                     <Link to={`/products/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
                 </div>
                 <div>
-                    <p className={clsx(style.price)}><span>{priceString}</span></p>
+                {discountPricesString?
+<><p className={clsx(style.oldPrice)}><span>{pricesString}</span></p>
+                <p className={clsx(style.price)}><span>{discountPricesString}</span></p>
+                </>
+                :<p className={clsx(style.price)}><span>{pricesString}</span></p>}
                     {/* <div className="add-to-cart-button">Add to cart</div> */}
 
                 </div>

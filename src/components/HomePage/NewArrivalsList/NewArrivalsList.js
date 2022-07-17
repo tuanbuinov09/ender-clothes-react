@@ -16,7 +16,7 @@ function NewArrivalsList({ products, type }) {
         //     });
         if(type === 'new-arrivals'){
             try{
-                axios.get(`http://localhost:22081/api/SanPham/new-arrivals?offset=0&limit=10`).then(res => {
+                axios.get(`http://localhost:22081/api/SanPham/new-arrivals?top=10`).then(res => {
                     const productsFromApi = res.data;
                     // console.log(productsFromApi);
                     setproducts2(productsFromApi);
@@ -32,7 +32,23 @@ function NewArrivalsList({ products, type }) {
         }
         if(type === 'most-viewed'){
             try{
-                axios.get(`http://localhost:22081/api/SanPham/most-viewed?offset=0&limit=10`).then(res => {
+                axios.get(`http://localhost:22081/api/SanPham/most-viewed?top=10`).then(res => {
+                    const productsFromApi = res.data;
+                    // console.log(productsFromApi);
+                    setproducts2(productsFromApi);
+                });
+                // let client = new SanPhamClient(undefined, axios);
+                // let result2 = client.newArrivals("0","10");
+                // console.log("1: ", result);
+                // console.log("2: ", result2);
+                
+                        }catch(error){
+                console.error(error);
+                        }
+        }
+        if(type === 'sale-off'){
+            try{
+                axios.get(`http://localhost:22081/api/SanPham/sale-off?top=5`).then(res => {
                     const productsFromApi = res.data;
                     // console.log(productsFromApi);
                     setproducts2(productsFromApi);
@@ -54,7 +70,7 @@ function NewArrivalsList({ products, type }) {
                     return (<Item key={index} product={product} type={1} />);
                 })}
             </div>
-            <div className={clsx(style.btnContainer)}><Link to={type === 'new-arrivals'? "/new-arrivals":type === 'most-viewed'?"/most-viewed":{}} className={clsx(style.btn)}>XEM THÊM</Link></div>
+            <div className={clsx(style.btnContainer)}><Link to={type === 'new-arrivals'? "/new-arrivals":type === 'most-viewed'?"/most-viewed":type==="sale-off"?'/sale-off':{}} className={clsx(style.btn)}>XEM THÊM</Link></div>
         </div>);
 }
 

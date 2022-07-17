@@ -19,44 +19,49 @@
     overflow: hidden;
 }
 .salePercentTag{
-    width: 40px;
+    width: 56px;
     position: absolute;
     top: 0;
-    left: 4px;
+    left: 0;
     background-color: crimson;
     color: white;
     font-weight: bolder;
     font-size: 13px;
-    padding: 12px 4px;
+    padding: 8px;
+    height: 24px;
+    padding: 4px 0;
+    text-align: center;
 }
 .salePercentTag::after{
     content: '';
     display: block;
+    
     width: 0;
     height: 0;
-    left: 0;
+    top: 0;
+    right: -24px;
     position: absolute;
-    border: 20px solid crimson;
-    bottom: -20px;
+    border: 12px solid crimson;
+    /* bottom: -20px; */
     border-left-color: crimson;
     border-right-color: transparent;
-    border-top-color: transparent;
+    border-top-color: crimson;
     border-bottom-color: transparent;
 }
-.salePercentTag::before{
+/* .salePercentTag::before{
     content: '';
     display: block;
     width: 0;
     height: 0;
     right: 0;
     position: absolute;
-    border: 20px solid crimson;
+    border: 10px solid crimson;
     bottom: -20px;
     border-left-color: transparent;
     border-right-color: crimson;
-    border-top-color: transparent;
+    border-top-color: crimson;
     border-bottom-color: transparent;
-}
+} */
 .item .itemMenu {
     cursor: pointer;
     position: absolute;
