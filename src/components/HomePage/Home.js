@@ -45,6 +45,9 @@ function Home() {
             <NewArrivalsList products={products} type={'new-arrivals'} />
             <SectionTitle title="Được xem nhiều" />
             <NewArrivalsList products={products} type={'most-viewed'} />
+            {/* <SectionTitle title="Khuyến mãi" />
+            {/* <h1 className="section section-title">HIGH RATING</h1> */}
+            {/* <NewArrivalsList products={top4products} type={'sale-off'}/> */}
             <SectionTitle title="Khuyến mãi" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
             <HomeSaleUpList products={top4products} />
