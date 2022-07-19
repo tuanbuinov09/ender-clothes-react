@@ -10,6 +10,7 @@ import SideBox from "./SideBarComponents/SideBox";
 import clsx from "clsx";
 import style from "./Main.module.css"
 import ProductManagement from "./Admin/Product/ProductManagement";
+import ProductDetail from "./ProductDetail/ProductDetail";
 
 function Main() {
     const [pushMain, setPushMain] = useState(false);
@@ -54,6 +55,7 @@ function Main() {
                         <Route path="/admin/product" element={<ProductManagement />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
+                        <Route path="/product/:productId" element={<ProductDetail />} />
                     </Routes>
                     <Footer />
                 </div>
