@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { MinusIcon, PlusIcon } from "../../../icons";
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../../features/shoppingBag/shoppingBagSlice.js';
 import { useDispatch } from "react-redux";
+import { intToVNDCurrencyFormat } from "../../../uitilities/utilities";
 function Item({ product, type }) {
 
     const dispatch = useDispatch();
@@ -142,35 +143,38 @@ function Item({ product, type }) {
                 <div className={clsx(style.itemDetail)}>
                     <div>
                         <Link to={`/product/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
-                        <p className={clsx(style.price)}><span>{product.chiTietSanPham[0].GIA}</span></p>
-                        <p className={clsx()}><span>{product.chiTietSanPham[0].TEN_SIZE}</span></p>
+                        {/* {giá này là giá đã giảm (nếu có)} */}
+                        <p className={clsx(style.price)}><span className={clsx(style.priceLabel)}>Giá: </span><span>{intToVNDCurrencyFormat(product.chiTietSanPham[0].GIA, true)}</span></p>
+                        <p className={clsx()}><span className={clsx(style.priceLabel)}>Size: </span><span>{product.chiTietSanPham[0].TEN_SIZE}</span></p>
                     </div>
 
                     <div className={clsx(style.inputGroupWrapper)}>
-                        <div className={clsx(style.inputGroup)}>
-                            <button className={clsx(style.buttonMinus)}
-                                onClick={() => {
-                                    dispatch(decreaseAmount(product.chiTietSanPham[0].MA_CT_SP));
-                                    dispatch(caculateTotalAmountAndPrice());
-                                }}>
-                                <MinusIcon />
-                            </button>
-                            {/* <input type="number" step="1" max="99" min="1" value={product.amount} name="quantity" className={clsx(style.quantityField)} /> */}
-                            <div className={clsx(style.quantityField)}>{product.chiTietSanPham[0].SO_LUONG} </div>
+                        <div className={clsx(style.flex)}><span className={clsx(style.priceLabel)}>Số lượng: </span>
+                            <div className={clsx(style.inputGroup)}>
+                                <button className={clsx(style.buttonMinus)}
+                                    onClick={() => {
+                                        dispatch(decreaseAmount(product.chiTietSanPham[0].MA_CT_SP));
+                                        dispatch(caculateTotalAmountAndPrice());
+                                    }}>
+                                    <MinusIcon />
+                                </button>
+                                {/* <input type="number" step="1" max="99" min="1" value={product.amount} name="quantity" className={clsx(style.quantityField)} /> */}
+                                <div className={clsx(style.quantityField)}>{product.chiTietSanPham[0].SO_LUONG} </div>
 
-                            <button className={clsx(style.buttonPlus)}
-                                onClick={() => {
-                                    dispatch(increaseAmount({ id: product.chiTietSanPham[0].MA_CT_SP }));
-                                    dispatch(caculateTotalAmountAndPrice());
-                                }}>
-                                <PlusIcon />
-                            </button>
-                        </div>
+                                <button className={clsx(style.buttonPlus)}
+                                    onClick={() => {
+                                        dispatch(increaseAmount({ id: product.chiTietSanPham[0].MA_CT_SP }));
+                                        dispatch(caculateTotalAmountAndPrice());
+                                    }}>
+                                    <PlusIcon />
+                                </button>
+                            </div></div>
+
                         <button className={clsx(style.btnDanger)}
                             onClick={() => {
                                 dispatch(removeItem(product.chiTietSanPham[0].MA_CT_SP));
                                 dispatch(caculateTotalAmountAndPrice());
-                            }}>Remove</button>
+                            }}>Xóa</button>
                     </div>
                 </div>
             </div >

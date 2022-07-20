@@ -79,7 +79,7 @@ const shoppingBagSlice = createSlice({
                 }
             }
             state.amount = totalAmount;
-            state.total = totalPrice.toFixed(3);
+            state.total = totalPrice;
         }
     }
 });

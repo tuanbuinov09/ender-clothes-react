@@ -1,29 +1,45 @@
-.container{
+.container {
     display: flex;
     background-color: white;
     margin: 24px 0;
     padding: 28px;
 }
-.left{
-flex:4;
+
+.flex {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
 }
-.right{
-    flex:6;
+
+.left {
+    flex: 4;
+}
+
+.right {
+    flex: 6;
     padding-left: 28px;
     display: flex;
 
     flex-direction: column;
 }
-.title{
+
+.subtitle {
+    font-size: 22px;
+    margin-right: 20px;
+    vertical-align: middle;
+}
+
+.title {
     font-size: 28px;
 }
-.imgContainer{
-position: relative;
-}
-.img{
 
+.imgContainer {
+    position: relative;
 }
-.desc{
+
+.img {}
+
+.desc {
     border-top: 1px solid #333;
     text-align: left;
     line-height: normal;
@@ -33,7 +49,7 @@ position: relative;
     padding: 16px 16px 0px 12px;
 }
 
-.salePercentTag{
+.salePercentTag {
     width: 64px;
     position: absolute;
     top: 0;
@@ -48,10 +64,11 @@ position: relative;
     padding: 8px 0;
     text-align: center;
 }
-.salePercentTag::after{
+
+.salePercentTag::after {
     content: '';
     display: block;
-    
+
     width: 0;
     height: 0;
     top: 0;
@@ -64,10 +81,12 @@ position: relative;
     border-top-color: crimson;
     border-bottom-color: transparent;
 }
-.sizeContainer{
-margin-top: 20px;
+
+.sizeContainer {
+    
 }
-.size{
+
+.size {
     display: inline-block;
     width: 40px;
     height: 40px;
@@ -77,29 +96,39 @@ margin-top: 20px;
     font-size: 16px;
     cursor: pointer;
 }
-.size.active{
+
+.size.active {
     background-color: #009eb6;
     color: white;
 }
-.price{
+.priceLabel{
+    color:#444;
+    font-size: 20px;
+}
+.price {
     margin: 24px 0;
     font-size: 2.4rem;
     font-weight: bolder;
     color: #009eb6;
     width: 100%;
 }
-.oldPrice{
-    margin: 24px 0 -20px 0;
+
+.oldPrice {
+    margin: 24px 0 -16px 0;
     font-size: 1.8rem;
     font-weight: 500;
     color: #777;
-    text-decoration: line-through;
     width: 100%;
+}
+.oldPriceString{
+    text-decoration: line-through;
+
 }
 .btnContainer {
     display: flex;
     /* justify-content: center; */
 }
+
 .btn {
     display: inline-block;
     position: relative;
@@ -113,10 +142,12 @@ margin-top: 20px;
 
     cursor: pointer;
 }
+
 .btn:hover {
     color: var(--light);
     border: 1px solid #e67e22;
 }
+
 .btn:before {
     position: absolute;
     display: block;
@@ -128,6 +159,7 @@ margin-top: 20px;
     transition: width 0.3s ease-in-out;
     background-color: rgb(255, 255, 255);
 }
+
 .btn:after {
     position: absolute;
     text-align: center;
@@ -144,9 +176,11 @@ margin-top: 20px;
     color: white;
     transition: all 0.3s ease-in-out;
 }
+
 .btn:hover:before {
     width: 100%;
 }
+
 .btn:hover::after {
     color: #e67e22;
 }

@@ -6,8 +6,8 @@ export const Button = (props) => {
         <div
             className={clsx(style.btnContainer)}>
             <button className={clsx(style.btn,
-                props.text === "CONFIRM" ? style.btnConfirm
-                    : props.text === "CANCEL" ? style.btnCancel : style.btnClearAll)}>{props.text}</button>
+                props.text === "ĐỒNG Ý" ? style.btnConfirm
+                    : props.text === "HỦY" ? style.btnCancel : style.btnClearAll)}>{props.text}</button>
         </div>
     );
 };

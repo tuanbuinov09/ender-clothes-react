@@ -24,7 +24,7 @@ function SideBox(props) {
     return (
         <> <div className={clsx(style.box)} ref={box}>
             <div className={clsx(style.top)}>
-                <h3>{props.type === "shoppingBag" ? "SHOPPING BAG" : "SEARCH"}</h3>
+                <h3>{props.type === "shoppingBag" ? "GIỎ HÀNG" : "TÌM KIẾM"}</h3>
                 <div onClick={() => {
                     toggleOverActive();
                     box.current.classList.remove(style.active);

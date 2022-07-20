@@ -104,10 +104,16 @@
     color: #333;
     transition: 0.3s;
 }
+.priceLabel{
+    color:#444;
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 4px;
+}
 .price {
     margin: 8px 0;
     font-size: 1.4rem;
-    font-weight: 500;
+    font-weight: 600;
     color: #009eb6;
     width: 100%;
     text-align: center;
@@ -156,6 +162,10 @@
 .typeBagItem .price{
     text-align: left;
 }
+.flex{
+    display: flex;
+    align-items: center;
+}
 /* fix later */
 .inputGroupWrapper{
     display: flex;
@@ -203,7 +213,7 @@ input[type="number"]{
     cursor: pointer;
     background-color: rgba(240, 25, 68, 0.87);
     font-size: 13px;
-    padding: 8px;
+    padding: 8px 12px;
     margin-right: 12px;
     color: white;
     border: none;
