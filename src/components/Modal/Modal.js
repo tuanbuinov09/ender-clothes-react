@@ -9,19 +9,19 @@ export const Modal = (props) => {
     return (
         <div className={clsx(style.modalWrapper)}>
             <div className={clsx(style.modal)}>
-                <h1 className={clsx(style.title)}>Do you want to clear your bag?</h1>
+                <h1 className={clsx(style.title)}>Bạn có muốn xóa tất cả sản phẩm hiện có trong giỏ hàng?</h1>
                 <div className={clsx(style.buttonWrapper)}>
                     <div onClick={() => {
                         dispatch(clearBag());
                         dispatch(caculateTotalAmountAndPrice());
                         dispatch(closeModal());
                     }} >
-                        <Button text="CONFIRM" className={clsx(style.buttonConfirm)} />
+                        <Button text="ĐỒNG Ý" className={clsx(style.buttonConfirm)} />
                     </div>
                     <div onClick={() => {
                         dispatch(closeModal());
                     }} >
-                        <Button text="CANCEL" className={clsx(style.buttonCancek)} />
+                        <Button text="HỦY" className={clsx(style.buttonCancek)} />
                     </div>
 
                 </div>

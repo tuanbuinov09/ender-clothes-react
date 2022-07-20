@@ -17,6 +17,14 @@ function ProductDetail(props) {
     useEffect(() => {
         console.log(`http://localhost:22081/api/SanPham/?productId=${params.productId}`);
         try {
+            axios.put(`http://localhost:22081/api/SanPham/incre-view?productId=${params.productId}`).then(res => {
+                const response = res.data;
+                console.log("response", response);
+            });
+        } catch (error) {
+            console.error(error);
+        }
+        try {
             axios.get(`http://localhost:22081/api/SanPham/?productId=${params.productId}`).then(res => {
                 const productsFromApi = res.data;
                 // console.log(productsFromApi[0]);
@@ -55,18 +63,22 @@ function ProductDetail(props) {
         </div>
         <div className={clsx(style.right)}>
             <h2 className={clsx(style.title)}>{product.TEN_SP}</h2>
-            <div className={clsx(style.sizeContainer)}>
-                {product.chiTietSanPham.map((ctsp, index) => {
-                    return (<div key={index} className={clsx(style.size, { [style.active]: ctsp.MA_SIZE === selectedSize.MA_SIZE })}
-                        onClick={() => { setSelectedSize(ctsp) }}>{ctsp.TEN_SIZE}</div>);
-                })}
+            <div className={clsx(style.flex)}>
+                <div className={clsx(style.subtitle)}>Size: </div>
+                <div className={clsx(style.sizeContainer)}>
+                    {product.chiTietSanPham.map((ctsp, index) => {
+                        return (<div key={index} className={clsx(style.size, { [style.active]: ctsp.MA_SIZE === selectedSize.MA_SIZE })}
+                            onClick={() => { setSelectedSize(ctsp) }}>{ctsp.TEN_SIZE}</div>);
+                    })}
+                </div>
             </div>
+            
             {product.PHAN_TRAM_GIAM ?
                 <>
-                    <p className={clsx(style.oldPrice)}><span>{oldPriceString}</span></p>
-                    <p className={clsx(style.price)}><span>{priceString}</span></p>
+                    <p className={clsx(style.oldPrice)}><span className={clsx(style.priceLabel)}>Giá cũ: </span><span className={clsx(style.oldPriceString)}>{oldPriceString}</span></p>
+                    <p className={clsx(style.price)}><span className={clsx(style.priceLabel)}>Giá khuyến mãi: </span><span>{priceString}</span></p>
                 </>
-                : <p className={clsx(style.price)}><span>{oldPriceString}</span></p>}
+                : <p className={clsx(style.price)}><span className={clsx(style.priceLabel)}>Giá: </span><span>{oldPriceString}</span></p>}
     <div className={clsx(style.desc)}>{product.MO_TA?product.MO_TA:"Không có mô tả cho sản phẩm này"}</div>
     <div className={clsx(style.btnContainer)}
     onClick={() => {

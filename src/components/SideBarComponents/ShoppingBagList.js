@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { caculateTotalAmountAndPrice } from '../../features/shoppingBag/shoppingBagSlice.js';
 import { Button } from '../Button/Button';
 import { openModal } from '../../features/modal/modalSlice';
+import { intToVNDCurrencyFormat } from '../../uitilities/utilities';
 function ShoppingBagList(props) {
 
     const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function ShoppingBagList(props) {
     if (amount < 1) {
         return (
             <div className={clsx(style.list)}>
-                <h1>Your bag is currently empty.</h1>
+                <h1>Giỏ hàng hiện đang trống.</h1>
             </div>
         );
     } else if (amount >= 1) {
@@ -69,11 +70,11 @@ function ShoppingBagList(props) {
                                         </div>
                                     </div> --> */}</>
                 </div>
-                <p className={clsx(style.totalWrapper)}><span>Total: </span><span className={clsx(style.total)}>$ {total}</span></p>
+                <p className={clsx(style.totalWrapper)}><span>Tổng: </span><span className={clsx(style.total)}>{intToVNDCurrencyFormat(total, true)}</span></p>
                 <div onClick={() => {
                     dispatch(openModal());
                 }}>
-                    <Button text={"CLEAR ALL"} />
+                    <Button text={"XÓA TẤT CẢ"} />
                 </div>
             </>
         );
