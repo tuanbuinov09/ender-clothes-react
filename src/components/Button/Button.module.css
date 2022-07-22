@@ -74,5 +74,42 @@
 .btnClearAll:after{
     content: "XÓA TẤT CẢ";
 }
+.btnOrder::after{
+    content: "ĐẶT MUA";
+}
 
+.btnOrder {
+    background-color: #009eb6;
+}
+.btnOrder:hover {
+    color: var(--light);
+    border: 1px solid #009eb6;
+}
+.btnOrder:after{
+    content: "ĐẶT MUA";
+}
+.btnOrder:hover::after {
+    color: #009eb6;
+}
+.btnContainer {
+    display: flex;
+    justify-content: left;
+    margin-top: 12px;
+}
+.btnLogin::after{
+    content: "ĐĂNG NHẬP";
+}
 
+.btnLogin {
+    background-color: #009eb6;
+}
+.btnLogin:hover {
+    color: var(--light);
+    border: 1px solid #009eb6;
+}
+.btnLogin:after{
+    content: "ĐĂNG NHẬP";
+}
+.btnLogin:hover::after {
+    color: #009eb6;
+}

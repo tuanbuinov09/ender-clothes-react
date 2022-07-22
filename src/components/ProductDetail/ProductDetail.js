@@ -58,6 +58,9 @@ function ProductDetail(props) {
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
                     {`- ${product.PHAN_TRAM_GIAM}%`}
                 </div> : <></>}
+                {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                    {`HẾT HÀNG`}
+                </div> : <></>}
                 <img src={product.HINH_ANH} className={clsx(style.img)} alt={`${product.TEN_SP}`} />
             </div>
         </div>
@@ -72,19 +75,20 @@ function ProductDetail(props) {
                     })}
                 </div>
             </div>
-            
+            <p className={clsx(style.sizeQuantity)}>Tồn kho: {selectedSize.SL_TON}</p>
+
             {product.PHAN_TRAM_GIAM ?
                 <>
                     <p className={clsx(style.oldPrice)}><span className={clsx(style.priceLabel)}>Giá cũ: </span><span className={clsx(style.oldPriceString)}>{oldPriceString}</span></p>
                     <p className={clsx(style.price)}><span className={clsx(style.priceLabel)}>Giá khuyến mãi: </span><span>{priceString}</span></p>
                 </>
                 : <p className={clsx(style.price)}><span className={clsx(style.priceLabel)}>Giá: </span><span>{oldPriceString}</span></p>}
-    <div className={clsx(style.desc)}>{product.MO_TA?product.MO_TA:"Không có mô tả cho sản phẩm này"}</div>
-    <div className={clsx(style.btnContainer)}
-    onClick={() => {
-        dispatch(addItem({...product, chiTietSanPham:[{...selectedSize, SO_LUONG:1}]}));
-        dispatch(caculateTotalAmountAndPrice());
-    }}><span className={clsx(style.btn)}>THÊM VÀO GIỎ HÀNG</span></div>
+            <div className={clsx(style.desc)}>{product.MO_TA ? product.MO_TA : "Không có mô tả cho sản phẩm này"}</div>
+            <div className={clsx(style.btnContainer)}
+                onClick={() => {
+                    dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedSize, SO_LUONG: 1 }] }));
+                    dispatch(caculateTotalAmountAndPrice());
+                }}><span className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 })}>THÊM VÀO GIỎ HÀNG</span></div>
 
         </div>
     </div>);

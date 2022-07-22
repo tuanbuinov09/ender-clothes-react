@@ -39,6 +39,19 @@
 
 .img {}
 
+.sizeQuantity{
+    width: 100%;
+    margin: 12px 0 0 0;
+    padding-right: 55px;
+    font-size: 16px;
+    text-align: right;
+}
+
+.disabled{
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 .desc {
     border-top: 1px solid #333;
     text-align: left;
@@ -48,7 +61,21 @@
     flex: 1;
     padding: 16px 16px 0px 12px;
 }
+.outOfStockTag{
+    position: absolute;
+    top: 50px;
+    left: 0;
+    background-color: transparent;
+    color: white;
+    text-shadow: 0px 0px 4px black;
+    font-size: 14px;
+    font-weight: bolder;
+    padding: 8px;
+    text-align: center;
+    border: 2px solid white;
+    vertical-align: middle;
 
+}
 .salePercentTag {
     width: 64px;
     position: absolute;
@@ -83,7 +110,8 @@
 }
 
 .sizeContainer {
-    
+    display: flex;
+    align-items: center;
 }
 
 .size {
