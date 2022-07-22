@@ -3,6 +3,13 @@
     flex: 1;
     overflow-y: auto;
 }
+.buttonsWrapper{
+    display: flex;
+    justify-content: space-between;
+}
+.buttonsWrapper button{
+    width: 150px;
+}
 .totalWrapper{
     display: flex;
     justify-content: space-between;

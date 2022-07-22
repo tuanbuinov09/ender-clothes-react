@@ -71,11 +71,21 @@ function ShoppingBagList(props) {
                                     </div> --> */}</>
                 </div>
                 <p className={clsx(style.totalWrapper)}><span>Tổng: </span><span className={clsx(style.total)}>{intToVNDCurrencyFormat(total, true)}</span></p>
-                <div onClick={() => {
-                    dispatch(openModal());
-                }}>
-                    <Button text={"XÓA TẤT CẢ"} />
+                <div className={style.buttonsWrapper}>
+
+                    <div onClick={() => {
+                        dispatch(openModal());
+                    }}>
+                        <Button text={"XÓA TẤT CẢ"} />
+                    </div>
+                    <div onClick={() => {
+                        // dispatch(openModal());
+                    }}>
+                        <Button text={"ĐẶT MUA"} />
+
+                    </div>
                 </div>
+
             </>
         );
     }

@@ -18,6 +18,20 @@
     position: relative;
     overflow: hidden;
 }
+
+.outOfStockTag{
+    position: absolute;
+    top: 30px;
+    left: 0;
+    background-color: transparent;
+    text-shadow: 0px 0px 4px black;
+    color: white;
+    font-size: 12px;
+    font-weight: bolder;
+    padding: 8px;
+    text-align: center;
+    border: 2px solid white;
+}
 .salePercentTag{
     width: 56px;
     position: absolute;
@@ -42,6 +56,39 @@
     right: -24px;
     position: absolute;
     border: 12px solid crimson;
+    /* bottom: -20px; */
+    border-left-color: crimson;
+    border-right-color: transparent;
+    border-top-color: crimson;
+    border-bottom-color: transparent;
+}
+.typeBagItem .oldPrice{
+    text-align: left;
+}
+.typeBagItem .salePercentTag{
+    width: 44px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: crimson;
+    color: white;
+    font-weight: bolder;
+    font-size: 12px;
+    padding: 4px;
+    height: 20px;
+    padding: 4px 0;
+    text-align: center;
+}
+.typeBagItem .salePercentTag::after{
+    content: '';
+    display: block;
+    
+    width: 0;
+    height: 0;
+    top: 0;
+    right: -20px;
+    position: absolute;
+    border: 10px solid crimson;
     /* bottom: -20px; */
     border-left-color: crimson;
     border-right-color: transparent;
@@ -145,6 +192,7 @@
     display: flex;
     margin-bottom: 12px;
     max-height: 120px;
+    position: relative;
 }
 .typeBagItem .imgContainer{
     max-width: 120px;

@@ -60,7 +60,9 @@ function Item({ product, type }) {
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
                     {`- ${product.PHAN_TRAM_GIAM}%`}
                 </div> : <></>}
-
+                {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                    {`HẾT HÀNG`}
+                </div> : <></>}
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)} title="Add to bag"
                         onClick={() => {
@@ -91,6 +93,9 @@ function Item({ product, type }) {
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
                     {`- ${product.PHAN_TRAM_GIAM}%`}
                 </div> : <></>}
+                {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                    {`HẾT HÀNG`}
+                </div> : <></>}
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)}
                         onClick={() => {
@@ -99,8 +104,10 @@ function Item({ product, type }) {
                         }}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
                     <div className={clsx(style.iconContainer)}><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
                 </div>
+                    
                 <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
                     <img src={product.HINH_ANH} alt="item" />
+
                 </Link>
             </div>
         );
@@ -111,6 +118,9 @@ function Item({ product, type }) {
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
                     {`- ${product.PHAN_TRAM_GIAM}%`}
                 </div> : <></>}
+                {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                    {`HẾT HÀNG`}
+                </div> : <></>}
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
                     <div className={clsx(style.iconContainer)}><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
@@ -118,6 +128,10 @@ function Item({ product, type }) {
                 <div>
                     <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
                         <img src={product.HINH_ANH} alt="item" />
+
+                        {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
+                    {`- ${product.PHAN_TRAM_GIAM}%`}
+                </div> : <></>}
                     </Link>
                     <Link to={`/product/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
                 </div>
@@ -134,11 +148,19 @@ function Item({ product, type }) {
             </div>
         );
     }
+    
     if (type === "bag-item") {
         return (
             <div className={clsx(style.typeBagItem)}>
+                {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
+                    {`- ${product.PHAN_TRAM_GIAM}%`}
+                </div> : <></>}
+                    {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                    {`HẾT HÀNG`}
+                </div> : <></>}
                 <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
                     <img src={product.HINH_ANH} alt="item" />
+
                 </Link>
                 <div className={clsx(style.itemDetail)}>
                     <div>
@@ -175,6 +197,35 @@ function Item({ product, type }) {
                                 dispatch(removeItem(product.chiTietSanPham[0].MA_CT_SP));
                                 dispatch(caculateTotalAmountAndPrice());
                             }}>Xóa</button>
+                    </div>
+                </div>
+            </div >
+        )
+    }
+
+    if (type === "search-item") {
+        return (
+            <div className={clsx(style.typeBagItem)}>
+                {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
+                    {`- ${product.PHAN_TRAM_GIAM}%`}
+                </div> : <></>}
+                    {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                    {`HẾT HÀNG`}
+                </div> : <></>}
+                <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
+                    <img src={product.HINH_ANH} alt="item" />
+
+                </Link>
+                <div className={clsx(style.itemDetail)}>
+                    <div>
+                        <Link to={`/product/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
+                        {discountPricesString ?
+                        <><p className={clsx(style.oldPrice)}><span>{pricesString}</span></p>
+                            <p className={clsx(style.price)}><span>{discountPricesString}</span></p>
+                        </>
+                        : <p className={clsx(style.price)}><span>{pricesString}</span></p>}
+                        <p>SIZE: {product.SIZE_STR? product.SIZE_STR.substring(1, product.SIZE_STR.length):""}</p>
+                    {/* <div className="add-to-cart-button">Add to cart</div> */}
                     </div>
                 </div>
             </div >

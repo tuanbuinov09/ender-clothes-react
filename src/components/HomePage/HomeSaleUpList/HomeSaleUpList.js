@@ -43,9 +43,9 @@ function HomeSaleUpList({ products }) {
                 })} */}
                   {saleOff.map((product, index) => {
                     if (index === 0 || index === 2) {
-                        return (<Item key={index} product={product} type={2} />)
+                        return (<Item key={index} product={product} type={1} />)
                     } else {
-                        return (<Item key={index} product={product} type={3} />)
+                        return (<Item key={index} product={product} type={1} />)
                     }
                 })}
                 <>{/* <div className="sale-off__img-container col-third">

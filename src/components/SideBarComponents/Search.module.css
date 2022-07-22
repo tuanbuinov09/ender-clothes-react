@@ -22,3 +22,13 @@
     font-size: 28px;
     cursor: pointer;
 }
+.list {
+    margin-top: 28px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.flex_1{
+   height: 500px;
+}
+
