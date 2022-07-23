@@ -6,7 +6,7 @@ export const Button = (props) => {
         <>
             {
                 props.text === "ĐĂNG NHẬP" ? <div className={clsx(style.btnContainer,style.btnLoginContainer)}>
-                    <button type='submit' className={clsx(style.btn, style.btnLogin)}>{props.text}</button>
+                    <button /*type='submit'*/ className={clsx(style.btn, style.btnLogin)}>{props.text}</button>
                 </div> : <div
                     className={clsx(style.btnContainer)}>
                     <button className={clsx(style.btn,

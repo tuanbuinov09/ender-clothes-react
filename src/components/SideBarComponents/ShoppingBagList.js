@@ -8,8 +8,9 @@ import { caculateTotalAmountAndPrice } from '../../features/shoppingBag/shopping
 import { Button } from '../Button/Button';
 import { openModal } from '../../features/modal/modalSlice';
 import { intToVNDCurrencyFormat } from '../../uitilities/utilities';
+import {useNavigate}from 'react-router-dom';
 function ShoppingBagList(props) {
-
+    let navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { bagProducts, amount, total } = useSelector((store) => {
@@ -79,6 +80,11 @@ function ShoppingBagList(props) {
                         <Button text={"XÓA TẤT CẢ"} />
                     </div>
                     <div onClick={() => {
+                        if(!JSON.parse(localStorage.getItem('user'))){
+                            navigate("/user/login", { replace: true });
+                        }else{
+                            console.log(JSON.parse(localStorage.getItem('user')));
+                        }
                         // dispatch(openModal());
                     }}>
                         <Button text={"ĐẶT MUA"} />
