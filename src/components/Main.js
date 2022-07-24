@@ -12,6 +12,8 @@ import style from "./Main.module.css"
 import ProductManagement from "./Admin/Product/ProductManagement";
 import ProductDetail from "./ProductDetail/ProductDetail";
 import Login from "./Login/Login";
+import PayPal from "./PayPal/PayPal";
+import ShipInfo from "./ShipInfo/ShipInfo";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -57,6 +59,8 @@ function Main() {
                         <Route path="/about" element={<About />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
                         <Route path="/user/login" element={<Login />} />
+                        <Route path="/purchase" element={<PayPal/>}/>
+                        <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
                     </Routes>
                     <Footer />
                 </div>

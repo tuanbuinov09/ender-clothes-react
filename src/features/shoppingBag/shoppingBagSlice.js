@@ -29,7 +29,7 @@ const shoppingBagSlice = createSlice({
             if (!product) {
                 console.log(typeof (product));
                 //-------------------spread
-                state.bagProducts = [...state.bagProducts, { ...item, chiTietSanPham: [{...item.chiTietSanPham[0],SO_LUONG: 1}] }];
+                state.bagProducts = [...state.bagProducts, { ...item, chiTietSanPham: [{...item.chiTietSanPham[0],SO_LUONG: 1,GIA:item.chiTietSanPham[0].GIA - item.chiTietSanPham[0].GIA*item.PHAN_TRAM_GIAM/100}] }];
             } else if (product) { //else we 'll just increase the amount
                 product.chiTietSanPham[0].SO_LUONG = product.chiTietSanPham[0].SO_LUONG + 1;//tang so luong dat
             }
