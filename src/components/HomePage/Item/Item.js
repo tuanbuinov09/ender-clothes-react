@@ -1,7 +1,7 @@
 import {
     Link
 } from "react-router-dom";
-import React from 'react';
+import React, { useRef } from 'react';
 import Icon from 'react-hero-icon';
 import style from './Item.module.css';
 import clsx from "clsx";
@@ -9,9 +9,12 @@ import { MinusIcon, PlusIcon } from "../../../icons";
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../../features/shoppingBag/shoppingBagSlice.js';
 import { useDispatch } from "react-redux";
 import { intToVNDCurrencyFormat } from "../../../uitilities/utilities";
+import ToastContainer, { toast } from 'react-light-toast'; 
 function Item({ product, type }) {
 
     const dispatch = useDispatch();
+    const notify = (message) => toast.error(message, {autoClose: true, closeDuration: 3000 });//error/info/add
+    const quantityField = useRef();
     let pricesString;
     let discountPricesString;
     let prices = product.GIA_STR.split(" - ");
@@ -151,6 +154,7 @@ function Item({ product, type }) {
     
     if (type === "bag-item") {
         return (
+
             <div className={clsx(style.typeBagItem)}>
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
                     {`- ${product.PHAN_TRAM_GIAM}%`}
@@ -181,12 +185,16 @@ function Item({ product, type }) {
                                     <MinusIcon />
                                 </button>
                                 {/* <input type="number" step="1" max="99" min="1" value={product.amount} name="quantity" className={clsx(style.quantityField)} /> */}
-                                <div className={clsx(style.quantityField)}>{product.chiTietSanPham[0].SO_LUONG} </div>
+                                <div className={clsx(style.quantityField)} ref={quantityField}>{product.chiTietSanPham[0].SO_LUONG} </div>
 
                                 <button className={clsx(style.buttonPlus)}
-                                    onClick={() => {
-                                        dispatch(increaseAmount({ id: product.chiTietSanPham[0].MA_CT_SP }));
-                                        dispatch(caculateTotalAmountAndPrice());
+                                    onClick={(e) => {
+                                        if(quantityField.current.innerHTML.trim()===product.chiTietSanPham[0].SO_LUONG_TON+""){
+                                            notify("Đạt giới hạn tồn kho của sản phẩm");
+                                        }else{
+                                            dispatch(increaseAmount({ id: product.chiTietSanPham[0].MA_CT_SP }));
+                                            dispatch(caculateTotalAmountAndPrice());
+                                        }
                                     }}>
                                     <PlusIcon />
                                 </button>
@@ -198,6 +206,9 @@ function Item({ product, type }) {
                                 dispatch(caculateTotalAmountAndPrice());
                             }}>Xóa</button>
                     </div>
+                </div>
+                <div className={clsx(style.top)}>
+                    <ToastContainer /> 
                 </div>
             </div >
         )

@@ -38,7 +38,8 @@ function SideBox(props) {
                     <Icon icon='x' className={clsx(style.iconSvg)} />
                 </div>
             </div>
-            {props.type === "shoppingBag" ? <ShoppingBagList /> : <Search />}
+            {props.type === "shoppingBag" ? <ShoppingBagList toggleShoppingBag={props.toggleShoppingBag} pushMain={props.pushMain}
+            toggleOverActive={toggleOverActive}/> : <Search />}
         </div>
             <OverCoat active={overActive} />
         </>

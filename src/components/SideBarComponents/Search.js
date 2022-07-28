@@ -21,32 +21,49 @@ function Search(props) {
             setIsLoading(false);
             return;
         }
-        search(keyWordFromInput);
+        // search(keyWordFromInput);
     }
     const search = (keyword) => {
         setIsLoading(true);
-        console.log(`http://localhost:22081/api/SanPham/search2`, {
-            keyword: modifyKeyword(keyword),
-        });
+        // console.log(`http://localhost:22081/api/SanPham/search2`, {
+        //     keyword: modifyKeyword(keyword),
+        // });
         axios.post(`http://localhost:22081/api/SanPham/search2`, {
             keyword: modifyKeyword(keyword),
         }).then(res => {
             const productsFromApi = res.data;
             // console.log(productsFromApi);
-            setProducts(productsFromApi);
-            // console.log(products);
-            setFlag(true);
-            setIsLoading(false);
+           
+            if(productsFromApi.length===0){
+                setProducts([]);
+                setFlag(false);
+                setIsLoading(false);
+                return;
+            }else{
+                setProducts(productsFromApi);
+                // console.log(products);
+                setFlag(true);
+                setIsLoading(false);
+                return;
+            }
         });
     }
     return (
         <div>
             <div>
-                <form className={clsx(style.form)}>
+                <form className={clsx(style.form)}
+                    onSubmit={(e)=>{
+                        e.preventDefault();
+                        if (keyword1 === 'null' || keyword1 === '') {
+                            setProducts([]);
+                            setFlag(false);
+                            setIsLoading(false);
+                            return;
+                        }
+                        search(modifyKeyword(keyword1));
+                    }}>
                     <input onChange={(e) => {
-                        setTimeout(function () {
-                            onInputChange(e.target.value);
-                        }, 500);
+                        onInputChange(e.target.value);
                     }} type="text" placeholder="Nhập từ khóa.." className={clsx(style.input)} />
                     <button type='submit' className={clsx(style.btn)}><Icon icon="search"></Icon></button>
                 </form>

@@ -270,6 +270,7 @@ input[type="number"]{
 .btnDanger:hover{
     opacity: 0.8;
 }
+
 @media (max-width: 900px) {
     .type2 {
         display: none;

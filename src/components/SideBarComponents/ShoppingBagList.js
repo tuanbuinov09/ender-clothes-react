@@ -8,14 +8,17 @@ import { caculateTotalAmountAndPrice } from '../../features/shoppingBag/shopping
 import { Button } from '../Button/Button';
 import { openModal } from '../../features/modal/modalSlice';
 import { intToVNDCurrencyFormat } from '../../uitilities/utilities';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import PayPal from '../PayPal/PayPal';
 function ShoppingBagList(props) {
-
+    let navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { bagProducts, amount, total } = useSelector((store) => {
         return store.shoppingBag;
     })
-
+    const [checkout, setCheckOut] = useState(false);
     // calculate total amount and price every time you modify bagProducts
     useEffect(() => {
         dispatch(caculateTotalAmountAndPrice());
@@ -79,8 +82,24 @@ function ShoppingBagList(props) {
                         <Button text={"XÓA TẤT CẢ"} />
                     </div>
                     <div onClick={() => {
-                        // dispatch(openModal());
-                    }}>
+                        if (!JSON.parse(localStorage.getItem('user'))) {
+                            navigate("/user/login", { replace: true });
+                            props.toggleOverActive();
+                            props.toggleShoppingBag();
+                            props.pushMain();
+                        } else {
+                            setCheckOut(true);
+                            console.log(JSON.parse(localStorage.getItem('user')));
+
+                            // dispatch(openModal());
+                            // navigate("/purchase", { replace: true });
+                            props.toggleOverActive();
+                            props.toggleShoppingBag();
+                            props.pushMain();
+                            navigate("/purchase/ship-info", { replace: true });
+                        }
+                    }
+                    }>
                         <Button text={"ĐẶT MUA"} />
 
                     </div>

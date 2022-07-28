@@ -1,32 +1,99 @@
+import axios from 'axios';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '../Button/Button';
 import style from './Login.module.css';
+import { useNavigate } from "react-router-dom";
+import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 function Login(props) {
-    return (
-        <div className={clsx(style.loginWrapper)}>
+    let navigate = useNavigate();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
+    useEffect(() => {
+        if (localStorage.getItem('user') && props.type === 'customer') {
+            navigate("/user/info", { replace: true });
+        }
+        if (localStorage.getItem('employee') && props.type === 'employee') {
+            navigate("/employee/info", { replace: true });
+        }
+        return ()=>{login=null};
+    }, [])
+    const login = (loginInfo) => {
+        let url = '';
+        if (props.type === 'customer') {
+            localStorage.removeItem('user');
+            url = `http://localhost:22081/api/KhachHang/login`;
+        }
+        else if (props.type === 'employee') {
+            localStorage.removeItem('employee');
+            url = `http://localhost:22081/api/NhanVien/login`;
+        }
+        console.log(url, {
+            MAT_KHAU: loginInfo.password,
+            EMAIL: loginInfo.email
+        });
+        setIsLoading(true);
+        axios.post(url, {
+            MAT_KHAU: loginInfo.password,
+            EMAIL: loginInfo.email
+        }).then(res => {
+            const userInfoFromRes = res.data;
+            console.log(userInfoFromRes);
+
+            if (userInfoFromRes&& props.type === 'customer') {
+                setErrorMessage('');
+                localStorage.setItem('user', JSON.stringify(userInfoFromRes));
+                console.log("---", localStorage.getItem('user'));
+                navigate("/", { replace: true });
+            } else if (userInfoFromRes&& props.type === 'employee') {
+                setErrorMessage('');
+                localStorage.setItem('employee', JSON.stringify(userInfoFromRes));
+                console.log("---", localStorage.getItem('employee'));
+                navigate("/store/dashboard", { replace: true });
+            } else {
+                setErrorMessage('*Xem lại tài khoản và mật khẩu');
+            }
+            setIsLoading(false);
+        });
+    }
+    return (<>
+        {<div className={clsx(style.loginWrapper)}>
+
             <div className={clsx(style.left)}>
-            <form className={clsx(style.form)}>
-                <div className={clsx(style.inputGroup)}>
-                    <label className={clsx(style.inputLabel)}>Email:</label>
-                <input onChange={(e) => {
-                    }} type="text" placeholder="" className={clsx(style.input)} />
-                </div>
-                <div className={clsx(style.inputGroup)}>
-                    <label className={clsx(style.inputLabel)}>Mật khẩu:</label>
-                <input onChange={(e) => {
-                    }} type="password" placeholder="" className={clsx(style.input)} />
-                </div>
-                <p className={clsx(style.errorMessage)}>*Báo lỗi</p>
-                <div className={clsx(style.inputGroup)}>
-                   <Button text="ĐĂNG NHẬP" />
-                   </div>
-                </form>
-            </div>
-            <div className={clsx(style.right)}>
 
             </div>
-        </div>
+            <div className={clsx(style.right)}>
+                {isLoading ? <LoadingAnimation /> :
+                    <><h1 className={clsx(style.title)}>{props.type==="customer"?'ĐĂNG NHẬP':'ĐĂNG NHẬP NHÂN VIÊN'}</h1>
+                        <form className={clsx(style.form)} onSubmit={(e) => {
+                            e.preventDefault();
+                            login({ 'email': email, 'password': password });
+                        }}>
+                            <div className={clsx(style.inputGroup)}>
+                                <label className={clsx(style.inputLabel)}>Email:</label>
+                                <input onChange={(e) => {
+                                    setEmail(e.target.value.trim());
+                                }} type="text" placeholder="" value={email} name='email' className={clsx(style.input)} />
+                            </div>
+                            <div className={clsx(style.inputGroup)}>
+                                <label className={clsx(style.inputLabel)}>Mật khẩu:</label>
+                                <input onChange={(e) => {
+                                    setPassword(e.target.value.trim());
+                                }} type="password" name='password' value={password} placeholder="" className={clsx(style.input)} />
+                            </div>
+                            <p className={clsx(style.errorMessage)}>{errorMessage}</p>
+                            <div className={clsx(style.inputGroup)}>
+                                <Button text="ĐĂNG NHẬP" />
+                            </div>
+                        </form>
+                    </>
+                }
+            </div>
+        </div>}
+    </>
+
     );
 }
 
