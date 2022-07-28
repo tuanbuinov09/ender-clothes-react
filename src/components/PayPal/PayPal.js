@@ -9,22 +9,19 @@ export default function PayPal(props) {
     const paypal = useRef();
     let navigate = useNavigate();
     const dispatch = useDispatch();
+    let tiGia=0;
+    
     useEffect(() => {
-
-        // const GIO_HANG_ENTITY = {};
-        // const shipInfo = JSON.parse(localStorage.getItem('shipInfo'));
-
-        // GIO_HANG_ENTITY.MA_KH = shipInfo.MA_KH;
-        // GIO_HANG_ENTITY.HO_TEN = shipInfo.HO_TEN;
-        // GIO_HANG_ENTITY.SDT = shipInfo.SDT;
-        // GIO_HANG_ENTITY.EMAIL = shipInfo.EMAIL;
-        // GIO_HANG_ENTITY.DIA_CHI = shipInfo.MA_KH;
-
-        // GIO_HANG_ENTITY.chiTietGioHang = bagProducts.map((product)=>{
-        //     return product.chiTietSanPham[0];
-        // })
-        // console.log(GIO_HANG_ENTITY);
-
+        try{
+            axios.get('http://localhost:22081/api/TiGia/current').then(res => {
+                const tiGiaFromApi = res.data;
+                // console.log(productsFromApi[0]);
+                tiGia = tiGiaFromApi;
+                console.log("tigia usd: ", tiGia);
+            })
+        }catch(e){
+            console.log(e);
+        }
     }, [])
     // (async () => {
     //     // Get the latest exchange rates
@@ -61,7 +58,7 @@ export default function PayPal(props) {
                                 description: "Cool looking table",
                                 amount: {
                                     currency_code: "USD",
-                                    value: (total / 23000).toFixed(2),
+                                    value: (total / tiGia).toFixed(2),
                                 },
                             },
                         ],

@@ -9,11 +9,11 @@ import {
 import SideBox from "./SideBarComponents/SideBox";
 import clsx from "clsx";
 import style from "./Main.module.css"
-import ProductManagement from "./Admin/Product/ProductManagement";
 import ProductDetail from "./ProductDetail/ProductDetail";
 import Login from "./Login/Login";
 import PayPal from "./PayPal/PayPal";
 import ShipInfo from "./ShipInfo/ShipInfo";
+import CartManagement from "./Admin/Cart/CartManagement";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -54,11 +54,12 @@ function Main() {
                 <div className={clsx(style.container)}>
                     <Routes>
                         <Route path="" element={<Content />} />
-                        {/* <Route path="/admin/product" element={<ProductManagement />} /> */}
+                        <Route path="/admin/cart-management" element={<CartManagement />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
-                        <Route path="/user/login" element={<Login />} />
+                        <Route path="/user/login" element={<Login type="customer" />} />
+                        <Route path="/employee/login" element={<Login type="employee" />} />
                         <Route path="/purchase" element={<PayPal/>}/>
                         <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
                     </Routes>

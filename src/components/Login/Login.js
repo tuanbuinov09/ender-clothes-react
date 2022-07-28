@@ -11,30 +11,47 @@ function Login(props) {
     const [password, setPassword] = useState();
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-    useEffect(()=>{
-        if(localStorage.getItem('user')){
+    useEffect(() => {
+        if (localStorage.getItem('user') && props.type === 'customer') {
             navigate("/user/info", { replace: true });
         }
-    },[])
+        if (localStorage.getItem('employee') && props.type === 'employee') {
+            navigate("/employee/info", { replace: true });
+        }
+        return ()=>{login=null};
+    }, [])
     const login = (loginInfo) => {
-        localStorage.removeItem('user');
-        console.log(`http://localhost:22081/api/KhachHang/login`, {
+        let url = '';
+        if (props.type === 'customer') {
+            localStorage.removeItem('user');
+            url = `http://localhost:22081/api/KhachHang/login`;
+        }
+        else if (props.type === 'employee') {
+            localStorage.removeItem('employee');
+            url = `http://localhost:22081/api/NhanVien/login`;
+        }
+        console.log(url, {
             MAT_KHAU: loginInfo.password,
             EMAIL: loginInfo.email
         });
         setIsLoading(true);
-        axios.post(`http://localhost:22081/api/KhachHang/login`, {
+        axios.post(url, {
             MAT_KHAU: loginInfo.password,
             EMAIL: loginInfo.email
         }).then(res => {
             const userInfoFromRes = res.data;
             console.log(userInfoFromRes);
 
-            if (userInfoFromRes) {
+            if (userInfoFromRes&& props.type === 'customer') {
                 setErrorMessage('');
                 localStorage.setItem('user', JSON.stringify(userInfoFromRes));
-                console.log("=---", localStorage.getItem('user'));
+                console.log("---", localStorage.getItem('user'));
                 navigate("/", { replace: true });
+            } else if (userInfoFromRes&& props.type === 'employee') {
+                setErrorMessage('');
+                localStorage.setItem('employee', JSON.stringify(userInfoFromRes));
+                console.log("---", localStorage.getItem('employee'));
+                navigate("/store/dashboard", { replace: true });
             } else {
                 setErrorMessage('*Xem lại tài khoản và mật khẩu');
             }
@@ -49,7 +66,7 @@ function Login(props) {
             </div>
             <div className={clsx(style.right)}>
                 {isLoading ? <LoadingAnimation /> :
-                    <><h1 className={clsx(style.title)}>ĐĂNG NHẬP</h1>
+                    <><h1 className={clsx(style.title)}>{props.type==="customer"?'ĐĂNG NHẬP':'ĐĂNG NHẬP NHÂN VIÊN'}</h1>
                         <form className={clsx(style.form)} onSubmit={(e) => {
                             e.preventDefault();
                             login({ 'email': email, 'password': password });
@@ -72,8 +89,8 @@ function Login(props) {
                             </div>
                         </form>
                     </>
-                    }
-                    </div>
+                }
+            </div>
         </div>}
     </>
 

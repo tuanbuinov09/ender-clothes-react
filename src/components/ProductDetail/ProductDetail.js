@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import clsx from 'clsx';
 import axios from 'axios';
-import { produceWithPatches } from 'immer';
 import { useDispatch } from 'react-redux/es/exports';
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
 function ProductDetail(props) {
@@ -86,7 +85,7 @@ function ProductDetail(props) {
             <div className={clsx(style.desc)}>{product.MO_TA ? product.MO_TA : "Không có mô tả cho sản phẩm này"}</div>
             <div className={clsx(style.btnContainer)}
                 onClick={() => {
-                    dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedSize, SO_LUONG: 1 }] }));
+                    dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedSize, SO_LUONG: 1, SO_LUONG_TON: selectedSize.SL_TON }] }));
                     dispatch(caculateTotalAmountAndPrice());
                 }}><span className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 })}>THÊM VÀO GIỎ HÀNG</span></div>
 
