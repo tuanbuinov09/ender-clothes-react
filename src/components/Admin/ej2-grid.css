@@ -18,3 +18,18 @@
     padding: 3px;
     width: 10px;
 }
+/* hide sorting in excel-like filter */
+.e-excel-ascending,
+.e-excel-descending,
+.e-separator.e-excel-separator {
+display: none;
+}
+/* hide custom filter in excel-like filter */
+.e-contextmenu-wrapper li:nth-child(5){
+    display: none;
+}
+.e-grid .e-headercell, .e-grid .e-detailheadercell {
+    background-color: #088699;
+    color: white;
+    font-weight: bolder;
+}
