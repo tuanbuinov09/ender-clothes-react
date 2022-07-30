@@ -3,6 +3,7 @@ svg{
 }
 .iconSvg {
     margin-right: 8px;
+    margin-bottom: -4px;
 }
 .inActive{
     pointer-events: none;
@@ -17,16 +18,28 @@ svg{
     cursor: pointer;
 }
 .viewButton{
-    width: 150px;
+    width: 130px;
     padding: 4px 12px;
-    background-color: rgb(12, 49, 168);
-    border:  none;
-    color: white;
+    background-color: rgba(255, 255, 255, 0.699);
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #333;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: -8px 8px 8px 8px;
 }
 .checkButton:hover{
     opacity: 0.8;
 }
 .viewButton:hover{
-    opacity: 0.8;
+    opacity: 0.7;
+}
+.toolBar{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cartManagement{
+    margin-bottom: 32px;
 }

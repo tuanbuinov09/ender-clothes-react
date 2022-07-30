@@ -10,6 +10,7 @@ import style from './CartManagement.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
 import CartDetail from '../CartDetail/CartDetail';
+import SectionTitle from '../../HomePage/SectionTitle/SectionTitle'
 
 function CartManagement(props) {
     let navigate = useNavigate();
@@ -251,13 +252,14 @@ function CartManagement(props) {
         setOpenDialog(true);
     }
     return (
-        <div>
+        <div className={clsx(style.cartManagement)}>
+            <SectionTitle title='Quản lý giỏ hàng'/>
             <div className={clsx(style.toolBar)}>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     approve();
                 }} className={clsx(style.checkButton, { [style.inActive]: selectedCart.TRANG_THAI !== 0 })}>
                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
-                </button>
+                </button> */}
                 <button onClick={() => {
                     openDialogFnc();
                 }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>

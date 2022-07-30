@@ -5,6 +5,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "@syncfusion/ej2-react-buttons": "^20.2.38",
+    "@syncfusion/ej2-react-dropdowns": "^20.2.40",
     "@syncfusion/ej2-react-grids": "^20.2.40",
     "@syncfusion/ej2-react-popups": "^20.2.40",
     "@testing-library/jest-dom": "^5.16.1",

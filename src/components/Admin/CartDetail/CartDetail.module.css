@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 80px;
+    padding-top: 28px;
 }
 
 .modal {
@@ -22,7 +22,7 @@
 .title {
     text-transform: uppercase;
     font-weight: bold;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
@@ -44,4 +44,78 @@
 
 .closeButton {
     cursor: pointer;
+}
+.cartInfo{
+    display: flex;
+    flex-wrap: wrap;
+}
+.infoGroup{
+    width: 33.33333%;
+    margin-bottom: 12px;
+}
+.infoGroup label{
+    font-size: 14px;
+color: #333;
+}
+.infoGroup span{
+    margin-left: 4px;
+    font-size: 14px;
+    color: #333;
+font-weight: bolder;
+}
+.cartDetail{
+    margin-top: 22px;
+}
+
+.inActive{
+    pointer-events: none;
+    opacity: 0.3;
+}
+.checkButton{
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    padding: 4px 12px;
+    border:  none;
+    background-color:#088699;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-left: 12px;
+}
+.saveButton{
+    background-color:#008829;
+}
+.btnCheckContainer{
+    display:  flex;
+    justify-content: flex-end;
+    margin-bottom: 12px;
+}
+.checkButton:hover{
+    opacity: 0.8;
+}
+.iconSvg {
+    margin-right: 8px;
+    margin-bottom: -8px;
+}
+svg{
+    width: 18px;
+}
+.infoEmployee{
+    width: 50%;
+    display: flex;
+    align-items: center;
+}
+.dropdownList{
+    flex: 1;
+    margin-left: 8px;
+    margin-bottom: -4px;
+}
+/* .infoEmployeeDelivery{
+    display: flex;
+    align-items: center;
+} */
+.dropdownList span{
+    font-weight: bolder !important;
 }
