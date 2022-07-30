@@ -1,0 +1,32 @@
+svg{
+    width: 18px;
+}
+.iconSvg {
+    margin-right: 8px;
+}
+.inActive{
+    pointer-events: none;
+    opacity: 0.7;
+}
+.checkButton{
+    width: 150px;
+    padding: 4px 12px;
+    border:  none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+}
+.viewButton{
+    width: 150px;
+    padding: 4px 12px;
+    background-color: rgb(12, 49, 168);
+    border:  none;
+    color: white;
+    cursor: pointer;
+}
+.checkButton:hover{
+    opacity: 0.8;
+}
+.viewButton:hover{
+    opacity: 0.8;
+}

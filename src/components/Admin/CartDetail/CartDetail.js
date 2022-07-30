@@ -1,110 +1,42 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { L10n } from '@syncfusion/ej2-base';
-import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter, Group, Edit, Toolbar, dataReady } from '@syncfusion/ej2-react-grids';
-import { CheckIcon, ViewDetailIcon } from '../../../icons';
-import axios from 'axios';
-import '../ej2-grid.css'
-import { removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
-import { TooltipComponent, DialogComponent } from '@syncfusion/ej2-react-popups';
-import style from './CartManagement.module.css';
-import { useNavigate, Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import style from './CartDetail.module.css';
 import clsx from 'clsx';
-import CartDetail from '../CartDetail/CartDetail';
-
-function CartManagement(props) {
-    let navigate = useNavigate();
+import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter, Group, Edit, Toolbar, dataReady } from '@syncfusion/ej2-react-grids';
+import axios from 'axios';
+import { removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
+import { useDispatch } from 'react-redux/es/exports';
+import { Button } from '../../Button/Button';
+import { XIcon } from '../../../icons';
+import { L10n } from '@syncfusion/ej2-base';
+function CartDetail(props) {
+    const dispatch = useDispatch();
+    // const params = useParams(); prams.cartId
+    console.log(props.cartId);
+    const [selectedSize, setSelectedSize] = useState(null);
+    const [cart, setCart] = useState(null);
+    const [flag, setFlag] = useState(false);
     removeSyncfusionLicenseMessage();
-    const [carts, setCarts] = useState([]);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [selectedCart, setSelectedCart] = useState({});
     const grid = useRef();
-    const dialog = useRef();
     useEffect(() => {
+        console.log("call api");
+        console.log(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`);
         try {
-            axios.get(`http://localhost:22081/api/GioHang/all`).then(res => {
-                const cartsFromApi = res.data;
-                // console.log(cartsFromApi);
-                cartsFromApi.forEach((cart) => {
-                    if (cart.NGAY_TAO) {
-                        let date = new Date(cart.NGAY_TAO);
-                        cart.NGAY_TAO = date.toLocaleDateString('vi-VN');
-                    }
-                    if (cart.TRANG_THAI === 0) {
-                        cart.TRANG_THAI_STR = 'Chờ duyệt';
-                    }
-                    if (cart.TRANG_THAI === 1) {
-                        cart.TRANG_THAI_STR = 'Đã duyệt';
-                    }
-                    if (cart.TRANG_THAI === 2) {
-                        cart.TRANG_THAI_STR = 'Đang giao hàng';
-                    }
-                    if (cart.TRANG_THAI === 3) {
-                        cart.TRANG_THAI_STR = 'Đã hủy';
-                    }
-                })
-                // console.log(cartsFromApi);
-                setCarts(cartsFromApi);
+            axios.get(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`).then(res => {
+                const response = res.data;
+                setCart(response);
+                setFlag(true);
             });
-
         } catch (error) {
             console.error(error);
         }
+        
     }, []);
-
-    let editOptions, toolbarOptions;
-
-    // console.log(grid.current);
-    {//     function actionBegin(args){
-        //         if (grid.current && (args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const cols = grid.current.columns;
-        //             for (const col of cols) {
-        //                 if (col.field === "MA_SP") {
-        //                     col.visible = true;
-        //                 }
-        //                 else if (col.field === "LUOT_XEM") {
-        //                     col.visible = false;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     function actionComplete(args) {
-        //         if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const dialog = args.dialog;
-        //             dialog.showCloseIcon = false;
-        //             dialog.height = 500;
-        //             dialog.width = 600;
-        //             // change the header of the dialog
-        //             dialog.header = args.requestType === 'beginEdit' ? 'Chỉnh sửa sản phẩm ' + args.rowData['TEN_SP'] : 'Sản phẩm mới';
-        //         }
-        // // trả lại cột luot xem
-        //         if (grid.current && (args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const cols = grid.current.columns;
-        //             for (const col of cols) {
-
-        //                 if (col.field === "LUOT_XEM") {
-        //                     col.visible = true;
-        //             }
-        //         }
-        //     }
-        // }
-        // actionBegin = actionBegin.bind(this);
-        // actionComplete = actionComplete.bind(this);
-    }
-    editOptions = { /*allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' */ };
     let pageSettings = { pageSize: 6 };
     let filterOptions = {
         // type: 'Menu' // default là input
         type: 'Excel'
-    };
-    let tooltip;
-    const beforeRender = (args) => {
-        // event triggered before render the tooltip on target element.
-        tooltip.current.content = args.target.closest("td").innerText;
-    }
-    beforeRender.bind(this);
-    // toolbarOptions = ['Add', 'Edit', 'Delete', 'Update', 'Cancel'];
-    // toolbarOptions = ['Edit', 'Update', 'Cancel'];
-
+    };  
     L10n.load({
         'vi-VN': {
             "grid": {
@@ -212,90 +144,92 @@ function CartManagement(props) {
         }
     });
 
-    const rowSelected = () => {
-        if (grid) {
-            /** Get the selected row indexes */
-            const selectedrowindex = grid.current.getSelectedRowIndexes();
-            /** Get the selected records. */
-            const selectedrecords = grid.current.getSelectedRecords();
-
-            // console.log(selectedrowindex[0] + " : " +  JSON.stringify(selectedrecords[0]));
-
-            setSelectedCart(JSON.parse(JSON.stringify(selectedrecords[0])));
-            // console.log("selectedRowData:", selectedCart);
-        }
-    }
-
-    const approve = () => {
-        try {
-            if (selectedCart.TRANG_THAI === 0) {
-                const selectedrowindex = grid.current.getSelectedRowIndexes();
-                let carts2 = [...carts];
-                carts2[selectedrowindex[0]].TRANG_THAI = 1;
-                carts2[selectedrowindex[0]].TRANG_THAI_STR = 'Đã duyệt';
-                console.log(carts2);
-                setCarts(carts2);
-                //refresh grid
-
-                grid.current.dataSource = carts;
-            }
-        } catch (e) {
-            console.log(e);
-        }
-
-    }
-    const closeDialog=()=>{
-        setOpenDialog(false);
-    }
-    const openDialogFnc=()=>{
-        setOpenDialog(true);
-    }
     return (
-        <div>
-            <div className={clsx(style.toolBar)}>
-                <button onClick={() => {
-                    approve();
-                }} className={clsx(style.checkButton, { [style.inActive]: selectedCart.TRANG_THAI !== 0 })}>
-                    <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
-                </button>
-                <button onClick={() => {
-                    openDialogFnc();
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+        flag?<div className={clsx(style.modalWrapper)}>
+    <div className={clsx(style.modal)}>
+        <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={()=>{
+            props.closeDialog();
+        }}><XIcon/></span></h1>
+        <h1 className={clsx(style.title)}>Chi tiết GH {props.cartId}</h1>
+        <div className={clsx(style.cartInfo)}>
+            <div className={clsx(style.infoGroup)}>
+                <label>Mã khách hàng: </label>
+                <span>{cart.MA_KH}</span>
+            </div>
+            <div className={clsx(style.infoGroup)}>
+                <label>Tên người nhận: </label>
+                <span>{cart.HO_TEN}</span>
+            </div>
+            <div className={clsx(style.infoGroup)}>
+                <label>Số điện thoại người nhận: </label>
+                <span>{cart.SDT}</span>
+            </div>
+            <div className={clsx(style.infoGroup)}>
+                <label>Email: </label>
+                <span>{cart.EMAIL}</span>
+            </div>
+            <div className={clsx(style.infoGroup)}>
+                <label>Địa chỉ: </label>
+                <span>{cart.DIA_CHI}</span>
+            </div>
+            <div className={clsx(style.infoGroup)}>
+                <label>Trạng thái đơn hàng: </label>
+                <span>{cart.TRANG_THAI}</span>
+            </div>
+            <div className={clsx(style.infoGroup)}>
+                <label>Nhân viên duyệt: </label>
+                <span>{cart.TEN_NV_DUYET}</span>
+            </div>
+            <div className={clsx(style.infoGroup)}>
+                <label>Nhân viên giao: </label>
+                <span>{cart.TEN_NV_GIAO}</span>
+            </div>
+        </div>
+        {/* <div className={clsx(style.buttonWrapper)}>
+            <div onClick={() => {
+            
+            }} >
+                <Button text="ĐỒNG Ý" className={clsx(style.buttonConfirm)} />
+            </div>
+            <div onClick={() => {
+            }} >
+                <Button text="HỦY" className={clsx(style.buttonCancek)} />
             </div>
 
-            <TooltipComponent ref={tooltip} target='.e-rowcell' beforeRender={(args) => { beforeRender(args) }}></TooltipComponent>
-            <GridComponent ref={grid}
+        </div> */}
+        {/* detail */}
+        <GridComponent ref={grid}
                 // toolbar={toolbarOptions}
                 //  actionComplete={actionComplete} 
                 //  actionBegin={actionBegin}
                 locale='vi-VN'
-                editSettings={editOptions}
+                // editSettings={editOptions}
                 pageSettings={pageSettings}
-                dataSource={carts} allowPaging={true} /*allowGrouping={true}*/
+                dataSource={cart.chiTietGioHang2} allowPaging={true} /*allowGrouping={true}*/
                 allowSorting={true} allowFiltering={true}
                 filterSettings={filterOptions} height={300}
-                rowSelected={rowSelected}
+                // rowSelected={rowSelected}
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" />
-                    <ColumnDirective field='SDT' headerTextAlign='Center' headerText='SĐT' width='200' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='200' textAlign="Left" />
+                    <ColumnDirective field='GIA' headerTextAlign='Center' headerText='Giá' width='200' textAlign="Right" />
+                    <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='200' editType='dropdownedit' textAlign="Left" />
                     {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
                     {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                    <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" />
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='200' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                    {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}
+                    {/*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */}
+                    {/* <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='200' textAlign="Left"  /> 
                     <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ' width='200' textAlign="Left" />
                     <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='200' textAlign="Left" />
                     <ColumnDirective field='MA_NV_DUYET' headerTextAlign='Center' headerText='Mã NV duyệt' width='200' textAlign="Left" />
-                    <ColumnDirective field='MA_NV_GIAO' headerTextAlign='Center' headerText='Mã NV giao' width='200' textAlign="Left" />
+                    <ColumnDirective field='MA_NV_GIAO' headerTextAlign='Center' headerText='Mã NV giao' width='200' textAlign="Left" /> */}
                 </ColumnsDirective>
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
             </GridComponent>
-
-        {openDialog && <CartDetail cartId={selectedCart.ID_GH} closeDialog = {closeDialog}/>}
-        </div>
-    );
+    </div>
+</div>:<></>);
 }
 
-export default CartManagement;
+export default CartDetail;
