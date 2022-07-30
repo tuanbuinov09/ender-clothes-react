@@ -14,6 +14,7 @@ import Login from "./Login/Login";
 import PayPal from "./PayPal/PayPal";
 import ShipInfo from "./ShipInfo/ShipInfo";
 import CartManagement from "./Admin/Cart/CartManagement";
+import CartDetail from "./Admin/CartDetail/CartDetail"
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {

@@ -24,6 +24,19 @@ const modifyKeyword = (keyword)=>{
     // console.log("res:",result)
     return result;
 }
+const removeSyncfusionLicenseMessage=()=>{
+    var script = document.createElement("script");
+    script.innerHTML=
+    `
+        var element = document.getElementById('js-licensing');
+        if(element){
+            element.remove();
+        }
+    `
+    script.async = true;
+    document.body.appendChild(script);
+
+}
 
 // const removeAccent = (str) => {
 // 	str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
@@ -46,4 +59,4 @@ const modifyKeyword = (keyword)=>{
 // 	return str;
 // }
 
-export {intToVNDCurrencyFormat, modifyKeyword}
+export {intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage}

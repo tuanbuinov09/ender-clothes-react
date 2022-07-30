@@ -5,7 +5,6 @@ import Icon from 'react-hero-icon';
 import { modifyKeyword } from '../../uitilities/utilities';
 import Item from '../HomePage/Item/Item.js';
 import axios from 'axios';
-import Skeleton from 'react-loading-skeleton';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 function Search(props) {
     const [products, setProducts] = useState([]);
