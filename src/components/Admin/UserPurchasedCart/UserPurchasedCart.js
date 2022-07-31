@@ -6,27 +6,25 @@ import axios from 'axios';
 import '../ej2-grid.css'
 import { removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
 import { TooltipComponent, DialogComponent } from '@syncfusion/ej2-react-popups';
-import style from './CartManagement.module.css';
-import { useNavigate, Link } from "react-router-dom";
+import style from './UserPurchasedCart.module.css';
 import clsx from 'clsx';
 import CartDetail from '../CartDetail/CartDetail';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 
-function CartManagement(props) {
-    let navigate = useNavigate();
+function UserPurchasedCart(props) {
     removeSyncfusionLicenseMessage();
     const [carts, setCarts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedCart, setSelectedCart] = useState({});
     const grid = useRef();
-const[rerender, setRerender] = useState();
+    const[rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
     useEffect(() => {
         try {
-            console.log(`http://localhost:22081/api/GioHang/all?filterState=${filterState}`)
-            axios.get(`http://localhost:22081/api/GioHang/all?filterState=${filterState}`).then(res => {
+            console.log(`http://localhost:22081/api/KhachHang/carts?filterState=${filterState}&customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`)
+            axios.get(`http://localhost:22081/api/KhachHang/carts?filterState=${filterState}&customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`).then(res => {
                 const cartsFromApi = res.data;
                 // console.log(cartsFromApi);
                 cartsFromApi.forEach((cart) => {
@@ -61,54 +59,13 @@ const[rerender, setRerender] = useState();
     let editOptions, toolbarOptions;
 
     // console.log(grid.current);
-    {//     function actionBegin(args){
-        //         if (grid.current && (args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const cols = grid.current.columns;
-        //             for (const col of cols) {
-        //                 if (col.field === "MA_SP") {
-        //                     col.visible = true;
-        //                 }
-        //                 else if (col.field === "LUOT_XEM") {
-        //                     col.visible = false;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     function actionComplete(args) {
-        //         if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const dialog = args.dialog;
-        //             dialog.showCloseIcon = false;
-        //             dialog.height = 500;
-        //             dialog.width = 600;
-        //             // change the header of the dialog
-        //             dialog.header = args.requestType === 'beginEdit' ? 'Chỉnh sửa sản phẩm ' + args.rowData['TEN_SP'] : 'Sản phẩm mới';
-        //         }
-        // // trả lại cột luot xem
-        //         if (grid.current && (args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const cols = grid.current.columns;
-        //             for (const col of cols) {
-
-        //                 if (col.field === "LUOT_XEM") {
-        //                     col.visible = true;
-        //             }
-        //         }
-        //     }
-        // }
-        // actionBegin = actionBegin.bind(this);
-        // actionComplete = actionComplete.bind(this);
-    }
     editOptions = { /*allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' */ };
     let pageSettings = { pageSize: 6 };
     let filterOptions = {
         // type: 'Menu' // default là input
         type: 'Excel'
     };
-    let tooltip;
-    const beforeRender = (args) => {
-        // event triggered before render the tooltip on target element.
-        tooltip.current.content = args.target.closest("td").innerText;
-    }
-    beforeRender.bind(this);
+
     // toolbarOptions = ['Add', 'Edit', 'Delete', 'Update', 'Cancel'];
     // toolbarOptions = ['Edit', 'Update', 'Cancel'];
     toolbarOptions = ['ColumnChooser'];
@@ -233,24 +190,7 @@ const[rerender, setRerender] = useState();
         }
     }
 
-    // const approve = () => {
-    //     try {
-    //         if (selectedCart.TRANG_THAI === 0) {
-    //             const selectedrowindex = grid.current.getSelectedRowIndexes();
-    //             let carts2 = [...carts];
-    //             carts2[selectedrowindex[0]].TRANG_THAI = 1;
-    //             carts2[selectedrowindex[0]].TRANG_THAI_STR = 'Đã duyệt';
-    //             console.log(carts2);
-    //             setCarts(carts2);
-    //             //refresh grid
-
-    //             grid.current.dataSource = carts;
-    //         }
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-
-    // }
+    
     const closeDialog = () => {
         setOpenDialog(false);
     }
@@ -286,7 +226,7 @@ const[rerender, setRerender] = useState();
 
     return (
         <div className={clsx(style.cartManagement)}>
-            <SectionTitle title='Quản lý giỏ hàng' />
+            <SectionTitle title='Đơn hàng đã mua' />
             <div className={clsx(style.toolBar)}>
                 {/* <button onClick={() => {
                     approve();
@@ -313,7 +253,6 @@ const[rerender, setRerender] = useState();
 
             </div>
 
-            <TooltipComponent ref={tooltip} target='.e-rowcell' beforeRender={(args) => { beforeRender(args) }}></TooltipComponent>
             <GridComponent ref={grid}
                 toolbar={toolbarOptions}
                 showColumnChooser={true}
@@ -329,10 +268,7 @@ const[rerender, setRerender] = useState();
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='HO_TEN_KH' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
-                    <ColumnDirective field='SDT_KH' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
-                    <ColumnDirective field='EMAIL_KH' headerTextAlign='Center' headerText='Email KH' width='200' textAlign="Left" />
+                    {/* <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /> */}{/*isPrimaryKey={true}*/ }
                     <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" />
                     <ColumnDirective field='SDT' headerTextAlign='Center' headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" />
                     {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
@@ -341,15 +277,15 @@ const[rerender, setRerender] = useState();
                     <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
                     <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
                     <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
-                    <ColumnDirective field='MA_NV_DUYET' headerTextAlign='Center' headerText='Mã NV duyệt' width='160' textAlign="Left" />
-                    <ColumnDirective field='MA_NV_GIAO' headerTextAlign='Center' headerText='Mã NV giao' width='160' textAlign="Left" />
+                    {/* <ColumnDirective field='MA_NV_DUYET' headerTextAlign='Center' headerText='Mã NV duyệt' width='160' textAlign="Left" /> */}
+                    {/* <ColumnDirective field='MA_NV_GIAO' headerTextAlign='Center' headerText='Mã NV giao' width='160' textAlign="Left" /> */}
                 </ColumnsDirective>
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
             </GridComponent>
 
-            {openDialog && <CartDetail cartId={selectedCart.ID_GH} rerender={toggleReRender} closeDialog={closeDialog} />}
+            {openDialog && <CartDetail cartId={selectedCart.ID_GH} type='userViewing' rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
     );
 }
 
-export default CartManagement;
+export default UserPurchasedCart;

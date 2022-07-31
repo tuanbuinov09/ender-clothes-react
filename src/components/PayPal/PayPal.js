@@ -5,6 +5,7 @@ import { caculateTotalAmountAndPrice, clearBag } from '../../features/shoppingBa
 import style from './PayPal.module.css';
 import axios from "axios";
 import clsx from "clsx";
+import ToastContainer, { toast } from 'react-light-toast';
 export default function PayPal(props) {
     const paypal = useRef();
     let navigate = useNavigate();
@@ -45,6 +46,7 @@ export default function PayPal(props) {
     const { bagProducts, amount, total } = useSelector((store) => {
         return store.shoppingBag;
     })
+    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     console.log("total: ", (total / 23000).toFixed(2));
     useEffect(() => {
 
@@ -81,7 +83,7 @@ export default function PayPal(props) {
                     GIO_HANG_ENTITY.HO_TEN = shipInfo.HO_TEN;
                     GIO_HANG_ENTITY.SDT = shipInfo.SDT;
                     GIO_HANG_ENTITY.EMAIL = shipInfo.EMAIL;
-                    GIO_HANG_ENTITY.DIA_CHI = shipInfo.MA_KH;
+                    GIO_HANG_ENTITY.DIA_CHI = shipInfo.DIA_CHI;
 
                     GIO_HANG_ENTITY.chiTietGioHang = bagProducts.map((product) => {
                         return product.chiTietSanPham[0];
@@ -95,6 +97,7 @@ export default function PayPal(props) {
                         // console.log(productsFromApi);
                         console.log(result);
                         alert(result);
+                        notify(result);
                     });
 
                     navigate("/", { replace: true });
@@ -111,6 +114,9 @@ export default function PayPal(props) {
         <div className={clsx(style.paypalWrapper)}>
             <h1 className={clsx(style.title)}>Chọn phương thức thanh toán</h1>
             <div ref={paypal}></div>
+            <div className={clsx(style.top)}>
+                <ToastContainer />
+            </div>
         </div>
     );
 }

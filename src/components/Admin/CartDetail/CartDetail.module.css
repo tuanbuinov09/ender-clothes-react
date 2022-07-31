@@ -112,10 +112,26 @@ svg{
     margin-left: 8px;
     margin-bottom: -4px;
 }
-/* .infoEmployeeDelivery{
-    display: flex;
-    align-items: center;
-} */
+.infoEmployeeDelivery1{
+    width: 100%;
+} 
 .dropdownList span{
     font-weight: bolder !important;
+}
+.total{
+    font-size: 15px;
+    text-align: right;
+    padding-top: 8px;
+    margin-bottom: -10px;
+}
+.cancelButton{
+    width: 150px;
+    background-color: #777;
+}.marginLeft32{
+    margin-left:  44px;
+}
+
+.w100{
+    width: 100%;
+    display: flex;
 }
