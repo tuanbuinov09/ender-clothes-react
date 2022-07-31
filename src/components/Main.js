@@ -15,6 +15,7 @@ import PayPal from "./PayPal/PayPal";
 import ShipInfo from "./ShipInfo/ShipInfo";
 import CartManagement from "./Admin/Cart/CartManagement";
 import CartDetail from "./Admin/CartDetail/CartDetail"
+import UserPurchasedCart from "./Admin/UserPurchasedCart/UserPurchasedCart";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -60,6 +61,7 @@ function Main() {
                         <Route path="/about" element={<About />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
                         <Route path="/user/login" element={<Login type="customer" />} />
+                        <Route path="/user/purchased-cart" element={<UserPurchasedCart/>} />
                         <Route path="/employee/login" element={<Login type="employee" />} />
                         <Route path="/purchase" element={<PayPal/>}/>
                         <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
