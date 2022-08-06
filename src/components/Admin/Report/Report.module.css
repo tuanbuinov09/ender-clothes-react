@@ -1,0 +1,14 @@
+.reportContainer{
+    background-color: white;
+    margin-bottom: 32px;
+    padding: 18px;
+    display: flex;
+}
+.reportContainer label{
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+.datePickerContainer{
+    margin: 12px 0;
+}

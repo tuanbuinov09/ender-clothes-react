@@ -17,6 +17,7 @@ import CartManagement from "./Admin/Cart/CartManagement";
 import UserPurchasedCart from "./Admin/UserPurchasedCart/UserPurchasedCart";
 import DashBoard from "./Admin/DashBoard/DashBoard";
 import HeaderEmployee from "./Header/HeaderEmployee";
+import Report from "./Admin/Report/Report";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -46,7 +47,7 @@ function Main() {
                 toggleShoppingBag={handleOpenShoppingBag} type={"shoppingBag"} />;
         }
     }
-    const [headerMode, setHeaderMode] = useState();
+    const [headerMode, setHeaderMode] = useState('user');
     
     const changeHeader = (type)=>{
         if(type==="user"){
@@ -73,6 +74,7 @@ function Main() {
                         <Route path="" element={<Content />} />
                         <Route path="/admin/cart-management" element={<CartManagement changeHeader={changeHeader}/>} />
                         <Route path="/admin/dashboard" element={<DashBoard changeHeader={changeHeader} />} />
+                        <Route path="/admin/report" element={<Report changeHeader={changeHeader} />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
