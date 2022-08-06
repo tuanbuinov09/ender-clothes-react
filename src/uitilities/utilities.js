@@ -1,5 +1,5 @@
 import moment from 'moment';
-
+import { L10n } from '@syncfusion/ej2-base';
 const intToVNDCurrencyFormat = (number, withSymbol)=>{
     let result;
     if(typeof number === 'string'){
@@ -65,5 +65,116 @@ return res;
 //     str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // mũ â (ê), mũ ă, mũ ơ (ư)
 // 	return str;
 // }
-
-export {intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate}
+const loadLocaleSyncfusion = ()=>{
+    L10n.load({
+        'vi-VN': {
+            "grid": {
+                "EmptyRecord": "Không có mục nào để hiển thị",
+                "True": "Đúng",
+                "False": "Sai",
+                "InvalidFilterMessage": "Dữ liệu bộ lọc không hợp lệ",
+                "GroupDropArea": "Kéo một tiêu đề cột ở đây để nhóm cột của nó",
+                "UnGroup": "Nhấn vào đây để hủy nhóm",
+                "GroupDisable": "Nhóm bị vô hiệu hóa cho cột này",
+                "FilterbarTitle": "\"Lọc tiêu đề",
+                "EmptyDataSourceError": "DataSource không được để trống khi tải ban đầu vì các cột được tạo từ dataSource trong Lưới cột AutoGenerate",
+                "Add": "Thêm mới",
+                "Edit": "Chỉnh sửa",
+                "Cancel": "Hủy bỏ",
+                "Update": "Cập nhật",
+                "Delete": "Xóa bỏ",
+                "Print": "In",
+                "Pdfexport": "Xuất PDF",
+                "Excelexport": "Xuất file Excel",
+                "Wordexport": "Xuất từ",
+                "Csvexport": "Xuất CSV",
+                "Search": "Tìm kiếm",
+                "Columnchooser": "Chọn cột cần xem",
+                "Save": "Lưu",
+                "Item": "mục",
+                "Items": "mặt hàng",
+                "EditOperationAlert": "Không có bản ghi nào được chọn cho thao tác chỉnh sửa",
+                "DeleteOperationAlert": "Không có bản ghi nào được chọn cho hoạt động xóa",
+                "SaveButton": "Lưu",
+                "OKButton": "Đồng ý",
+                "CancelButton": "Hủy bỏ",
+                "EditFormTitle": "Chi tiết của",
+                "AddFormTitle": "Thêm bản ghi mới",
+                "BatchSaveConfirm": "Bạn có chắc chắn muốn lưu các thay đổi?",
+                "BatchSaveLostChanges": "Những thay đổi chưa được lưu sẽ bị mất. Bạn có chắc chắn muốn tiếp tục?",
+                "ConfirmDelete": "Bạn có chắc chắn muốn xóa Bản ghi?",
+                "CancelEdit": "Bạn có chắc chắn muốn Hủy bỏ các thay đổi?",
+                "ChooseColumns": "Chọn cột",
+                "SearchColumns": "cột tìm kiếm",
+                "Matchs": "Lọc kết quả tìm thấy",
+                "FilterButton": "OK",
+                "ClearButton": "Hủy",
+                "StartsWith": "Bắt đầu với",
+                "EndsWith": "Kết thúc với",
+                "Contains": "Bao gồm",
+                "Equal": "Bằng",
+                "NotEqual": "Không bằng",
+                "LessThan": "Ít hơn",
+                "LessThanOrEqual": "Nhỏ hơn hoặc bằng",
+                "GreaterThan": "Lớn hơn",
+                "GreaterThanOrEqual": "Lớn hơn hoặc bằng",
+                "ChooseDate": "Chọn một ngày",
+                "EnterValue": "Nhập giá trị",
+                "Copy": "Sao chép",
+                "Group": "Nhóm theo cột này",
+                "Ungroup": "Ungroup theo cột này",
+                "autoFitAll": "Tự động điều chỉnh tất cả các cột",
+                "autoFit": "Tự động điều chỉnh cột này",
+                "Export": "Xuất",
+                "FirstPage": "Trang đầu",
+                "LastPage": "Trang cuối",
+                "PreviousPage": "Trang trước",
+                "NextPage": "Trang tiếp theo",
+                "SortAscending": "Sắp xếp tăng dần",
+                "SortDescending": "Sắp xếp giảm dần",
+                "EditRecord": "Chỉnh sửa bản ghi",
+                "DeleteRecord": "Xóa bản ghi",
+                "FilterMenu": "Bộ lọc",
+                "SelectAll": "Chọn tất cả",
+                "Blanks": "Khoảng trống",
+                "FilterTrue": "Đúng",
+                "FilterFalse": "Sai",
+                "NoResult": "Lọc kết quả tìm thấy",
+                "ClearFilter": "Bỏ lựa chọn lọc",
+                "NumberFilter": "Bộ lọc số",
+                "TextFilter": "Bộ lọc văn bản",
+                "DateFilter": "Bộ lọc ngày",
+                "DateTimeFilter": "Bộ lọc DateTime",
+                "MatchCase": "Trường hợp phù hợp",
+                "Between": "Giữa",
+                "CustomFilter": "Bộ lọc tùy chỉnh",
+                "CustomFilterPlaceHolder": "Nhập giá trị",
+                "CustomFilterDatePlaceHolder": "Chọn một ngày",
+                "AND": "VÀ",
+                "OR": "HOẶC LÀ",
+                "ShowRowsWhere": "Hiển thị các hàng trong đó:"
+            },
+            "pager": {
+                "currentPageInfo": "{0} trên {1} trang",
+                // "totalItemsInfo": "({0} dòng)",
+                "totalItemsInfo": "Tổng số dòng: {0}",
+                "firstPageTooltip": "Đến trang đầu tiên",
+                "lastPageTooltip": "Đến trang cuối",
+                "nextPageTooltip": "Chuyển đến trang tiếp theo",
+                "previousPageTooltip": "Chuyển đến trang trước",
+                "nextPagerTooltip": "Đi đến máy nhắn tin tiếp theo",
+                "previousPagerTooltip": "Đi đến máy nhắn tin trước",
+                "pagerDropDown": "Dòng hiển thị",
+                "pagerAllDropDown": "Bản ghi",
+                "All": "Tất cả",
+                // "totalItemInfo": "({0} dòng)"
+                "totalItemInfo": "{0} dòng"
+            },
+            datepicker: {
+                placeholder: "Nhập ngày",
+                today:"Hôm nay"
+            }
+        }
+    });
+}
+export {intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion}

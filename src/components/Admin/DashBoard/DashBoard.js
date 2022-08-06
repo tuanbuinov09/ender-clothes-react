@@ -19,6 +19,7 @@ import style from './DashBoard.module.css';
 import DashBoardChart from "../Chart/DashBoardChart";
 import OverAllStatistic from "../OverAllStatistic/OverAllStatistic";
 import SectionTitle from "../../HomePage/SectionTitle/SectionTitle";
+
 function DashBoard(props) {
   useEffect(()=>{
 
@@ -28,8 +29,10 @@ function DashBoard(props) {
     }
   }, [])
   props.changeHeader('employee')
+  
   return (
     <div className={clsx(style.dashBoardContainer)}>
+
       <SectionTitle title={"THỐNG KÊ"}/>
       <OverAllStatistic/>
       <DashBoardChart />
