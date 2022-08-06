@@ -92,6 +92,7 @@ font-weight: bolder;
     justify-content: flex-end;
     margin-bottom: 12px;
 }
+
 .checkButton:hover{
     opacity: 0.8;
 }
@@ -134,4 +135,45 @@ svg{
 .w100{
     width: 100%;
     display: flex;
+}
+
+.modalPrintWrapper{
+    background-color: white;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: scroll;
+    width: 100%;
+}
+
+.modalPrintWrapper .modal {
+    background-color: white;
+    width: 800px;
+    min-width: 400px;
+    padding: 22px;
+}
+
+.container .cartInfo{
+    display: flex;
+    flex-direction: column;
+}
+.printButton{
+    margin-right: 32px;
+    width: 120px;
+}
+.printButtonContainer{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 32px;
+}
+.btnCheckContainer .printButton{
+    margin-right: 0;
+    margin-left: 12px;
 }

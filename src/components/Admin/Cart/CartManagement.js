@@ -15,6 +15,15 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 
 function CartManagement(props) {
+    useEffect(()=>{
+
+        //khi unmount trả lại header
+        return ()=>{
+          props.changeHeader('user')
+        }
+      }, [])
+      
+    props.changeHeader('employee')
     let navigate = useNavigate();
     removeSyncfusionLicenseMessage();
     const [carts, setCarts] = useState([]);

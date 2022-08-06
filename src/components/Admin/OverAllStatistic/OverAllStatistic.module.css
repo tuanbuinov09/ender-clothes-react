@@ -1,0 +1,30 @@
+.statisticsContainer{
+display: flex;
+justify-content: center;
+font-size: 16px;
+margin-bottom: 20px;
+background-color: white; 
+padding: 12px 0;
+}
+.statistic{
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 20%;
+    border: 4px solid #555;
+    margin: 12px;
+    border-radius: 10px;
+    transition: transform .3s ease-in-out;
+}
+.statistic:hover{
+  transform: translateY(-12px);
+}
+.statisticsContainer svg{
+  width: 36px;
+  height: 36px;
+}
+.statisticsContainer label{
+  margin: 8px 0 12px 0;
+  font-weight: bolder;
+}

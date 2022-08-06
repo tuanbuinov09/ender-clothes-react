@@ -4,15 +4,17 @@ import style from './CartDetail.module.css';
 import clsx from 'clsx';
 import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter, Group, Edit, Toolbar, dataReady } from '@syncfusion/ej2-react-grids';
 import axios from 'axios';
-import { removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
+import { newInvoiceIdByDate, removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
 import { useDispatch } from 'react-redux/es/exports';
 import { Button } from '../../Button/Button';
-import { XIcon, CheckIcon, SaveIcon, CancelIcon } from '../../../icons';
+import { XIcon, CheckIcon, SaveIcon, CancelIcon,PrintIcon } from '../../../icons';
 import { L10n } from '@syncfusion/ej2-base';
 import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import { intToVNDCurrencyFormat } from '../../../uitilities/utilities'
+import CartDetailToPrint from './CartDetailToPrint';
+import { useReactToPrint } from 'react-to-print';
 function CartDetail(props) {
     const dispatch = useDispatch();
     // const params = useParams(); prams.cartId
@@ -20,6 +22,7 @@ function CartDetail(props) {
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [cart, setCart] = useState({});
     const [flag, setFlag] = useState(false);
+    const [preparePrint, setPreparePrint] = useState(false);
     const [employees, setEmployees] = useState([]);
     removeSyncfusionLicenseMessage();
     const dropdownList = useRef();
@@ -223,6 +226,7 @@ function CartDetail(props) {
                     , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
                 })
                 notify("Đã giao cho nhân viên: " + selectedItem.HO_TEN);
+                
                 props.rerender();
             });
         } catch (error) {
@@ -247,7 +251,16 @@ function CartDetail(props) {
         }
 
     }
-
+        const print = ()=>{
+            const maHD = newInvoiceIdByDate();
+                //tạo hóa đơn
+                axios.post(`http://localhost:22081/api/HoaDon/`, {
+                ID_GH: cart.ID_GH,
+                MA_HD: maHD
+            }).then(res =>{
+                setPreparePrint(true);
+            })
+        }
     let fields = { text: 'HO_TEN_STR', value: 'MA_NV' };
     // filtering event handler to filter a Country
 
@@ -258,8 +271,15 @@ function CartDetail(props) {
         //pass the filter data source, filter query to updateData method.
         e.updateData(employees, query);
     };
+
+    const closePreparePrintDialog = ()=>{
+        setPreparePrint(false);
+    }
+
     return (
+        preparePrint?<CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId}/>:
         flag ? <div className={clsx(style.modalWrapper)}>
+            
             <div className={clsx(style.top)}>
                 <ToastContainer />
             </div>
@@ -281,7 +301,14 @@ function CartDetail(props) {
                             save();
                         }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
                             <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
-                        </button></>
+                        </button>
+                        
+                        <button onClick={() => {
+                            print();
+                        }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                            <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
+                        </button>
+                        </>
                         : <></>
                     }
                     <button onClick={() => {
