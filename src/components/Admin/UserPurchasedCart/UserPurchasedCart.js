@@ -12,6 +12,7 @@ import CartDetail from '../CartDetail/CartDetail';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
+import CartDetailToPrint from '../CartDetail/CartDetailToPrint';
 
 function UserPurchasedCart(props) {
     removeSyncfusionLicenseMessage();
@@ -223,7 +224,6 @@ function UserPurchasedCart(props) {
         setFilterState(dropdownList.current.value);
         console.log(filterState);
     }
-
     return (
         <div className={clsx(style.cartManagement)}>
             <SectionTitle title='Đơn hàng đã mua' />

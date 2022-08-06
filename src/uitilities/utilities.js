@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const intToVNDCurrencyFormat = (number, withSymbol)=>{
     let result;
     if(typeof number === 'string'){
@@ -38,6 +40,11 @@ const removeSyncfusionLicenseMessage=()=>{
 
 }
 
+const newInvoiceIdByDate=()=>{
+    const date = moment().format('DDMMyyyyhhmmss');
+    const res = "HD"+date;
+return res;
+}
 // const removeAccent = (str) => {
 // 	str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
 //     str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -59,4 +66,4 @@ const removeSyncfusionLicenseMessage=()=>{
 // 	return str;
 // }
 
-export {intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage}
+export {intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate}

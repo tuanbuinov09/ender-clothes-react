@@ -14,8 +14,9 @@ import Login from "./Login/Login";
 import PayPal from "./PayPal/PayPal";
 import ShipInfo from "./ShipInfo/ShipInfo";
 import CartManagement from "./Admin/Cart/CartManagement";
-import CartDetail from "./Admin/CartDetail/CartDetail"
 import UserPurchasedCart from "./Admin/UserPurchasedCart/UserPurchasedCart";
+import DashBoard from "./Admin/DashBoard/DashBoard";
+import HeaderEmployee from "./Header/HeaderEmployee";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -45,24 +46,39 @@ function Main() {
                 toggleShoppingBag={handleOpenShoppingBag} type={"shoppingBag"} />;
         }
     }
+    const [headerMode, setHeaderMode] = useState();
+    
+    const changeHeader = (type)=>{
+        if(type==="user"){
+            setHeaderMode('user')
+
+        }
+        if(type==="employee"){
+            setHeaderMode('employee')
+        }
+    }
     return (
         <BrowserRouter>
             <div className={clsx(style.main, { [style.active]: pushMain })}>
-                <Header
+                {headerMode==='user'?<><Header
                     toggleSearchBox={handleOpenSearchBox}
                     toggleShoppingBag={handleOpenShoppingBag}
                     pushMain={togglePushMain}
-                />
+                /></>:<></>}
+                {headerMode==='employee'?<><HeaderEmployee
+                    
+                /></>:<></>}
                 <div className={clsx(style.container)}>
                     <Routes>
                         <Route path="" element={<Content />} />
-                        <Route path="/admin/cart-management" element={<CartManagement />} />
+                        <Route path="/admin/cart-management" element={<CartManagement changeHeader={changeHeader}/>} />
+                        <Route path="/admin/dashboard" element={<DashBoard changeHeader={changeHeader} />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
                         <Route path="/user/login" element={<Login type="customer" />} />
                         <Route path="/user/purchased-cart" element={<UserPurchasedCart/>} />
-                        <Route path="/employee/login" element={<Login type="employee" />} />
+                        <Route path="/employee/login" element={<Login type="employee" changeHeader={changeHeader} />} />
                         <Route path="/purchase" element={<PayPal/>}/>
                         <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
                     </Routes>
