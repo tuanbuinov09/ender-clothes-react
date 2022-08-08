@@ -5,7 +5,6 @@ import { CheckIcon, ViewDetailIcon } from '../../../icons';
 import axios from 'axios';
 import '../ej2-grid.css'
 import { removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
-import { TooltipComponent, DialogComponent } from '@syncfusion/ej2-react-popups';
 import style from './UserPurchasedCart.module.css';
 import clsx from 'clsx';
 import CartDetail from '../CartDetail/CartDetail';

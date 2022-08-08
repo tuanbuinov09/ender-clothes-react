@@ -13,7 +13,7 @@ import * as numbers from 'cldr-data/main/vi/numbers.json';
 import * as timeZoneNames from 'cldr-data/main/vi/timeZoneNames.json';
 import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
 import * as weekData from 'cldr-data/supplemental/weekData.json';// To load the culture based first day of week
-
+import FileSaver from 'file-saver';
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames, weekData);
 function Report(props) {
     useEffect(() => {
@@ -25,22 +25,63 @@ function Report(props) {
     }, [])
     const fromDate = useRef();
     const toDate = useRef();
+
+    const [selectedDates, setSelectedDates]=useState({});
+
+    const linkExport = ()=>{
+        try{
+            setSelectedDates({...selectedDates, 'from':fromDate.current.value.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+              })})
+        }catch(e){
+
+        }
+        try{
+            setSelectedDates({...selectedDates, 'to':toDate.current.value.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+              }) })
+        }catch(e){
+
+        }
+         
+    }
     props.changeHeader('employee')
     const excel = () => {
         console.log(fromDate.current) //,toDate.current.value 
-        return
         axios.post('http://localhost:22081/api/NhanVien/report-sale', {
             method: 'GET',
-            responseType: 'blob', // important
-            'from':fromDate.current.value,
-            'to':toDate.current.value 
+             responseType: 'blob', // important
+            // responseType: 'arraybuffer', // important
+            'from':fromDate.current.value.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+              }),
+            'to':toDate.current.value.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+              }) 
         }).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', `${Date.now()}.xlsx`);
-            document.body.appendChild(link);
-            link.click();
+
+            var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            FileSaver.saveAs(blob, 'fixi.xlsx');
         });
     }
     L10n.load({
@@ -49,6 +90,7 @@ function Report(props) {
              today: 'Hôm nay' }
         }
         });
+        setCulture('vi')
     return (
         <div >
 
@@ -59,15 +101,21 @@ function Report(props) {
                     <h1>Doanh thu theo tháng</h1>
                     <div className={clsx(style.datePickerContainer)}>
                         <label>Từ ngày:</label>
-                        <DatePickerComponent ref={fromDate} format={'dd/MM/yyyy'} locale='vi'/>
+                        <DatePickerComponent onChange={()=>{
+                            linkExport();
+                        }} ref={fromDate} format={'dd/MM/yyyy'} locale='vi'/>
                     </div>
                     <div className={clsx(style.datePickerContainer)}>
                         <label>Tới ngày:</label>
-                        <DatePickerComponent ref={toDate} format={'dd/MM/yyyy'} locale='vi'/>
+                        <DatePickerComponent  onChange={()=>{
+                            linkExport();
+                        }} ref={toDate} format={'dd/MM/yyyy'} locale='vi'/>
                     </div>
-                    <button onClick={() => {
+                    {/* <button onClick={() => {
                         excel();
-                    }}>Xuất file</button>
+                    }}>Xuất file</button> */}
+                    {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>}
+                    
                 </div>
 
 
