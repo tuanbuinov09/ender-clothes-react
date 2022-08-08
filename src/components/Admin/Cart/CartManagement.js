@@ -5,7 +5,6 @@ import { CheckIcon, ViewDetailIcon } from '../../../icons';
 import axios from 'axios';
 import '../ej2-grid.css'
 import { removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
-import { TooltipComponent, DialogComponent } from '@syncfusion/ej2-react-popups';
 import style from './CartManagement.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
@@ -322,7 +321,7 @@ const[rerender, setRerender] = useState();
 
             </div>
 
-            <TooltipComponent ref={tooltip} target='.e-rowcell' beforeRender={(args) => { beforeRender(args) }}></TooltipComponent>
+            {/* <TooltipComponent ref={tooltip} target='.e-rowcell' beforeRender={(args) => { beforeRender(args) }}></TooltipComponent> */}
             <GridComponent ref={grid}
                 toolbar={toolbarOptions}
                 showColumnChooser={true}

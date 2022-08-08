@@ -50,7 +50,7 @@ function CartDetail(props) {
                 response.chiTietGioHang2.forEach((resp) => {
                     try {
                         resp.GIA_STR = intToVNDCurrencyFormat(resp.GIA) + " ₫";
-
+                        resp.TRI_GIA_STR = intToVNDCurrencyFormat(resp.GIA * resp.SO_LUONG, true);//thêm true + đ
                     } catch (e) {
                         console.log(e)
                     }
@@ -420,6 +420,7 @@ function CartDetail(props) {
                             <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='150' textAlign="Left" />
                             <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Left" />
                             <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='150' editType='dropdownedit' textAlign="Right" />
+                            <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='150' textAlign="Left" />
                             {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
                             {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
                             {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}
