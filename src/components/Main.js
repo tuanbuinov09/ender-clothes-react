@@ -84,7 +84,7 @@ function Main() {
                         <Route path="/user/info" element={<UserInfo />}/>
                         <Route path="/user/purchased-cart" element={<UserPurchasedCart/>} />
                         <Route path="/employee/login" element={<Login type="employee" changeHeader={changeHeader} />} />
-                        <Route path="/employee/info" element={<EmpInfo />}/>
+                        <Route path="/employee/info" element={<EmpInfo changeHeader={changeHeader} />}/>
                         <Route path="/purchase" element={<PayPal/>}/>
                         <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
                     </Routes>

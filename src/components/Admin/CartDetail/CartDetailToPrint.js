@@ -53,8 +53,9 @@ function CartDetailToPrint(props) {
         try {
             axios.get(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`).then(res => {
                 const response = res.data;
-                response.chiTietGioHang2.forEach((resp) => {
+                response.chiTietGioHang2.forEach((resp, index) => {
                     try {
+                        resp.STT = index + 1;
                         resp.GIA_STR = intToVNDCurrencyFormat(resp.GIA) + " ₫";
                         resp.TRI_GIA_STR = intToVNDCurrencyFormat(resp.GIA * resp.SO_LUONG, true);//thêm true + đ
                     } catch (e) {
@@ -223,21 +224,29 @@ function CartDetailToPrint(props) {
     return (<>
 
         {flag ? <div className={clsx(style.modalPrintWrapper)}>
-            
+
             <h1 className={clsx(style.header, style.printButtonContainer)}>
-            <button onClick={() => {
-                print();
-            }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
-                <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
-            </button>
+                <button onClick={() => {
+                    print();
+                }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                    <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
+                </button>
                 <span className={clsx(style.closeButton)} onClick={() => {
-                        props.closePreparePrintDialog();
-                    }}><XIcon /></span></h1>
+                    props.closePreparePrintDialog();
+                }}><XIcon /></span></h1>
 
             <div className={clsx(style.container)} ref={componentRef}>
                 <div className={clsx(style.modal)}>
                     <h1 className={clsx(style.title)}>{invoiceId}</h1>
-
+                    <p className={clsx(style.subtitle)}>Nhân viên xuất hóa đơn: <span>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</span></p>
+                    <p >Ngày xuất hóa đơn: <span>{(new Date()).toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        // hour: '2-digit',
+                        // minute: '2-digit',
+                        // second: '2-digit',
+                    })}</span></p>
                     <div className={clsx(style.cartInfo)}>
                         {/* khách hàng đang coi thì k cần mã */}
                         {/* {props.type !== 'userViewing' ? <> */}
@@ -245,10 +254,10 @@ function CartDetailToPrint(props) {
                             <label>Mã khách hàng: </label>
                             <span>{cart.MA_KH}</span>
                         </div>
-                            <div className={clsx(style.infoGroup)}>
-                                <label>Tên khách hàng: </label>
-                                <span>{cart.HO_TEN_KH}</span>
-                            </div>
+                        <div className={clsx(style.infoGroup)}>
+                            <label>Tên khách hàng: </label>
+                            <span>{cart.HO_TEN_KH}</span>
+                        </div>
                         {/* </> : <></>
                         } */}
 
@@ -295,7 +304,7 @@ function CartDetailToPrint(props) {
                                 </div>
                             </div></div>
                             : cart.TRANG_THAI === 2 || cart.TRANG_THAI === 3 ? <>
-                                <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery1)}>
+                                {/* <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery1)}>
                                     <div className={clsx(style.infoGroup, style.infoEmployee)}>
                                         <label>Nhân viên giao: </label>
                                         <span>{cart.TEN_NV_GIAO}</span>
@@ -305,7 +314,7 @@ function CartDetailToPrint(props) {
                                         <span>{cart.SDT_NV_GIAO}</span>
                                     </div>
 
-                                </div>
+                                </div> */}
                             </> : <></>}
 
                     </div>
@@ -326,11 +335,12 @@ function CartDetailToPrint(props) {
                             gridLines='Both'
                         >
                             <ColumnsDirective>
-                                <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='250' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='120' textAlign="Left" />
-                                <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Left" />
+                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
+                                <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
                                 <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
-                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Left" />
+                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
                                 {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
                                 {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
                                 {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}

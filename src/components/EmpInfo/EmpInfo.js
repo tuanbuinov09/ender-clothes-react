@@ -2,9 +2,18 @@ import React, { useEffect, useState } from 'react';
 import style from './EmpInfo.module.css';
 import clsx from 'clsx';
 import { Button } from '../Button/Button';
+import { PrintIcon, LogOutIcon } from '../../icons';
 import { useNavigate } from 'react-router-dom';
-import loading from '../../components/LoadingAnimation/Rolling_1s_187px.gif';
+import userImage from './128-1280406_view-user-icon-png-user-circle-icon-png.png';
 function EmpInfo(props) {
+    useEffect(() => {
+        //khi unmount trả lại header
+        return () => {
+            props.changeHeader('user')
+        }
+    }, [])
+
+    props.changeHeader('employee')
     const [errorMessage, setErrorMessage] = useState();
     const [userInfo, setUserInfo] = useState();
     const [shipInfo, setShipInfo] = useState({
@@ -42,11 +51,12 @@ function EmpInfo(props) {
         <div>
             {<div className={clsx(style.loginWrapper)}>
             <div className={clsx(style.left)}>
-                <img src={loading}></img>
-                <button onClick={()=>{
+                <div className={clsx(style.userImageContainer)}><img className={clsx(style.userImage)} src={userImage} alt='employee'></img></div>
+                
+                <button className={clsx(style.checkButton, style.printButton, style.logOutBtn)} onClick={()=>{
                     localStorage.removeItem('employee');
                     navigate("/employee/login", { replace: true })
-                }}>Đăng xuất</button>
+                }}><span className={clsx(style.iconSvg)}><LogOutIcon /></span>Đăng xuất</button>
             </div>
             <div className={clsx(style.right)}>
                     <><h1 className={clsx(style.title)}>THÔNG TIN NHÂN VIÊN</h1>

@@ -179,12 +179,14 @@ svg{
     margin-right: 0;
     margin-left: 12px;
 }
-.container p{
-    margin-bottom: 36px;
-}
+
 .subtitle{
-    margin-bottom: 8px !important;
+    margin-bottom: 8px;
 }
 .container span{
     font-weight: bold;
+}
+.subtitleCompanyName{
+    font-weight: bold;
+    margin-bottom: 8px;
 }

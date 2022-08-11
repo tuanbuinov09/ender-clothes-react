@@ -7,7 +7,7 @@ import axios from 'axios';
 import { newInvoiceIdByDate, removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
 import { useDispatch } from 'react-redux/es/exports';
 import { Button } from '../../Button/Button';
-import { XIcon, CheckIcon, SaveIcon, CancelIcon,PrintIcon } from '../../../icons';
+import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon } from '../../../icons';
 import { L10n } from '@syncfusion/ej2-base';
 import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
@@ -47,8 +47,9 @@ function CartDetail(props) {
         try {
             axios.get(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`).then(res => {
                 const response = res.data;
-                response.chiTietGioHang2.forEach((resp) => {
+                response.chiTietGioHang2.forEach((resp, index) => {
                     try {
+                        resp.STT = index +1;
                         resp.GIA_STR = intToVNDCurrencyFormat(resp.GIA) + " ₫";
                         resp.TRI_GIA_STR = intToVNDCurrencyFormat(resp.GIA * resp.SO_LUONG, true);//thêm true + đ
                     } catch (e) {
@@ -180,24 +181,21 @@ function CartDetail(props) {
         }
     });
 
-    // const approve = () => {
-    //     try {
-    //         axios.put(`http://localhost:22081/api/GioHang/approve`, {
-    //             ID_GH: cart.ID_GH,
-    //             MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
-    //         }).then(res => {
-    //             const response = res.data;
-    //             // console.log('res: ' + response);
-    //             setCart({ ...cart, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao', MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN })
-    //             notify("Duyệt thành công");
-    //             props.rerender();
-    //         });
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-
-    // }
-
+    const finish = () => {
+        try {
+            axios.put(`http://localhost:22081/api/NhanVien/finish-cart`, {
+                ID_GH: cart.ID_GH
+            }).then(res => {
+                const response = res.data;
+                // console.log('res: ' + response);
+                setCart({ ...cart, TRANG_THAI: 2, TRANG_THAI_STR: 'Đã hoàn tất' })
+                notify("Giao đơn hàng thành công");
+                props.rerender();
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    }
     const save = () => {
         // if (!cart.MA_NV_DUYET) {
         //     notify("Hãy duyệt trước khi giao cho nhân viên vận chuyển");
@@ -226,7 +224,7 @@ function CartDetail(props) {
                     , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
                 })
                 notify("Đã giao cho nhân viên: " + selectedItem.HO_TEN);
-                
+
                 props.rerender();
             });
         } catch (error) {
@@ -251,16 +249,16 @@ function CartDetail(props) {
         }
 
     }
-        const print = ()=>{
-            const maHD = newInvoiceIdByDate();
-                //tạo hóa đơn
-                axios.post(`http://localhost:22081/api/HoaDon/`, {
-                ID_GH: cart.ID_GH,
-                MA_HD: maHD
-            }).then(res =>{
-                setPreparePrint(true);
-            })
-        }
+    const print = () => {
+        const maHD = newInvoiceIdByDate();
+        //tạo hóa đơn
+        axios.post(`http://localhost:22081/api/HoaDon/`, {
+            ID_GH: cart.ID_GH,
+            MA_HD: maHD
+        }).then(res => {
+            setPreparePrint(true);
+        })
+    }
     let fields = { text: 'HO_TEN_STR', value: 'MA_NV' };
     // filtering event handler to filter a Country
 
@@ -272,123 +270,138 @@ function CartDetail(props) {
         e.updateData(employees, query);
     };
 
-    const closePreparePrintDialog = ()=>{
+    const closePreparePrintDialog = () => {
         setPreparePrint(false);
     }
 
     return (
-        preparePrint?<CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId}/>:
-        flag ? <div className={clsx(style.modalWrapper)}>
-            
-            <div className={clsx(style.top)}>
-                <ToastContainer />
-            </div>
-            <div className={clsx(style.modal)}>
-                <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
-                    props.closeDialog();
-                }}><XIcon /></span></h1>
+        preparePrint ? <CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId} /> :
+            flag ? <div className={clsx(style.modalWrapper)}>
 
-                <h1 className={clsx(style.title)}>Chi tiết GH {props.cartId}</h1>
-                <div className={clsx(style.btnCheckContainer)}>
-                    {/* không duyệt nữa, assign cho nhân viên là duyệt luôn */}
-                    {props.type !== 'userViewing' ? <>
-                        {/* <button onClick={() => {
+                <div className={clsx(style.top)}>
+                    <ToastContainer />
+                </div>
+                <div className={clsx(style.modal)}>
+                    <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
+                        props.closeDialog();
+                    }}><XIcon /></span></h1>
+
+                    <h1 className={clsx(style.title)}>Chi tiết GH {props.cartId}</h1>
+                    <div className={clsx(style.btnCheckContainer)}>
+                        {/* không duyệt nữa, assign cho nhân viên là duyệt luôn */}
+                        {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
+
+                            <>
+                                {/* <button onClick={() => {
                         approve();
                     }} className={clsx(style.checkButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
                         <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
                     </button> */}
-                        <button onClick={() => {
-                            save();
-                        }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
-                            <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
-                        </button>
-                        
-                        <button onClick={() => {
-                            print();
-                        }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
-                            <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
-                        </button>
-                        </>
-                        : <></>
-                    }
-                    <button onClick={() => {
-                        cancel();
-                    }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
-                        <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
-                    </button>
-                </div>
+                                <button onClick={() => {
+                                    save();
+                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                                    <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
+                                </button>
 
-                <div className={clsx(style.cartInfo)}>
-                    {/* khách hàng đang coi thì k cần mã */}
-                    {props.type !== 'userViewing' ?<><div className={clsx(style.infoGroup)}>
-                        <label>Mã khách hàng: </label>
-                        <span>{cart.MA_KH}</span>
+                                <button onClick={() => {
+                                    print();
+                                }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                                    <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
+                                </button>
+
+                                {/* <><button onClick={() => {
+                                    cancel();
+                                }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                                    <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
+                                </button></> */}
+                            </>
+                            : JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ? <>
+                                <button onClick={() => {
+                                    finish();
+                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
+                                    <span className={clsx(style.iconSvg)}><CheckIcon /></span>Hoàn tất
+                                </button>
+                            </> :
+                                <><button onClick={() => {
+                                    cancel();
+                                }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                                    <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
+                                </button></>
+                        }
+
                     </div>
-                    <div className={clsx(style.infoGroup)}>
-                        <label>Tên khách hàng: </label>
-                        <span>{cart.HO_TEN_KH}</span>
-                    </div>
-                    </> : <></>
-                    }
-                    
-                    <div className={clsx(style.infoGroup)}>
-                        <label>Tên người nhận: </label>
-                        <span>{cart.HO_TEN}</span>
-                    </div>
-                    <div className={clsx(style.infoGroup)}>
-                        <label>SĐT người nhận: </label>
-                        <span>{cart.SDT}</span>
-                    </div>
-                    <div className={clsx(style.infoGroup)}>
-                        <label>Email: </label>
-                        <span>{cart.EMAIL}</span>
-                    </div>
-                    <div className={clsx(style.infoGroup)}>
-                        <label>Địa chỉ: </label>
-                        <span>{cart.DIA_CHI}</span>
-                    </div>
-                    <div className={clsx(style.infoGroup)}>
-                        <label>Trạng thái đơn hàng: </label>
-                        <span>{
-                            cart.TRANG_THAI === -1 ? 'Đã hủy'
-                                : cart.TRANG_THAI === 0 ? 'Chờ duyệt'
-                                    : cart.TRANG_THAI === 1 ? 'Đang giao'
-                                        : cart.TRANG_THAI === 2 ? 'Đã hoàn tất'
-                                           :''}
-                        </span>
-                    </div>
-                    {props.type !== 'userViewing' ? <div className={clsx(style.w100)}><div className={clsx(style.infoGroup, style.infoEmployee)}>
-                        <label>Nhân viên duyệt: </label>
-                        <span>{cart.TEN_NV_DUYET}</span>
-                    </div>
-                        <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery)}>
-                            <label>Nhân viên giao: </label>
-                            {/* <span>{cart.TEN_NV_GIAO}</span> */}
-                            <div className={clsx(style.dropdownList)}>
-                                <div className='control-section'>
-                                    <div id='filtering'>
-                                        <DropDownListComponent id="employeeDelivery" ref={dropdownList} dataSource={employees} filtering={onFiltering} filterBarPlaceholder='Tìm nhân viên' allowFiltering={true} fields={fields} placeholder="Chọn nhân viên" popupHeight="220px" />
+
+                    <div className={clsx(style.cartInfo)}>
+                        {/* khách hàng đang coi thì k cần mã */}
+                        {props.type !== 'userViewing' &&  JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04'? <><div className={clsx(style.infoGroup)}>
+                            <label>Mã khách hàng: </label>
+                            <span>{cart.MA_KH}</span>
+                        </div>
+                            <div className={clsx(style.infoGroup)}>
+                                <label>Tên khách hàng: </label>
+                                <span>{cart.HO_TEN_KH}</span>
+                            </div>
+                        </> : <></>
+                        }
+
+                        <div className={clsx(style.infoGroup)}>
+                            <label>Tên người nhận: </label>
+                            <span>{cart.HO_TEN}</span>
+                        </div>
+                        <div className={clsx(style.infoGroup)}>
+                            <label>SĐT người nhận: </label>
+                            <span>{cart.SDT}</span>
+                        </div>
+                        <div className={clsx(style.infoGroup)}>
+                            <label>Email: </label>
+                            <span>{cart.EMAIL}</span>
+                        </div>
+                        <div className={clsx(style.infoGroup)}>
+                            <label>Địa chỉ: </label>
+                            <span>{cart.DIA_CHI}</span>
+                        </div>
+                        <div className={clsx(style.infoGroup)}>
+                            <label>Trạng thái đơn hàng: </label>
+                            <span>{
+                                cart.TRANG_THAI === -1 ? 'Đã hủy'
+                                    : cart.TRANG_THAI === 0 ? 'Chờ duyệt'
+                                        : cart.TRANG_THAI === 1 ? 'Đang giao'
+                                            : cart.TRANG_THAI === 2 ? 'Đã hoàn tất'
+                                                : ''}
+                            </span>
+                        </div>
+                        {props.type !== 'userViewing' ? <div className={clsx(style.w100)}><div className={clsx(style.infoGroup, style.infoEmployee)}>
+                            <label>Nhân viên duyệt: </label>
+                            <span>{cart.TEN_NV_DUYET}</span>
+                        </div>
+                            <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery, { [style.disabled]: JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' })}>
+                                <label>Nhân viên giao: </label>
+                                {/* <span>{cart.TEN_NV_GIAO}</span> */}
+                                <div className={clsx(style.dropdownList)}>
+                                    <div className='control-section'>
+                                        <div id='filtering'>
+                                            <DropDownListComponent id="employeeDelivery" ref={dropdownList} dataSource={employees} filtering={onFiltering} filterBarPlaceholder='Tìm nhân viên' allowFiltering={true} fields={fields} placeholder="Chọn nhân viên" popupHeight="220px" />
+                                        </div>
                                     </div>
-                                </div>
 
-                            </div>
-                        </div></div>
-                        : cart.TRANG_THAI === 2 || cart.TRANG_THAI === 3 ? <>
-                            <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery1)}>
-                                <div className={clsx(style.infoGroup, style.infoEmployee)}>
-                                    <label>Nhân viên giao: </label>
-                                    <span>{cart.TEN_NV_GIAO}</span>
                                 </div>
-                                <div className={clsx(style.infoGroup, style.infoEmployee)}>
-                                    <label className={clsx()}>SĐT nhân viên giao: </label>
-                                    <span>{cart.SDT_NV_GIAO}</span>
+                            </div></div>
+                            : cart.TRANG_THAI === 2 || cart.TRANG_THAI === 3 ? <>
+                                <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery1)}>
+                                    <div className={clsx(style.infoGroup, style.infoEmployee)}>
+                                        <label>Nhân viên giao: </label>
+                                        <span>{cart.TEN_NV_GIAO}</span>
+                                    </div>
+                                    <div className={clsx(style.infoGroup, style.infoEmployee)}>
+                                        <label className={clsx()}>SĐT nhân viên giao: </label>
+                                        <span>{cart.SDT_NV_GIAO}</span>
+                                    </div>
+
                                 </div>
+                            </> : <></>}
 
-                            </div>
-                        </> : <></>}
-
-                </div>
-                {/* <div className={clsx(style.buttonWrapper)}>
+                    </div>
+                    {/* <div className={clsx(style.buttonWrapper)}>
             <div onClick={() => {
             
             }} >
@@ -400,45 +413,45 @@ function CartDetail(props) {
             </div>
 
         </div> */}
-                {/* detail */}
-                <div className={clsx(style.cartDetail)}>
-                    <GridComponent ref={grid}
-                        // toolbar={toolbarOptions}
-                        //  actionComplete={actionComplete} 
-                        //  actionBegin={actionBegin}
-                        locale='vi-VN'
-                        // editSettings={editOptions}
-                        pageSettings={pageSettings}
-                        dataSource={cart.chiTietGioHang2} allowPaging={true} /*allowGrouping={true}*/
-                        allowSorting={true} allowFiltering={true}
-                        filterSettings={filterOptions} height={150}
-                        // rowSelected={rowSelected}
-                        gridLines='Both'
-                    >
-                        <ColumnsDirective>
-                            <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='100' textAlign="Center" /*isPrimaryKey={true}*/ />
-                            <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
-                            <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='150' textAlign="Left" />
-                            <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Left" />
-                            <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='150' editType='dropdownedit' textAlign="Right" />
-                            <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Left" />
-                            {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
-                            {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                            {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}
-                            {/*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */}
-                            {/* <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='200' textAlign="Left"  /> 
+                    {/* detail */}
+                    <div className={clsx(style.cartDetail)}>
+                        <GridComponent ref={grid}
+                            // toolbar={toolbarOptions}
+                            //  actionComplete={actionComplete} 
+                            //  actionBegin={actionBegin}
+                            locale='vi-VN'
+                            // editSettings={editOptions}
+                            pageSettings={pageSettings}
+                            dataSource={cart.chiTietGioHang2} allowPaging={true} /*allowGrouping={true}*/
+                            allowSorting={true} allowFiltering={true}
+                            filterSettings={filterOptions} height={150}
+                            // rowSelected={rowSelected}
+                            gridLines='Both'
+                        >
+                            <ColumnsDirective>
+                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
+                                <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
+                                <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
+                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
+                                {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
+                                {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
+                                {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}
+                                {/*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */}
+                                {/* <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='200' textAlign="Left"  /> 
                     <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ' width='200' textAlign="Left" />
                     <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='200' textAlign="Left" />
                     <ColumnDirective field='MA_NV_DUYET' headerTextAlign='Center' headerText='Mã NV duyệt' width='200' textAlign="Left" />
                     <ColumnDirective field='MA_NV_GIAO' headerTextAlign='Center' headerText='Mã NV giao' width='200' textAlign="Left" /> */}
-                        </ColumnsDirective>
-                        <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
-                    </GridComponent>
-                    <div className={clsx(style.total)}>Tổng trị giá: {intToVNDCurrencyFormat(cart.TONG_TRI_GIA) + " ₫"}</div>
-                </div>
+                            </ColumnsDirective>
+                            <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
+                        </GridComponent>
+                        <div className={clsx(style.total)}>Tổng trị giá: {intToVNDCurrencyFormat(cart.TONG_TRI_GIA) + " ₫"}</div>
+                    </div>
 
-            </div>
-        </div> : <></>);
+                </div>
+            </div> : <></>);
 }
 //chỉ update lúc cần
 export default React.memo(CartDetail);
