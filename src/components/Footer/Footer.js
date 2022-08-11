@@ -10,9 +10,9 @@ function Footer() {
         <footer>
             <div className={clsx(style.wrapper)}>
                 <div className={clsx(style.subscribe)}>
-                    <h2 className={clsx(style.title)}>SUBSCRIBE TO OUR NEWS</h2>
+                    <h2 className={clsx(style.title)}>ĐĂNG KÍ NHẬN TIN TỨC</h2>
                     <form className={clsx(style.form)}>
-                        <input type="email" placeholder="Type in your email..." className={clsx(style.input)} />
+                        <input type="email" placeholder="Nhập email..." className={clsx(style.input)} />
                         <button type='submit' className={clsx(style.btn)}><Icon icon="mail"></Icon></button>
 
                     </form>
@@ -25,10 +25,10 @@ function Footer() {
                         END_CLOTHES CO,. LTD
                     </p>
                     <p>
-                        Tax Number: 16021602
+                        Mã số thuế: 16021602
                     </p>
                     <p>
-                        Office: 16/02 SomeWhere, SomeWhere District, SomeWhere City
+                        Văn phòng: 16/02 Đâu đó, Quận 9, tp Hồ Chí Minh
                     </p>
 
                     {/* <Link to="/nowhere" className="footer__img-container"><img
@@ -36,31 +36,31 @@ function Footer() {
                 </div>
                 <div className={clsx(style.right)}>
                     <div className={clsx(style.colThird)}>
-                        <h3 className={clsx(style.title)}>COMPANY</h3>
+                        <h3 className={clsx(style.title)}>CÔNG TY</h3>
                         <ul>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Introduction</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Hiring</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>News</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Customer Services</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Contact</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Giới thiệu</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Tuyển dụng</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Tin tức</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Chăm sóc khách hàng</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Liên hệ</Link></li>
                         </ul>
                     </div>
                     <div className={clsx(style.colThird)}>
-                        <h3 className={clsx(style.title)}>CUSTOMER SERVICES</h3>
+                        <h3 className={clsx(style.title)}>CHĂM SÓC KH</h3>
                         <ul>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Loyalty</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Return Product</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Guarantee</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Privacy</Link></li>
-                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Question</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Ưu đãi</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Chính sách trả hàng</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Đảm bảo chất lượng</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Chính sách riêng tư</Link></li>
+                            <li><Link to="/nowhere" className={clsx(style.navLink)}><span>-</span>Hỏi đáp</Link></li>
                         </ul>
                     </div>
                     <div className={clsx(style.colThird)}>
-                        <h3 className={clsx(style.title)}>STORES INFORMATION</h3>
+                        <h3 className={clsx(style.title)}>THÔNG TIN CỬA HÀNG</h3>
                         <h3 className={clsx(style.subTitle)}>STORE Nth</h3>
-                        <p>16 SomeWhere, SomeWhere District, SomeWhere City</p>
+                        <p>16 Hiệp Phú, Quận 9, tp Hồ Chí Minh</p>
                         <h3 className={clsx(style.subTitle)}>STORE Nth</h3>
-                        <p>16 SomeWhere, SomeWhere District, SomeWhere City</p>
+                        <p>22 Hiệp Phú, Quận 9, tp Hồ Chí Minh</p>
                     </div>
                 </div>
             </div>

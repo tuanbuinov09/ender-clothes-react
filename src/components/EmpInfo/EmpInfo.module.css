@@ -49,3 +49,48 @@ flex: 1;
     text-align: right;
     font-weight: bold;
 }
+.userImageContainer{
+   width: 100%;
+   padding: 64px 156px 32px 128px;
+}
+.userImage{
+    width: 100%;
+}
+
+.logOutBtn {
+    width: 100px !important;
+    background-color: #ddd !important;
+    color: #333 !important;
+    border: 1px solid #333 !important;
+}
+
+.printButton {
+    margin-left: 32px;
+    margin-top: 24px;
+    width: 150px;
+    display: inline-flex;
+    align-items: center;
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.printButton span {
+    margin-right: 4px;
+}
+
+.printButtonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 32px;
+}
+
+.checkButton {
+    cursor: pointer;
+}
+
+.checkButton:hover {
+    opacity: 0.8;
+}

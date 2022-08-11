@@ -1,4 +1,4 @@
-.loginWrapper{
+.loginWrapper {
     display: flex;
     /* align-items: center; */
     background-color: white;
@@ -6,33 +6,41 @@
     padding: 24px;
     margin: 24px 0;
 }
-.left{
-flex: 1;
+
+.left {
+    flex: 1;
 }
-.right{
-    flex:1;
+
+.right {
+    flex: 1;
 }
-.title{
+
+.title {
     font-size: 28px;
     font-weight: bold;
     margin: 56px 0;
 }
-.inputGroup{
+
+.inputGroup {
     margin-top: 20px;
 }
-.inputLabel{
+
+.inputLabel {
     font-size: 16px;
     color: #555;
     font-weight: bold;
 }
-.img{
+
+.img {
     width: 150px;
     height: 150px;
 }
+
 .form {
     position: relative;
     margin-top: 12px;
 }
+
 .form .input {
     width: 100%;
     appearance: none;
@@ -43,9 +51,56 @@ flex: 1;
     font-size: 14px;
 }
 
-.errorMessage{
+.errorMessage {
     color: crimson;
     margin: 12px 0;
     text-align: right;
     font-weight: bold;
+}
+
+.userImageContainer {
+    width: 100%;
+    padding: 64px 156px 32px 128px;
+}
+
+.userImage {
+    width: 100%;
+}
+
+.logOutBtn {
+    width: 100px !important;
+    background-color: #ddd !important;
+    color: #333 !important;
+    border: 1px solid #333 !important;
+}
+
+.printButton {
+    margin-left: 32px;
+    margin-top: 24px;
+    width: 150px;
+    display: inline-flex;
+    align-items: center;
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.printButton span {
+    margin-right: 4px;
+}
+
+.printButtonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 32px;
+}
+
+.checkButton {
+    cursor: pointer;
+}
+
+.checkButton:hover {
+    opacity: 0.8;
 }

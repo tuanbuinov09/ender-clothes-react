@@ -33,8 +33,12 @@ function CartManagement(props) {
     const [filterState, setFilterState] = useState(-2);
     useEffect(() => {
         try {
-            console.log(`http://localhost:22081/api/GioHang/all?filterState=${filterState}`)
-            axios.get(`http://localhost:22081/api/GioHang/all?filterState=${filterState}`).then(res => {
+            let url = ((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
+                `http://localhost:22081/api/NhanVien/delivering-by-emp?deliverEmpId=${(JSON.parse(localStorage.getItem('employee'))).MA_NV}`
+                : `http://localhost:22081/api/GioHang/all?filterState=${filterState}`;
+
+            console.log(url)
+            axios.get(url).then(res => {
                 const cartsFromApi = res.data;
                 // console.log(cartsFromApi);
                 cartsFromApi.forEach((cart) => {
@@ -263,6 +267,9 @@ function CartManagement(props) {
         setOpenDialog(false);
     }
     const openDialogFnc = () => {
+        if (!selectedCart.ID_GH) {
+            return;
+        }
         setOpenDialog(true);
     }
     const toggleReRender = () => {
@@ -294,7 +301,10 @@ function CartManagement(props) {
 
     return (
         <div className={clsx(style.cartManagement)}>
-            <SectionTitle title='Quản lý giỏ hàng' />
+            <SectionTitle title={((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
+                'Vận chuyển bởi bạn'
+                :
+                'Quản lý giỏ hàng'} />
             <div className={clsx(style.toolBar)}>
                 {/* <button onClick={() => {
                     approve();
@@ -323,43 +333,75 @@ function CartManagement(props) {
             </div>
 
             {/* <TooltipComponent ref={tooltip} target='.e-rowcell' beforeRender={(args) => { beforeRender(args) }}></TooltipComponent> */}
-            <GridComponent ref={grid}
-                toolbar={toolbarOptions}
-                showColumnChooser={true}
-                //  actionComplete={actionComplete} 
-                //  actionBegin={actionBegin}
-                locale='vi-VN'
-                editSettings={editOptions}
-                pageSettings={pageSettings}
-                dataSource={carts} allowPaging={true} /*allowGrouping={true}*/
-                allowSorting={true} allowFiltering={true}
-                filterSettings={filterOptions} height={300}
-                rowSelected={rowSelected}
-                gridLines='Both'
-            >
-                <ColumnsDirective>
-                    <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='HO_TEN_KH' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
-                    <ColumnDirective field='SDT_KH' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
-                    <ColumnDirective field='EMAIL_KH' headerTextAlign='Center' headerText='Email KH' width='200' textAlign="Left" />
-                    <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" />
-                    <ColumnDirective field='SDT' headerTextAlign='Center' headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" />
-                    {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
-                    {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                    <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email người nhận' width='200' textAlign="Left" />
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
-                    <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
-                    <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
+            {JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ?
 
-                    {((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
-                        <></>
-                        : <><ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
-                            <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" /></>
-                    }
+                <GridComponent ref={grid}
+                    toolbar={toolbarOptions}
+                    showColumnChooser={true}
+                    //  actionComplete={actionComplete} 
+                    //  actionBegin={actionBegin}
+                    locale='vi-VN'
+                    editSettings={editOptions}
+                    pageSettings={pageSettings}
+                    dataSource={carts} allowPaging={true} /*allowGrouping={true}*/
+                    allowSorting={true} allowFiltering={true}
+                    filterSettings={filterOptions} height={300}
+                    rowSelected={rowSelected}
+                    gridLines='Both'
+                >
+                    <ColumnsDirective>
+                        <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" />
+                        <ColumnDirective field='SDT' headerTextAlign='Center' headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" />
+                        {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
+                        {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
+                        <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email người nhận' width='200' textAlign="Left" />
+                        <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                        <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
+                        <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
 
-                </ColumnsDirective>
-                <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
-            </GridComponent>
+                    </ColumnsDirective>
+                    <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
+                </GridComponent>
+
+                : <GridComponent ref={grid}
+                    toolbar={toolbarOptions}
+                    showColumnChooser={true}
+                    //  actionComplete={actionComplete} 
+                    //  actionBegin={actionBegin}
+                    locale='vi-VN'
+                    editSettings={editOptions}
+                    pageSettings={pageSettings}
+                    dataSource={carts} allowPaging={true} /*allowGrouping={true}*/
+                    allowSorting={true} allowFiltering={true}
+                    filterSettings={filterOptions} height={300}
+                    rowSelected={rowSelected}
+                    gridLines='Both'
+                >
+                    <ColumnsDirective>
+                        <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /*isPrimaryKey={true}*/ />
+                        <ColumnDirective field='HO_TEN_KH' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
+                        <ColumnDirective field='SDT_KH' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
+                        <ColumnDirective field='EMAIL_KH' headerTextAlign='Center' headerText='Email KH' width='200' textAlign="Left" />
+
+                        <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" />
+                        <ColumnDirective field='SDT' headerTextAlign='Center' headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" />
+                        {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
+                        {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
+                        <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email người nhận' width='200' textAlign="Left" />
+                        <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                        <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
+                        <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
+
+
+                        <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
+                        <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" />
+
+
+                    </ColumnsDirective>
+                    <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
+                </GridComponent>
+            }
+
 
             {openDialog && <CartDetail cartId={selectedCart.ID_GH} rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
