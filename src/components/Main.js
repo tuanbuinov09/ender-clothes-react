@@ -18,6 +18,8 @@ import UserPurchasedCart from "./Admin/UserPurchasedCart/UserPurchasedCart";
 import DashBoard from "./Admin/DashBoard/DashBoard";
 import HeaderEmployee from "./Header/HeaderEmployee";
 import Report from "./Admin/Report/Report";
+import UserInfo from "./UserInfo/UserInfo";
+import EmpInfo from "./EmpInfo/EmpInfo";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -79,8 +81,10 @@ function Main() {
                         <Route path="/about" element={<About />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
                         <Route path="/user/login" element={<Login type="customer" />} />
+                        <Route path="/user/info" element={<UserInfo />}/>
                         <Route path="/user/purchased-cart" element={<UserPurchasedCart/>} />
                         <Route path="/employee/login" element={<Login type="employee" changeHeader={changeHeader} />} />
+                        <Route path="/employee/info" element={<EmpInfo />}/>
                         <Route path="/purchase" element={<PayPal/>}/>
                         <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
                     </Routes>

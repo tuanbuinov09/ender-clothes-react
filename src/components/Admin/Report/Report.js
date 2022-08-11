@@ -60,8 +60,7 @@ function Report(props) {
         console.log(fromDate.current) //,toDate.current.value 
         axios.post('http://localhost:22081/api/NhanVien/report-sale', {
             method: 'GET',
-             responseType: 'blob', // important
-            // responseType: 'arraybuffer', // important
+//             responseType: 'blob', // important
             'from':fromDate.current.value.toLocaleString('en-US', {
                 year: 'numeric',
                 month: '2-digit',
@@ -79,9 +78,9 @@ function Report(props) {
                 second: '2-digit',
               }) 
         }).then((response) => {
-
-            var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            FileSaver.saveAs(blob, 'fixi.xlsx');
+            console.log(response);
+            // var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+            // FileSaver.saveAs(blob, 'fixi.xlsx');
         });
     }
     L10n.load({
@@ -111,10 +110,10 @@ function Report(props) {
                             linkExport();
                         }} ref={toDate} format={'dd/MM/yyyy'} locale='vi'/>
                     </div>
-                    {/* <button onClick={() => {
+                    <button className={clsx(style.btnExport)} onClick={() => {
                         excel();
-                    }}>Xuất file</button> */}
-                    {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>}
+                    }}>Xuất file</button>
+                    {/* {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>} */}
                     
                 </div>
 

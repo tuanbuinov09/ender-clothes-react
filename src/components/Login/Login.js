@@ -51,7 +51,11 @@ function Login(props) {
                 setErrorMessage('');
                 localStorage.setItem('employee', JSON.stringify(userInfoFromRes));
                 console.log("---", localStorage.getItem('employee'));
-                navigate("/store/dashboard", { replace: true });
+                if(JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04'){
+                    navigate("/admin/cart-management", { replace: true });
+                }else{
+                    navigate("/admin/dashboard", { replace: true });
+                }
             } else {
                 setErrorMessage('*Xem lại tài khoản và mật khẩu');
             }

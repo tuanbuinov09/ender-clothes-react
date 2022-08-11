@@ -125,7 +125,7 @@ function HeaderEmployee(props) {
                 </ul >
 
                 <div className={clsx(style.right)} ref={right}>
-                    <Link to={"/user/login"} className={clsx(style.iconWrapper)}><Icon icon="user-circle" className={clsx(style.iconSvg)} /></Link>
+                    <Link to={"/employee/login"} className={clsx(style.iconWrapper)}><Icon icon="user-circle" className={clsx(style.iconSvg)} /></Link>
                     {/* <button className={clsx(style.iconWrapper, style.searchIcon)}
                         onClick={() => {
                             // //neu menu header dang mo thi dong lai

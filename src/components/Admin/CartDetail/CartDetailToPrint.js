@@ -330,7 +330,7 @@ function CartDetailToPrint(props) {
                                 <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='120' textAlign="Left" />
                                 <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Left" />
                                 <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
-                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='150' textAlign="Left" />
+                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Left" />
                                 {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
                                 {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
                                 {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}

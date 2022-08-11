@@ -14,14 +14,14 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 
 function CartManagement(props) {
-    useEffect(()=>{
+    useEffect(() => {
 
         //khi unmount trả lại header
-        return ()=>{
-          props.changeHeader('user')
+        return () => {
+            props.changeHeader('user')
         }
-      }, [])
-      
+    }, [])
+
     props.changeHeader('employee')
     let navigate = useNavigate();
     removeSyncfusionLicenseMessage();
@@ -29,7 +29,7 @@ function CartManagement(props) {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedCart, setSelectedCart] = useState({});
     const grid = useRef();
-const[rerender, setRerender] = useState();
+    const [rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
     useEffect(() => {
         try {
@@ -268,7 +268,7 @@ const[rerender, setRerender] = useState();
     const toggleReRender = () => {
         setRerender(!rerender);
     }
-    
+
     const dropdownList = useRef();
     let dropdpwnData = [
         { TRANG_THAI: -2, TRANG_THAI_STR: 'Tất cả' },
@@ -287,7 +287,7 @@ const[rerender, setRerender] = useState();
         e.updateData(dropdpwnData, query);
     };
 
-    const onChange = ()=>{
+    const onChange = () => {
         setFilterState(dropdownList.current.value);
         console.log(filterState);
     }
@@ -301,19 +301,20 @@ const[rerender, setRerender] = useState();
                 }} className={clsx(style.checkButton, { [style.inActive]: selectedCart.TRANG_THAI !== 0 })}>
                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
                 </button> */}
-
-                <div className={clsx(style.dropdownList)}>
-                    <div className='control-section'>
-                        <div id='filtering'>
-                            <DropDownListComponent id="employeeDelivery" ref={dropdownList} 
-                            dataSource={dropdpwnData} filtering={onFiltering} filterBarPlaceholder='Tìm trạng thái' 
-                            allowFiltering={true} fields={fields} placeholder="Trạng thái" popupHeight="220px" 
-                            change={onChange}/>
+                {((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
+                    <></>
+                    : <div className={clsx(style.dropdownList)}>
+                        <div className='control-section'>
+                            <div id='filtering'>
+                                <DropDownListComponent id="employeeDelivery" ref={dropdownList}
+                                    dataSource={dropdpwnData} filtering={onFiltering} filterBarPlaceholder='Tìm trạng thái'
+                                    allowFiltering={true} fields={fields} placeholder="Trạng thái" popupHeight="220px"
+                                    change={onChange} />
+                            </div>
                         </div>
+
                     </div>
-
-                </div>
-
+                }
                 <button onClick={() => {
                     openDialogFnc();
                 }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
@@ -349,8 +350,13 @@ const[rerender, setRerender] = useState();
                     <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
                     <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
                     <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
-                    <ColumnDirective field='MA_NV_DUYET' headerTextAlign='Center' headerText='Mã NV duyệt' width='160' textAlign="Left" />
-                    <ColumnDirective field='MA_NV_GIAO' headerTextAlign='Center' headerText='Mã NV giao' width='160' textAlign="Left" />
+
+                    {((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
+                        <></>
+                        : <><ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
+                            <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" /></>
+                    }
+
                 </ColumnsDirective>
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
             </GridComponent>
