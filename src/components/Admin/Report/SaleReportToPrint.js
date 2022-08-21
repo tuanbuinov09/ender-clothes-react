@@ -150,10 +150,10 @@ function SaleReportToPrint(props) {
 
             <div className={clsx(style.container)} ref={componentRef}>
                 <div className={clsx(style.modal)}>
-                    <h1 className={clsx(style.title)}>Báo cáo doanh thu theo tháng</h1>
                     <p className={clsx(style.subtitleCompanyName)}>Công ty TNHH END_CLOTHES</p>
+                    <h1 className={clsx(style.title)}>Báo cáo doanh thu theo tháng</h1>
                     <p className={clsx(style.subtitle)}>Từ ngày: <span>{props.data.fromDate }</span>     tới ngày: <span>{props.data.toDate }</span></p>
-                    <p className={clsx(style.subtitle)}>Nhân viên xuất báo cáo: <span>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</span></p>
+                    {/* <p className={clsx(style.subtitle)}>Nhân viên xuất báo cáo: <span>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</span></p> */}
 
                     {/* detail */}
                     <div className={clsx(style.cartDetail)}>
@@ -182,6 +182,13 @@ function SaleReportToPrint(props) {
                         <div className={clsx(style.total)}>Tổng doanh thu: {intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
                     </div>
 
+                    <div className={clsx(style.saleReportFooter)}>
+                        <div className={clsx(style.signContainer)}>
+                            <p className={clsx(style.reportLocation)}>Thành phố Hồ Chí Minh, ngày {(new Date()).getUTCDate()} tháng {(new Date()).getUTCMonth() + 1} năm {(new Date()).getUTCFullYear()}</p>
+                            <p className={clsx(style.employeeNameTitle)}>Nhân viên lập báo cáo</p>
+                            <p className={clsx(style.employeeName)}>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</p>
+                        </div>
+                    </div>
                 </div>
             </div> </div> : <></>}
 

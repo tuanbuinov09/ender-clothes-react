@@ -50,7 +50,6 @@ function UserInfo(props) {
                     }}> <span className={clsx(style.iconSvg)}><LogOutIcon /></span> Đăng xuất</button>
                     <button className={clsx(style.checkButton, style.printButton)}
                         onClick={() => {
-                            localStorage.removeItem('user');
                             navigate("/user/purchased-cart", { replace: true })
                         }}><span className={clsx(style.iconSvg)}><PrintIcon /></span> Lịch sử mua hàng</button>
                 </div>

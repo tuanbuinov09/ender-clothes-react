@@ -4,6 +4,7 @@ import style from './ProductDetail.module.css';
 import clsx from 'clsx';
 import axios from 'axios';
 import { useDispatch } from 'react-redux/es/exports';
+import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
 function ProductDetail(props) {
     const dispatch = useDispatch();
@@ -51,7 +52,9 @@ function ProductDetail(props) {
 
     }
 
-    return (!flag ? <div></div> : <div className={clsx(style.container)}>
+    return (!flag ? <div className={clsx(style.flex_1, style.list)}>
+    <LoadingAnimation />
+</div> : <div className={clsx(style.container)}>
         <div className={clsx(style.left)}>
             <div className={clsx(style.imgContainer)}>
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
@@ -69,8 +72,11 @@ function ProductDetail(props) {
                 <div className={clsx(style.subtitle)}>Size: </div>
                 <div className={clsx(style.sizeContainer)}>
                     {product.chiTietSanPham.map((ctsp, index) => {
-                        return (<div key={index} className={clsx(style.size, { [style.active]: ctsp.MA_SIZE === selectedSize.MA_SIZE })}
-                            onClick={() => { setSelectedSize(ctsp) }}>{ctsp.TEN_SIZE}</div>);
+                        return (
+                        <div key={index} className={clsx(style.size, { [style.active]: ctsp.MA_SIZE === selectedSize.MA_SIZE },
+                            { [style.freeSize]: ctsp.MA_SIZE === 'S07' })}//trong csdl s07 la free size
+                            onClick={() => { setSelectedSize(ctsp) }}>{ctsp.TEN_SIZE}</div>
+                            );
                     })}
                 </div>
             </div>

@@ -28,7 +28,7 @@ function CartDetail(props) {
     const dropdownList = useRef();
     const grid = useRef();
     useEffect(() => {
-        
+
         console.log(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`);
         try {
             axios.get(`http://localhost:22081/api/NhanVien/delivering`).then(res => {
@@ -49,7 +49,7 @@ function CartDetail(props) {
                 const response = res.data;
                 response.chiTietGioHang2.forEach((resp, index) => {
                     try {
-                        resp.STT = index +1;
+                        resp.STT = index + 1;
                         resp.GIA_STR = intToVNDCurrencyFormat(resp.GIA) + " ₫";
                         resp.TRI_GIA_STR = intToVNDCurrencyFormat(resp.GIA * resp.SO_LUONG, true);//thêm true + đ
                     } catch (e) {
@@ -315,7 +315,7 @@ function CartDetail(props) {
                                     <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
                                 </button></> */}
                             </>
-                            : JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ? <>
+                            : JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' && props.type !== "userViewing" ? <>
                                 <button onClick={() => {
                                     finish();
                                 }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
@@ -333,7 +333,7 @@ function CartDetail(props) {
 
                     <div className={clsx(style.cartInfo)}>
                         {/* khách hàng đang coi thì k cần mã */}
-                        {props.type !== 'userViewing' &&  JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04'? <><div className={clsx(style.infoGroup)}>
+                        {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ? <><div className={clsx(style.infoGroup)}>
                             <label>Mã khách hàng: </label>
                             <span>{cart.MA_KH}</span>
                         </div>
@@ -370,23 +370,26 @@ function CartDetail(props) {
                                                 : ''}
                             </span>
                         </div>
-                        {props.type !== 'userViewing' ? <div className={clsx(style.w100)}><div className={clsx(style.infoGroup, style.infoEmployee)}>
-                            <label>Nhân viên duyệt: </label>
-                            <span>{cart.TEN_NV_DUYET}</span>
-                        </div>
-                            <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery, { [style.disabled]: JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' })}>
-                                <label>Nhân viên giao: </label>
-                                {/* <span>{cart.TEN_NV_GIAO}</span> */}
-                                <div className={clsx(style.dropdownList)}>
-                                    <div className='control-section'>
-                                        <div id='filtering'>
-                                            <DropDownListComponent id="employeeDelivery" ref={dropdownList} dataSource={employees} filtering={onFiltering} filterBarPlaceholder='Tìm nhân viên' allowFiltering={true} fields={fields} placeholder="Chọn nhân viên" popupHeight="220px" />
-                                        </div>
-                                    </div>
-
+                        {props.type !== 'userViewing' ?
+                            <div className={clsx(style.w100)}>
+                                <div className={clsx(style.infoGroup, style.infoEmployee)}>
+                                    <label>Nhân viên duyệt: </label>
+                                    <span>{cart.TEN_NV_DUYET}</span>
                                 </div>
-                            </div></div>
-                            : cart.TRANG_THAI === 2 || cart.TRANG_THAI === 3 ? <>
+                                <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery, { [style.disabled]: JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' })}>
+                                    <label>Nhân viên giao: </label>
+                                    {/* <span>{cart.TEN_NV_GIAO}</span> */}
+                                    <div className={clsx(style.dropdownList)}>
+                                        <div className='control-section'>
+                                            <div id='filtering'>
+                                                <DropDownListComponent id="employeeDelivery" ref={dropdownList} dataSource={employees} filtering={onFiltering} filterBarPlaceholder='Tìm nhân viên' allowFiltering={true} fields={fields} placeholder="Chọn nhân viên" popupHeight="220px" />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            : cart.TRANG_THAI === 1 || cart.TRANG_THAI === 2 ? <>
                                 <div className={clsx(style.infoGroup, style.infoEmployee, style.infoEmployeeDelivery1)}>
                                     <div className={clsx(style.infoGroup, style.infoEmployee)}>
                                         <label>Nhân viên giao: </label>
