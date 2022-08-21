@@ -24,7 +24,8 @@
 .title {
     text-transform: uppercase;
     font-weight: bold;
-    margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 12px;
     text-align: center;
 }
 
@@ -66,7 +67,8 @@ color: #333;
 font-weight: bolder;
 }
 .cartDetail{
-    margin-top: 22px;
+    /* margin-top: 22px; */
+    margin-top: 32px;
 }
 
 .inActive{
@@ -182,11 +184,36 @@ svg{
 
 .subtitle{
     margin-bottom: 8px;
+    text-align: center;
 }
 .container span{
     font-weight: bold;
 }
 .subtitleCompanyName{
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 0px;
+    font-size: 18px;
+}
+.saleReportFooter{
+    margin-top: 36px;
+    display: flex;
+    justify-content: flex-end;
+
+}
+.employeeName{
+    margin-top: 44px;
+}
+.reportLocation{
+    font-style: italic;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+.employeeNameTitle{
+    font-size: 14px;
+    text-align: center;
+}
+.employeeName{
+    font-size: 14px;
+    text-align: center;
 }

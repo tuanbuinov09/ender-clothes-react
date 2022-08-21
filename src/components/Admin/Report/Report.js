@@ -125,8 +125,22 @@ const [data, setData] = useState(null);
                 dataFromApi.TONG_DOANH_THU = dataFromApi.reduce((total, dat)=>{
                      return total + dat.TONG_TRI_GIA;
                  }, 0)
-                 dataFromApi.fromDate = from;
-                 dataFromApi.toDate = to;
+                 dataFromApi.fromDate =  fromDate.current.value.toLocaleString('vi-VN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    // hour: '2-digit',
+                    // minute: '2-digit',
+                    // second: '2-digit',
+                })
+                 dataFromApi.toDate = toDate.current.value.toLocaleString('vi-VN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    // hour: '2-digit',
+                    // minute: '2-digit',
+                    // second: '2-digit',
+                })
                 // console.log(cartsFromApi);
                 setData(dataFromApi);
               });
@@ -158,7 +172,7 @@ const [data, setData] = useState(null);
                     </div>
                     <button className={clsx(style.btnExport)} onClick={() => {
                         print2();
-                    }}>Xuất file</button>
+                    }}>In báo cáo</button>
                     {/* {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>} */}
 
                 </div>

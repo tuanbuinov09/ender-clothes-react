@@ -13,36 +13,25 @@ const productsArray = products;
 
 function Home() {
     const [products, setProducts] = useState(productsArray);
-    // useEffect(function () {
-    //     fetch('https://fakestoreapi.com/products?limit=10')
-    //         .then(res => res.json())
-    //         .then(json => setProducts(json));
-    // }, []);
 
-    // useEffect(function () {
-    //     fetch('https://fakestoreapi.com/products')
-    //         .then(res => res.json())
-    //         .then((json) => {
-    //             setTop2products(json.sort(compareByRate).slice(0, 2));
-    //         });
-    // }, []);
-    // console.log(top2products);
-    function compareByRate(a, b) {
-        if (a.rating.rate < b.rating.rate) {
-            return -1;
-        }
-        if (a.rating.rate > b.rating.rate) {
-            return 1;
-        }
-        return 0;
-    }
-    const [top4products, setTop4products] = useState(productsArray.sort(compareByRate).slice(0, 4));
+    // function compareByRate(a, b) {
+    //     if (a.rating.rate < b.rating.rate) {
+    //         return -1;
+    //     }
+    //     if (a.rating.rate > b.rating.rate) {
+    //         return 1;
+    //     }
+    //     return 0;
+    // }
+    // const [top4products, setTop4products] = useState(productsArray.sort(compareByRate).slice(0, 4));
     return (
 
         <div className="">
             <Banner />
             <SectionTitle title="Hàng mới về" />
             <NewArrivalsList products={products} type={'new-arrivals'} />
+            <SectionTitle title="Sản phẩm bán chạy" />
+            <NewArrivalsList products={products} type={'best-seller'} />
             <SectionTitle title="Được xem nhiều" />
             <NewArrivalsList products={products} type={'most-viewed'} />
             {/* <SectionTitle title="Khuyến mãi" />
@@ -50,7 +39,7 @@ function Home() {
             {/* <NewArrivalsList products={top4products} type={'sale-off'}/> */}
             <SectionTitle title="Khuyến mãi" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
-            <HomeSaleUpList products={top4products} />
+            <HomeSaleUpList products={products} />
         </div >
     );
 }
