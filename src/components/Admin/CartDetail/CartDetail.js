@@ -234,6 +234,10 @@ function CartDetail(props) {
     }
 
     const cancel = () => {
+        if(cart.ID_GH !== 0){
+            notify("Đơn hàng đã được duyệt, không thể hủy.");
+            return;
+        }
         try {
             axios.put(`http://localhost:22081/api/KhachHang/cancel-cart`, {
                 ID_GH: cart.ID_GH
@@ -254,7 +258,8 @@ function CartDetail(props) {
         //tạo hóa đơn
         axios.post(`http://localhost:22081/api/HoaDon/`, {
             ID_GH: cart.ID_GH,
-            MA_HD: maHD
+            MA_HD: maHD,
+            MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
         }).then(res => {
             setPreparePrint(true);
         })

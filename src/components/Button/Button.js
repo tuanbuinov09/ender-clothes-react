@@ -12,7 +12,7 @@ export const Button = (props) => {
                     <button className={clsx(style.btn,
                         props.text === "ĐỒNG Ý" ? style.btnConfirm
                             : props.text === "HỦY" ? style.btnCancel : props.text === "XÓA TẤT CẢ" ? style.btnClearAll
-                                : style.btnOrder)}>{props.text}</button>
+                                :props.text === "ĐĂNG KÝ" ? style.btnSignUp: style.btnOrder)}>{props.text}</button>
                 </div>
             }
         </>

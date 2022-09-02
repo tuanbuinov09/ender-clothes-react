@@ -113,3 +113,20 @@
 .btnLogin:hover::after {
     color: #009eb6;
 }
+.btnSignUp::after{
+    content: "ĐĂNG KÝ";
+}
+
+.btnSignUp {
+    background-color: #009eb6;
+}
+.btnSignUp:hover {
+    color: var(--light);
+    border: 1px solid #009eb6;
+}
+.btnSignUp:after{
+    content: "ĐĂNG KÝ";
+}
+.btnSignUp:hover::after {
+    color: #009eb6;
+}

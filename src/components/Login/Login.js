@@ -88,10 +88,16 @@ function Login(props) {
                                 }} type="password" name='password' value={password} placeholder="" className={clsx(style.input)} />
                             </div>
                             <p className={clsx(style.errorMessage)}>{errorMessage}</p>
+                            
                             <div className={clsx(style.inputGroup)}>
                                 <Button text="ĐĂNG NHẬP" />
                             </div>
                         </form>
+                        
+                        <p className={clsx(style.signUpLink)}
+                            onClick={()=>{
+                                navigate("/user/sign-up", true);
+                            }}>Đăng ký tài khoản</p>
                     </>
                 }
             </div>
