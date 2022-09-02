@@ -10,7 +10,7 @@ export default function PayPal(props) {
     const paypal = useRef();
     let navigate = useNavigate();
     const dispatch = useDispatch();
-    let tiGia=0;
+    let tiGia = 0;
     
     useEffect(() => {
         try{
@@ -48,6 +48,17 @@ export default function PayPal(props) {
     })
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     console.log("total: ", (total / 23000).toFixed(2));
+
+    let cartDetail = bagProducts.map((product) => {
+        return {description: product.chiTietSanPham[0].TEN_SP + "; Size: "+product.chiTietSanPham[0].TEN_SIZE+"; SL: "+product.chiTietSanPham[0].SO_LUONG,
+        amount: {
+            currency_code: "USD",
+            value: ((product.chiTietSanPham[0].GIA* product.chiTietSanPham[0].SO_LUONG)/ tiGia).toFixed(2),
+        }
+        };
+
+    })
+console.log(cartDetail);
     useEffect(() => {
 
         window.paypal
@@ -55,7 +66,9 @@ export default function PayPal(props) {
                 createOrder: (data, actions, err) => {
                     return actions.order.create({
                         intent: "CAPTURE",
-                        purchase_units: [
+                        purchase_units: 
+                        //cartDetail
+                        [
                             {
                                 description: "Cool looking table",
                                 amount: {
@@ -84,6 +97,7 @@ export default function PayPal(props) {
                     GIO_HANG_ENTITY.SDT = shipInfo.SDT;
                     GIO_HANG_ENTITY.EMAIL = shipInfo.EMAIL;
                     GIO_HANG_ENTITY.DIA_CHI = shipInfo.DIA_CHI;
+                    GIO_HANG_ENTITY.GHI_CHU = shipInfo.GHI_CHU;
 
                     GIO_HANG_ENTITY.chiTietGioHang = bagProducts.map((product) => {
                         return product.chiTietSanPham[0];

@@ -45,6 +45,13 @@ const newInvoiceIdByDate=()=>{
     const res = "HD"+date;
 return res;
 }
+
+const newIdByDate=(prefix)=>{
+    const date = moment().format('DDMMyyyyhhmmss');
+    const res = prefix + date;
+return res;
+}
+
 // const removeAccent = (str) => {
 // 	str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
 //     str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
@@ -177,4 +184,6 @@ const loadLocaleSyncfusion = ()=>{
         }
     });
 }
+const isValidPhone = phone => /(([03+[2-9]|05+[6|8|9]|07+[0|6|7|8|9]|08+[1-9]|09+[1-4|6-9]]){3})+[0-9]{7}\b/g.test(phone)
+export {isValidPhone, newIdByDate}
 export {intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion}
