@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import clsx from 'clsx';
 import axios from 'axios';
-import { useDispatch } from 'react-redux/es/exports';
+import ToastContainer, { toast } from 'react-light-toast'; 
+import { useDispatch, useSelector } from 'react-redux/es/exports';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
 function ProductDetail(props) {
@@ -13,7 +14,10 @@ function ProductDetail(props) {
     const [selectedSize, setSelectedSize] = useState(null);
     const [product, setProduct] = useState(null);
     const [flag, setFlag] = useState(false);
-
+    const { bagProducts, amount, total } = useSelector((store) => {
+        return store.shoppingBag;
+    })
+    const notify = (message) => toast.error(message, {autoClose: true, closeDuration: 3000 });//error/info/add
     useEffect(() => {
         console.log(`http://localhost:22081/api/SanPham/?productId=${params.productId}`);
         try {
@@ -36,7 +40,17 @@ function ProductDetail(props) {
             console.error(error);
         }
     }, []);
-
+const checkQuantity = (MA_CT_SP)=>{
+    console.log(MA_CT_SP, bagProducts)
+    let quantity;
+    bagProducts.forEach((item)=>{
+        console.log(item.chiTietSanPham[0].MA_CT_SP);
+        if(item.chiTietSanPham[0].MA_CT_SP === MA_CT_SP){
+            quantity = item.chiTietSanPham[0].SO_LUONG;
+        }
+    })
+    return quantity
+}
     console.log(product);
     console.log(selectedSize);
     let priceString = '';
@@ -91,11 +105,22 @@ function ProductDetail(props) {
             <div className={clsx(style.desc)}>{product.MO_TA ? product.MO_TA : "Không có mô tả cho sản phẩm này"}</div>
             <div className={clsx(style.btnContainer)}
                 onClick={() => {
+                    const quantityInCart = checkQuantity(selectedSize.MA_CT_SP)
+                    console.log(quantityInCart);
+
+                    if((quantityInCart) === selectedSize.SL_TON){
+                        console.log("Đạt giới hạn tồn kho của sản phẩm")
+                        notify("Đạt giới hạn tồn kho của sản phẩm");
+                        return;
+                    }
+
                     dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedSize, SO_LUONG: 1, SO_LUONG_TON: selectedSize.SL_TON }] }));
                     dispatch(caculateTotalAmountAndPrice());
                 }}><span className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 })}>THÊM VÀO GIỎ HÀNG</span></div>
 
-        </div>
+<div className={clsx(style.top)}>
+                    <ToastContainer /> 
+                </div></div>
     </div>);
 }
 
