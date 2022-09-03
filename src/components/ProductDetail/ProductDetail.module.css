@@ -167,7 +167,7 @@
     color: var(--light);
     border: 1px solid transparent;
     text-align: center;
-    background-color: #e67e22;
+    background-color: #009eb6;
     transition: all 0.3s ease-out;
 
     cursor: pointer;
@@ -175,7 +175,7 @@
 
 .btn:hover {
     color: var(--light);
-    border: 1px solid #e67e22;
+    border: 1px solid #009eb6;
 }
 
 .btn:before {
@@ -212,5 +212,5 @@
 }
 
 .btn:hover::after {
-    color: #e67e22;
+    color: #009eb6;
 }
