@@ -5,6 +5,7 @@ import { Button } from '../Button/Button';
 import style from './Login.module.css';
 import { useNavigate } from "react-router-dom";
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+import loginImage from './062_Outline_OnlineShopping_MS.jpg'
 function Login(props) {
     let navigate = useNavigate();
     const [email, setEmail] = useState();
@@ -66,7 +67,10 @@ function Login(props) {
         {<div className={clsx(style.loginWrapper)}>
 
             <div className={clsx(style.left)}>
+                <div className={clsx(style.imgContainer)}>
+                <img src={loginImage} alt="" className={clsx(style.loginImage)}/>
 
+                </div>
             </div>
             <div className={clsx(style.right)}>
                 {isLoading ? <LoadingAnimation /> :

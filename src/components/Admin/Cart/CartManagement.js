@@ -12,7 +12,7 @@ import CartDetail from '../CartDetail/CartDetail';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
-
+import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
 function CartManagement(props) {
     useEffect(() => {
 
@@ -31,8 +31,12 @@ function CartManagement(props) {
     const grid = useRef();
     const [rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
+
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         try {
+            setIsLoading(true);
             let url = ((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
                 `http://localhost:22081/api/NhanVien/delivering-by-emp?deliverEmpId=${(JSON.parse(localStorage.getItem('employee'))).MA_NV}`
                 : `http://localhost:22081/api/GioHang/all?filterState=${filterState}`;
@@ -63,6 +67,7 @@ function CartManagement(props) {
                 setCarts(cartsFromApi);
                 console.log(cartsFromApi);
                 grid.current.dataSource = cartsFromApi;
+                setIsLoading(false);
             });
 
         } catch (error) {
@@ -333,6 +338,10 @@ function CartManagement(props) {
             </div>
 
             {/* <TooltipComponent ref={tooltip} target='.e-rowcell' beforeRender={(args) => { beforeRender(args) }}></TooltipComponent> */}
+            
+            {isLoading ? <div className={clsx(style.loadingOverCoat)}>
+                <LoadingAnimation />
+            </div>:<></>}
             {JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ?
 
                 <GridComponent ref={grid}

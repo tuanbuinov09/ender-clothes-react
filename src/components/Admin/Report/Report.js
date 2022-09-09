@@ -14,6 +14,7 @@ import * as timeZoneNames from 'cldr-data/main/vi/timeZoneNames.json';
 import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
 import * as weekData from 'cldr-data/supplemental/weekData.json';// To load the culture based first day of week
 import { useReactToPrint } from 'react-to-print';
+import '../ej2-grid.css'
 import SaleReportToPrint from "./SaleReportToPrint";
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames, weekData);
 function Report(props) {

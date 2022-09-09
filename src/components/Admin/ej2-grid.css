@@ -1,16 +1,18 @@
-@import '../../../node_modules/@syncfusion/ej2-base/styles/material.css';  
-@import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';  
-@import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';  
-@import '../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';  
-@import '../../../node_modules/@syncfusion/ej2-inputs/styles/material.css';  
+@import '../../../node_modules/@syncfusion/ej2-base/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-buttons/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-calendars/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-dropdowns/styles/material.css';
+@import '../../../node_modules/@syncfusion/ej2-inputs/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-navigations/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-popups/styles/material.css';
 @import '../../../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
 @import "../../../node_modules/@syncfusion/ej2-react-grids/styles/material.css";
 
-.e-grid .e-gridheader .e-sortfilter .e-headercelldiv, .e-grid .e-gridheader .e-stackedheadercelldiv {
-     padding: 0;
+.e-grid .e-gridheader .e-sortfilter .e-headercelldiv,
+.e-grid .e-gridheader .e-stackedheadercelldiv {
+    padding: 0;
 }
+
 .e-grid .e-sortfilterdiv {
     float: right;
     height: 10px;
@@ -18,34 +20,43 @@
     padding: 3px;
     width: 10px;
 }
+
 /* hide sorting in excel-like filter */
 .e-excel-ascending,
 .e-excel-descending,
 .e-separator.e-excel-separator {
-display: none;
-}
-/* hide custom filter in excel-like filter */
-.e-contextmenu-wrapper li:nth-child(5){
     display: none;
 }
-.e-grid .e-headercell, .e-grid .e-detailheadercell {
+
+/* hide custom filter in excel-like filter */
+.e-contextmenu-wrapper li:nth-child(5) {
+    display: none;
+}
+
+.e-grid .e-headercell,
+.e-grid .e-detailheadercell {
     /* background-color: #088699; */
     color: #333;
     font-weight: bolder;
 }
-.e-pager .e-currentitem, .e-pager .e-currentitem:hover {
+
+.e-pager .e-currentitem,
+.e-pager .e-currentitem:hover {
     background: #088699;
     color: #fff;
     opacity: 1;
     border-radius: unset;
 }
 
-.e-checkbox-wrapper .e-frame.e-check, .e-css.e-checkbox-wrapper .e-frame.e-check {
+.e-checkbox-wrapper .e-frame.e-check,
+.e-css.e-checkbox-wrapper .e-frame.e-check {
     background-color: #088699;
     border-color: transparent;
     color: #fff;
 }
-.e-btn.e-flat.e-primary, .e-css.e-btn.e-flat.e-primary {
+
+.e-btn.e-flat.e-primary,
+.e-css.e-btn.e-flat.e-primary {
     background-color: transparent;
     border-color: transparent;
     color: #088699;
@@ -54,16 +65,32 @@ display: none;
 .e-grid .e-filtered::before {
     color: #088699;
 }
-.e-input-group:not(.e-float-icon-left):not(.e-float-input)::before, .e-input-group:not(.e-float-icon-left):not(.e-float-input)::after, .e-input-group.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::before, .e-input-group.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::after, .e-input-group.e-control-wrapper:not(.e-float-icon-left):not(.e-float-input)::before, .e-input-group.e-control-wrapper:not(.e-float-icon-left):not(.e-float-input)::after, .e-input-group.e-control-wrapper.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::before, .e-input-group.e-control-wrapper.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::after {
+
+.e-input-group:not(.e-float-icon-left):not(.e-float-input)::before,
+.e-input-group:not(.e-float-icon-left):not(.e-float-input)::after,
+.e-input-group.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::before,
+.e-input-group.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::after,
+.e-input-group.e-control-wrapper:not(.e-float-icon-left):not(.e-float-input)::before,
+.e-input-group.e-control-wrapper:not(.e-float-icon-left):not(.e-float-input)::after,
+.e-input-group.e-control-wrapper.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::before,
+.e-input-group.e-control-wrapper.e-float-icon-left:not(.e-float-input) .e-input-in-wrap::after {
     background: #088699;
 }
-.e-pager .e-currentitem.e-numericitem.e-focused{
+
+.e-pager .e-currentitem.e-numericitem.e-focused {
     background: #088699;
 }
-.e-headertext{
+
+.e-headertext {
     font-size: 14px;
     font-weight: bolder;
 }
-.e-rowcell{
+
+.e-rowcell {
     font-size: 14px;
 }
+
+.e-date-wrapper span.e-input-group-icon.e-date-icon.e-icons.e-active {
+    color: #088699;
+}
+
