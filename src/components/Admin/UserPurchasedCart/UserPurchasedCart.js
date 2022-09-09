@@ -12,6 +12,7 @@ import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import CartDetailToPrint from '../CartDetail/CartDetailToPrint';
+import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
 
 function UserPurchasedCart(props) {
     removeSyncfusionLicenseMessage();
@@ -21,8 +22,10 @@ function UserPurchasedCart(props) {
     const grid = useRef();
     const[rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         try {
+            setIsLoading(true);
             console.log(`http://localhost:22081/api/KhachHang/carts?filterState=${filterState}&customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`)
             axios.get(`http://localhost:22081/api/KhachHang/carts?filterState=${filterState}&customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`).then(res => {
                 const cartsFromApi = res.data;
@@ -49,6 +52,7 @@ function UserPurchasedCart(props) {
                 setCarts(cartsFromApi);
                 console.log(cartsFromApi);
                 grid.current.dataSource = cartsFromApi;
+                setIsLoading(false);
             });
 
         } catch (error) {
@@ -251,7 +255,9 @@ function UserPurchasedCart(props) {
 
 
             </div>
-
+            {isLoading ? <div className={clsx(style.loadingOverCoat)}>
+                <LoadingAnimation />
+            </div>:<></>}
             <GridComponent ref={grid}
                 toolbar={toolbarOptions}
                 showColumnChooser={true}

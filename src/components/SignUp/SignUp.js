@@ -8,6 +8,7 @@ import {newIdByDate} from '../../uitilities/utilities'
 import { isValidPhone } from '../../uitilities/utilities.js';
 import axios from 'axios';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
+import loginImage from '../Login/062_Outline_OnlineShopping_MS.jpg'
 function SignUp(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState({errorName:"", errorAddress:"", errorEmail:"", errorPhone:""});
@@ -108,6 +109,10 @@ function SignUp(props) {
         <div>
             {<div className={clsx(style.loginWrapper)}>
                 <div className={clsx(style.left)}>
+                <div className={clsx(style.imgContainer)}>
+                <img src={loginImage} alt="" className={clsx(style.loginImage)}/>
+
+            </div>
                 </div>
                 <div className={clsx(style.right)}>
                 {isLoading ? <LoadingAnimation /> :

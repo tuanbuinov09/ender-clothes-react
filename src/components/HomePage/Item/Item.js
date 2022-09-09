@@ -10,7 +10,17 @@ import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decre
 import { useDispatch } from "react-redux";
 import { intToVNDCurrencyFormat } from "../../../uitilities/utilities";
 import ToastContainer, { toast } from 'react-light-toast'; 
+import {useState} from 'react';
+import ProductDetailModal from "../../ProductDetail/ProductDetailModal";
 function Item({ product, type }) {
+    const [openDialog, setOpenDialog] = useState(false);
+
+    const closeDialog = () => {
+        setOpenDialog(false);
+    }
+    const openDialogFnc = () => {
+        setOpenDialog(true);
+    }
 
     const dispatch = useDispatch();
     const notify = (message) => toast.error(message, {autoClose: true, closeDuration: 3000 });//error/info/add
@@ -69,8 +79,11 @@ function Item({ product, type }) {
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)} title="Add to bag"
                         onClick={() => {
-                            dispatch(addItem(product));
-                            dispatch(caculateTotalAmountAndPrice());
+                            // dispatch(addItem(product));
+                            // dispatch(caculateTotalAmountAndPrice());
+                            openDialogFnc();
+
+
                         }}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
                     <div className={clsx(style.iconContainer)} title="Add to favourites" ><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
                 </div>
@@ -86,7 +99,7 @@ function Item({ product, type }) {
                         <p className={clsx(style.price)}><span>{discountPricesString}</span></p>
                     </>
                     : <p className={clsx(style.price)}><span>{pricesString}</span></p>}
-
+{openDialog && <ProductDetailModal productId={product.MA_SP}closeDialog={closeDialog} />}
             </div >
         );
     }
@@ -102,8 +115,11 @@ function Item({ product, type }) {
                 <div className={clsx(style.itemMenu)}>
                     <div className={clsx(style.iconContainer)}
                         onClick={() => {
-                            dispatch(addItem(product));
-                            dispatch(caculateTotalAmountAndPrice());
+                            // dispatch(addItem(product));
+                            // dispatch(caculateTotalAmountAndPrice());
+                            openDialogFnc();
+
+
                         }}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
                     <div className={clsx(style.iconContainer)}><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
                 </div>
@@ -112,6 +128,8 @@ function Item({ product, type }) {
                     <img src={product.HINH_ANH} alt="item" />
 
                 </Link>
+
+                {openDialog && <ProductDetailModal productId={product.MA_SP}closeDialog={closeDialog} />}
             </div>
         );
     }
