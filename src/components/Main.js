@@ -21,6 +21,8 @@ import Report from "./Admin/Report/Report";
 import UserInfo from "./UserInfo/UserInfo";
 import EmpInfo from "./EmpInfo/EmpInfo";
 import SignUp from "./SignUp/SignUp";
+import NewArrivalsList from "./HomePage/NewArrivalsList/NewArrivalsList";
+import ItemListWithTitle from "./HomePage/NewArrivalsList/ItemListWithTitle";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -89,6 +91,11 @@ function Main() {
                         <Route path="/employee/info" element={<EmpInfo changeHeader={changeHeader} />}/>
                         <Route path="/purchase" element={<PayPal/>}/>
                         <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
+
+                        <Route path="/new-arrivals" element={<ItemListWithTitle type="new-arrivals"/>}/>
+                        <Route path="/most-viewed" element={<ItemListWithTitle type="most-viewed"/>}/>
+                        <Route path="/best-seller" element={<ItemListWithTitle type="best-seller"/>}/>
+                        <Route path="/sale-off" element={<ItemListWithTitle type="sale-off"/>}/>
                     </Routes>
                     <Footer />
                 </div>

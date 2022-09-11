@@ -234,8 +234,8 @@ function CartDetail(props) {
     }
 
     const cancel = () => {
-        if(cart.ID_GH !== 0){
-            notify("Đơn hàng đã được duyệt, không thể hủy.");
+     if(cart.TRANG_THAI === -1||cart.TRANG_THAI === 1||cart.TRANG_THAI === 2){
+         notify("Đơn hàng đã được duyệt, không thể hủy.");
             return;
         }
         try {
@@ -304,7 +304,7 @@ function CartDetail(props) {
                     </button> */}
                                 <button onClick={() => {
                                     save();
-                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI !== 0})}>
                                     <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
                                 </button>
 
@@ -329,7 +329,7 @@ function CartDetail(props) {
                             </> :
                                 <><button onClick={() => {
                                     cancel();
-                                }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                                }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
                                     <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
                                 </button></>
                         }

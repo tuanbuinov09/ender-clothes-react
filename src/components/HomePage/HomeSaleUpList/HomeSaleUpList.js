@@ -71,7 +71,7 @@ function HomeSaleUpList({ products }) {
                     </div> */}</>
             </div>}
             
-            <div className={clsx(style.btnContainer)}><Link to={`/sale-up`} className={clsx(style.btn)}>XEM CHI TIẾT</Link></div>
+            <div className={clsx(style.btnContainer)}><Link to={`/sale-off`} className={clsx(style.btn)}>XEM CHI TIẾT</Link></div>
 
         </div>
     );

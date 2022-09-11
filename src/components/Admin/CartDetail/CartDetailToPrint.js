@@ -332,6 +332,7 @@ function CartDetailToPrint(props) {
                             // allowSorting={true} allowFiltering={true}
                             // filterSettings={filterOptions}
                             // rowSelected={rowSelected}
+                            allowSelection={false}
                             gridLines='Both'
                         >
                             <ColumnsDirective>

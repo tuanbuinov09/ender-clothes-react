@@ -37,7 +37,9 @@
     position: relative;
 }
 
-.img {}
+.img {
+    display: block;
+}
 
 .sizeQuantity{
     width: 100%;
