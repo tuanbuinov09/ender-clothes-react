@@ -273,7 +273,7 @@ function Header(props) {
                     <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li> */}
 
                     <NavLink to="/new-arrivals" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Hàng mới về</NavLink>
-                    <NavLink to="/sale-up" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Khuyến mãi</NavLink>
+                    <NavLink to="/sale-off" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Khuyến mãi</NavLink>
                     <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Trợ giúp</NavLink>
                     <NavLink to="/about" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>About Me</NavLink>
                 </ul >

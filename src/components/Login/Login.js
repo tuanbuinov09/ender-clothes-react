@@ -98,10 +98,11 @@ function Login(props) {
                             </div>
                         </form>
                         
-                        <p className={clsx(style.signUpLink)}
+                       {props.type==="customer"?<p className={clsx(style.signUpLink)}
                             onClick={()=>{
                                 navigate("/user/sign-up", true);
-                            }}>Đăng ký tài khoản</p>
+                            }}>Đăng ký tài khoản</p>:<></>} 
+                        
                     </>
                 }
             </div>

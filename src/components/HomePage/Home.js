@@ -29,17 +29,17 @@ function Home() {
         <div className="">
             <Banner />
             <SectionTitle title="Hàng mới về" />
-            <NewArrivalsList products={products} type={'new-arrivals'} />
+            <NewArrivalsList products={products} type={'new-arrivals'} top={'10'}/>
             <SectionTitle title="Sản phẩm bán chạy" />
-            <NewArrivalsList products={products} type={'best-seller'} />
+            <NewArrivalsList products={products} type={'best-seller'} top={'5'}/>
             <SectionTitle title="Được xem nhiều" />
-            <NewArrivalsList products={products} type={'most-viewed'} />
+            <NewArrivalsList products={products} type={'most-viewed'} top={'10'}/>
             {/* <SectionTitle title="Khuyến mãi" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
             {/* <NewArrivalsList products={top4products} type={'sale-off'}/> */}
             <SectionTitle title="Khuyến mãi" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
-            <HomeSaleUpList products={products} />
+            <HomeSaleUpList products={products} top={'5'}/>
         </div >
     );
 }

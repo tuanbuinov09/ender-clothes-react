@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import clsx from 'clsx';
 import axios from 'axios';
-import ToastContainer, { toast } from 'react-light-toast'; 
+import ToastContainer, { toast } from 'react-light-toast';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
@@ -17,7 +17,7 @@ function ProductDetailForModal(props) {
     const { bagProducts, amount, total } = useSelector((store) => {
         return store.shoppingBag;
     })
-    const notify = (message) => toast.error(message, {autoClose: true, closeDuration: 3000 });//error/info/add
+    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     useEffect(() => {
         console.log(`http://localhost:22081/api/SanPham/?productId=${props.productId}`);
         try {
@@ -40,17 +40,17 @@ function ProductDetailForModal(props) {
             console.error(error);
         }
     }, []);
-const checkQuantity = (MA_CT_SP)=>{
-    console.log(MA_CT_SP, bagProducts)
-    let quantity;
-    bagProducts.forEach((item)=>{
-        console.log(item.chiTietSanPham[0].MA_CT_SP);
-        if(item.chiTietSanPham[0].MA_CT_SP === MA_CT_SP){
-            quantity = item.chiTietSanPham[0].SO_LUONG;
-        }
-    })
-    return quantity
-}
+    const checkQuantity = (MA_CT_SP) => {
+        console.log(MA_CT_SP, bagProducts)
+        let quantity;
+        bagProducts.forEach((item) => {
+            console.log(item.chiTietSanPham[0].MA_CT_SP);
+            if (item.chiTietSanPham[0].MA_CT_SP === MA_CT_SP) {
+                quantity = item.chiTietSanPham[0].SO_LUONG;
+            }
+        })
+        return quantity
+    }
     console.log(product);
     console.log(selectedSize);
     let priceString = '';
@@ -67,8 +67,8 @@ const checkQuantity = (MA_CT_SP)=>{
     }
 
     return (!flag ? <div className={clsx(style.flex_1, style.list)}>
-    <LoadingAnimation />
-</div> : <div className={clsx(style.container)}>
+        <LoadingAnimation />
+    </div> : <div className={clsx(style.container)}>
         <div className={clsx(style.left)}>
             <div className={clsx(style.imgContainer)}>
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
@@ -87,10 +87,10 @@ const checkQuantity = (MA_CT_SP)=>{
                 <div className={clsx(style.sizeContainer)}>
                     {product.chiTietSanPham.map((ctsp, index) => {
                         return (
-                        <div key={index} className={clsx(style.size, { [style.active]: ctsp.MA_SIZE === selectedSize.MA_SIZE },
-                            { [style.freeSize]: ctsp.MA_SIZE === 'S07' })}//trong csdl s07 la free size
-                            onClick={() => { setSelectedSize(ctsp) }}>{ctsp.TEN_SIZE}</div>
-                            );
+                            <div key={index} className={clsx(style.size, { [style.active]: ctsp.MA_SIZE === selectedSize.MA_SIZE },
+                                { [style.freeSize]: ctsp.MA_SIZE === 'S07' })}//trong csdl s07 la free size
+                                onClick={() => { setSelectedSize(ctsp) }}>{ctsp.TEN_SIZE}</div>
+                        );
                     })}
                 </div>
             </div>
@@ -104,11 +104,14 @@ const checkQuantity = (MA_CT_SP)=>{
                 : <p className={clsx(style.price)}><span className={clsx(style.priceLabel)}>Giá: </span><span>{oldPriceString}</span></p>}
             <div className={clsx(style.desc)}>{product.MO_TA ? product.MO_TA : "Không có mô tả cho sản phẩm này"}</div>
             <div className={clsx(style.btnContainer)}
-                onClick={() => {
+                onClick={(e) => {
+                    if(product.TONG_SL_TON <= 0){
+                        return;
+                    }
                     const quantityInCart = checkQuantity(selectedSize.MA_CT_SP)
                     console.log(quantityInCart);
 
-                    if((quantityInCart) === selectedSize.SL_TON){
+                    if ((quantityInCart) === selectedSize.SL_TON || selectedSize.SL_TON === 0) {
                         console.log("Đạt giới hạn tồn kho của sản phẩm")
                         notify("Đạt giới hạn tồn kho của sản phẩm");
                         return;
@@ -116,11 +119,11 @@ const checkQuantity = (MA_CT_SP)=>{
 
                     dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedSize, SO_LUONG: 1, SO_LUONG_TON: selectedSize.SL_TON }] }));
                     dispatch(caculateTotalAmountAndPrice());
-                }}><span className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 })}>THÊM VÀO GIỎ HÀNG</span></div>
+                }}><button className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 })}>THÊM VÀO GIỎ HÀNG</button></div>
 
-<div className={clsx(style.top)}>
-                    <ToastContainer /> 
-                </div></div>
+            <div className={clsx(style.top)}>
+                <ToastContainer />
+            </div></div>
     </div>);
 }
 

@@ -6,7 +6,8 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation';
-function NewArrivalsList({ products, type , top}) {
+import SectionTitle from '../SectionTitle/SectionTitle';
+function ItemListWithTitle({ products, type , top}) {
     const [products2, setproducts2] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
@@ -44,7 +45,7 @@ function NewArrivalsList({ products, type , top}) {
         }
         if (type === 'most-viewed') {
             try {
-                axios.get(`http://localhost:22081/api/SanPham/most-viewed?top=${topToFind}`).then(res => {
+                axios.get(`http://localhost:22081/api/SanPham/most-viewed?${topToFind}`).then(res => {
                     const productsFromApi = res.data;
                     // console.log(productsFromApi);
                     setproducts2(productsFromApi);
@@ -82,7 +83,12 @@ function NewArrivalsList({ products, type , top}) {
         }
     }, []);
     return (
+        <><SectionTitle title={type==='new-arrivals'?"HÀNG MỚI VỀ":
+        type==='best-seller'?"SẢN PHẨM BÁN CHẠY":
+        type==='sale-off'?"KHUYẾN MÃI":
+        type==='most-viewed'?"ĐƯỢC XEM NHIỀU":""} />
         <div className="section">
+            
             {isLoading ? <div className={clsx(style.flex_1, style.list)}>
                 <LoadingAnimation />
             </div> : <div className={style.itemList}>
@@ -91,8 +97,9 @@ function NewArrivalsList({ products, type , top}) {
                 })}
             </div>}
 
-            <div className={clsx(style.btnContainer)}><Link to={type === 'new-arrivals' ? "/new-arrivals" : type === 'most-viewed' ? "/most-viewed" : type === "sale-off" ? '/sale-off' : type === "best-seller" ? '/best-seller' : {}} className={clsx(style.btn)}>XEM THÊM</Link></div>
-        </div>);
+            {top?<div className={clsx(style.btnContainer)}><Link to={type === 'new-arrivals' ? "/new-arrivals" : type === 'most-viewed' ? "/most-viewed" : type === "sale-off" ? '/sale-off' : type === "best-seller" ? '/best-seller' : {}} className={clsx(style.btn)}>XEM THÊM</Link></div>:<></>}
+        </div>
+        </>);
 }
 
-export default NewArrivalsList;
+export default ItemListWithTitle;

@@ -115,7 +115,7 @@ function CartManagement(props) {
         // actionComplete = actionComplete.bind(this);
     }
     editOptions = { /*allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' */ };
-    let pageSettings = { pageSize: 6 };
+    let pageSettings = { pageSize: 8 };
     let filterOptions = {
         // type: 'Menu' // default là input
         type: 'Excel'
@@ -382,7 +382,7 @@ function CartManagement(props) {
                     pageSettings={pageSettings}
                     dataSource={carts} allowPaging={true} /*allowGrouping={true}*/
                     allowSorting={true} allowFiltering={true}
-                    filterSettings={filterOptions} height={300}
+                    filterSettings={filterOptions} height={315}
                     rowSelected={rowSelected}
                     gridLines='Both'
                 >
