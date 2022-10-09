@@ -24,6 +24,7 @@
 }
 
 .subtitle {
+    width: 40px;
     font-size: 22px;
     margin-right: 20px;
     vertical-align: middle;
@@ -126,6 +127,18 @@
     font-size: 16px;
     cursor: pointer;
 }
+
+.color {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bolder;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #555;
+}
 .freeSize{
     width: 100px;
 }
@@ -133,6 +146,10 @@
     background-color: #009eb6;
     color: white;
 }
+.color.active {
+    border: 4px solid #009eb6;
+}
+
 .priceLabel{
     color:#444;
     font-size: 20px;
