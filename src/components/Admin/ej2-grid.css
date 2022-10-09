@@ -94,3 +94,10 @@
     color: #088699;
 }
 
+
+
+/* image carousel*/
+.e-carousel .e-carousel-indicators .e-indicator-bar.e-active .e-indicator div {
+    background-color: #088699;
+    border-color: #088699;
+}
