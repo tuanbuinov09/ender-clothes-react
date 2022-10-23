@@ -101,24 +101,26 @@ function HeaderEmployee(props) {
                 {/* nested menu */}
                 <ul className={clsx(style.nav, style.navList, { [style.active]: showNavListResponsive })}
                     ref={navbar}>
+                    <NavLink to="/admin/dashboard" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Thống kê</NavLink>
+
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
-                    {/* <li className={clsx(style.navItem, style.submenuContainer)}>
-                        <div className={clsx(style.nowhere)}>Sản phẩm<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
+                     <li className={clsx(style.navItem, style.submenuContainer)}>
+                        <div className={clsx(style.nowhere)}>Quản lý<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                         </div>
                         <ul className={clsx(style.submenu)} >
-                            <Link to="/admin/cart-management" className={clsx(style.navLink, style.lastNavLink)}>Đơn hàng</Link>
-                            <Link to="/admin/dashboard" className={clsx(style.navLink, style.lastNavLink)}>Thống kê</Link>
-                            <Link to="/admin/report" className={clsx(style.navLink, style.lastNavLink)}>Báo cáo</Link>
-                            <Link to="/all" className={clsx(style.navLink, style.lastNavLink)}>Tất cả</Link>
+                            <Link to="/admin/product-management" className={clsx(style.navLink, style.lastNavLink)}>Sản phẩm</Link>
+                            <Link to="/admin/product-price-management" className={clsx(style.navLink, style.lastNavLink)}>Thay đổi giá</Link>
+                            <Link to="/admin/product-import-management" className={clsx(style.navLink, style.lastNavLink)}>Nhập hàng</Link>
+                            <Link to="/admin/product-return-management" className={clsx(style.navLink, style.lastNavLink)}>Trả hàng</Link>
+                            <Link to="/admin/sale-off-management" className={clsx(style.navLink, style.lastNavLink)}>Khuyến mãi</Link>
                         </ul>
-                    </li> */}
+                    </li> 
                     {/* <li className={clsx(style.navItem)}><Link to="/new-arrivals" className={clsx(style.navLink)} onClick={activeLinkStyle}>New Arrivals</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/sale-up" className={clsx(style.navLink)} onClick={activeLinkStyle}>Sale Up</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/helps" className={clsx(style.navLink)} onClick={activeLinkStyle}>Helps</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li> */}
 
                     <NavLink to="/admin/cart-management" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Đơn hàng</NavLink>
-                    <NavLink to="/admin/dashboard" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Thống kê</NavLink>
                     <NavLink to="/admin/report" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Báo cáo</NavLink>
                     <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Trợ giúp</NavLink>
                     <NavLink to="/about" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>About Me</NavLink>

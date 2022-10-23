@@ -23,6 +23,7 @@ import EmpInfo from "./EmpInfo/EmpInfo";
 import SignUp from "./SignUp/SignUp";
 import NewArrivalsList from "./HomePage/NewArrivalsList/NewArrivalsList";
 import ItemListWithTitle from "./HomePage/NewArrivalsList/ItemListWithTitle";
+import ProductManagement from './Admin/ProductManagement/ProductManagement'
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -79,6 +80,7 @@ function Main() {
                         <Route path="" element={<Content />} />
                         <Route path="/admin/cart-management" element={<CartManagement changeHeader={changeHeader}/>} />
                         <Route path="/admin/dashboard" element={<DashBoard changeHeader={changeHeader} />} />
+                        <Route path="/admin/product-management" element={<ProductManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/report" element={<Report changeHeader={changeHeader} />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
