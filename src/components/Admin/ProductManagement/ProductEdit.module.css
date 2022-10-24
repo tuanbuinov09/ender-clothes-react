@@ -256,7 +256,8 @@ svg{
     appearance: none;
     outline: none;
     border: none;
-    border-bottom: 2px solid #333333;
+    border: 1px solid #aaa;
+    /* border-bottom: 1px solid #333333; */
     padding: 4px 12px 4px 0px;
     font-size: 14px;
 }
@@ -273,4 +274,9 @@ svg{
     margin-left: 0;
     flex: unset;
     width: 100%;
+}
+
+.readOnly{
+    pointer-events: none;
+    background-color: #eee;
 }

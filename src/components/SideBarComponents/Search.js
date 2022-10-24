@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import style from './Search.module.css';
 import clsx from 'clsx';
 import Icon from 'react-hero-icon';
-import { modifyKeyword } from '../../uitilities/utilities';
+import { modifyKeyword, removeSyncfusionLicenseMessage } from '../../uitilities/utilities';
 import Item from '../HomePage/Item/Item.js';
 import axios from 'axios';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
@@ -54,6 +54,7 @@ function Search(props) {
             }
         });
     }
+    removeSyncfusionLicenseMessage();
     return (
         <div>
             <div>

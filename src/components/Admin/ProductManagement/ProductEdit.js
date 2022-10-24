@@ -20,6 +20,8 @@ import * as numbers from 'cldr-data/main/vi/numbers.json';
 import * as timeZoneNames from 'cldr-data/main/vi/timeZoneNames.json';
 import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
 import * as weekData from 'cldr-data/supplemental/weekData.json';// To load the culture based first day of week
+import { MultiSelectComponent  } from '@syncfusion/ej2-react-dropdowns';
+
 function ProductEdit(props) {
     const dispatch = useDispatch();
     // const params = useParams(); prams.cartId
@@ -28,10 +30,31 @@ function ProductEdit(props) {
     const [cart, setCart] = useState({});
     const [flag, setFlag] = useState(false);
     const [categories, setCategories] = useState([]);
+    const [sizes, setSizes] = useState([]);
+    const [colors, setColors] = useState([]);
+
+
     removeSyncfusionLicenseMessage();
     const categoryDropdownList = useRef();
     const grid = useRef();
     const datePicker = useRef();
+    const multiSelectColorsFields = {text: 'TEN_MAU', value: 'MA_MAU' }
+    const multiSelectSizesFields = {text: 'TEN_SIZE', value: 'MA_SIZE' }
+    const onColorFiltering = (e) => {
+        let query = new Query();
+        //frame the query based on search string with filter type.
+        query = (e.text !== '') ? query.where('TEN_MAU', 'contains', e.text, true) : query;
+        //pass the filter data source, filter query to updateData method.
+        e.updateData(colors, query);
+    };
+    const onSizeFiltering = (e) => {
+        let query = new Query();
+        //frame the query based on search string with filter type.
+        query = (e.text !== '') ? query.where('TEN_SIZE', 'contains', e.text, true) : query;
+        //pass the filter data source, filter query to updateData method.
+        e.updateData(sizes, query);
+    };
+
     useEffect(() => {
         try {
             axios.get('http://localhost:22081/api/TheLoai').then(res => {
@@ -41,6 +64,18 @@ function ProductEdit(props) {
                 console.log(categoriesFromAPI)
                 setCategories(categoriesFromAPI);
                 setFlag(true);
+
+                datePicker.current.value = new Date();
+            })
+
+            axios.get('http://localhost:22081/api/BangMau').then(res => {
+                console.log("Bang Mau: ", res.data)
+                setColors(res.data);
+            })
+
+            axios.get('http://localhost:22081/api/BangSize').then(res => {
+                console.log("Bang Size: ", res.data)
+                setSizes(res.data);
             })
         } catch (e) {
             console.log(e);
@@ -357,7 +392,7 @@ function ProductEdit(props) {
                         {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
                     </div>
 
-                    <div className={clsx(style.inputGroup)}>
+                    {/* <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Lượt xem:</label>
                         <input onChange={(e) => {
                             // setPassword(e.target.value.trim());
@@ -366,17 +401,8 @@ function ProductEdit(props) {
                             value={cart.LUOT_XEM}
                             placeholder="" className={clsx(style.input)}
                         />
-                        {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
-                    </div>
-
-                    <div className={clsx(style.inputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
-                        <div className={clsx(style.datePickerContainer)}>
-                            <DatePickerComponent onChange={() => {
-                            }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi' />
-                        </div>
-                        {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
-                    </div>
+                        {{errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""}}
+                    </div> */}
 
                     <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Mô tả:</label>
@@ -387,7 +413,38 @@ function ProductEdit(props) {
                             value={cart.MO_TA} name='MO_TA' className={clsx(style.input)} />
                     </div>
 
+                    <div className={clsx(style.inputGroup)}>
+                        <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
+                        <div className={clsx(style.datePickerContainer, style.readOnly)}>
+                            <DatePickerComponent onChange={() => {
+                            }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi' />
+                        </div>
+                        {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
+                    </div>
 
+                    <div className={clsx(style.inputGroup)}>
+                        <label className={clsx(style.inputLabel)}>Bảng màu:</label>
+                        <div className={clsx(style.dropdownList, style.datePickerContainer)}>
+                            <div className='control-section'>
+                                <div id='filtering'>
+                                    <MultiSelectComponent id="multiSelectColors" dataSource={colors} fields={multiSelectColorsFields} filtering={onColorFiltering} filterBarPlaceholder='Tìm màu' allowFiltering={true} placeholder="Chọn các màu của sản phẩm"/>
+                                </div>
+                        
+                            </div>
+                        </div>
+                    </div>
+               
+                    <div className={clsx(style.inputGroup)}>
+                        <label className={clsx(style.inputLabel)}>Bảng size:</label>
+                        <div className={clsx(style.dropdownList, style.datePickerContainer)}>
+                            <div className='control-section'>
+                                <div id='filtering'>
+                                    <MultiSelectComponent id="multiSelectSizes" dataSource={sizes} fields={multiSelectSizesFields} filtering={onSizeFiltering} filterBarPlaceholder='Tìm size' allowFiltering={true} placeholder="Chọn các size của sản phẩm" />
+                                </div>
+                        
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {/* <div className={clsx(style.buttonWrapper)}>
             <div onClick={() => {
