@@ -77,7 +77,7 @@
     text-align: center;
     border: 2px solid white;
     vertical-align: middle;
-
+z-index: 1;
 }
 .salePercentTag {
     width: 64px;
@@ -93,6 +93,7 @@
     height: 30px;
     padding: 8px 0;
     text-align: center;
+    z-index: 1;
 }
 
 .salePercentTag::after {

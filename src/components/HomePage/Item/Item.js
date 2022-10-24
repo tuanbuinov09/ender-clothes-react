@@ -189,7 +189,7 @@ function Item({ product, type }) {
                         <Link to={`/product/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
                         {/* {giá này là giá đã giảm (nếu có)} */}
                         <p className={clsx(style.price)}><span className={clsx(style.priceLabel)}>Giá: </span><span>{intToVNDCurrencyFormat(product.chiTietSanPham[0].GIA, true)}</span></p>
-                        <p className={clsx()}><span className={clsx(style.priceLabel)}>Size: </span><span>{product.chiTietSanPham[0].TEN_SIZE}</span></p>
+                        <p className={clsx(style.sizeColor)}><span className={clsx(style.priceLabel)}>Size/ màu: </span><span>{product.chiTietSanPham[0].TEN_SIZE}/ {product.chiTietSanPham[0].TEN_MAU}</span></p>
                     </div>
 
                     <div className={clsx(style.inputGroupWrapper)}>
