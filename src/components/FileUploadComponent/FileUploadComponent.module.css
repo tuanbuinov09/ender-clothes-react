@@ -1,0 +1,28 @@
+.label{
+
+}
+.fileInputContainer{
+    position: relative;
+    display: flex;
+}
+.fileInput{
+    padding-right: 50px;
+}
+.fileInput #file-upload-button{
+    background-color: white;
+}
+.fileUpLoadButton{
+
+    width: 50px;
+    background: #333;
+    color: white;
+    border: none;
+}
+.fileUpLoadProgress{
+    position: absolute;
+    right: 62px;
+
+}
+.fileUpLoadStatus{
+
+}
