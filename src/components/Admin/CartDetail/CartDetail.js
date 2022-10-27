@@ -270,7 +270,7 @@ function CartDetail(props) {
     const onFiltering = (e) => {
         let query = new Query();
         //frame the query based on search string with filter type.
-        query = (e.text !== '') ? query.where('HO_TEN_STR', 'startswith', e.text, true) : query;
+        query = (e.text !== '') ? query.where('HO_TEN_STR', 'contains', e.text, true) : query;
         //pass the filter data source, filter query to updateData method.
         e.updateData(employees, query);
     };

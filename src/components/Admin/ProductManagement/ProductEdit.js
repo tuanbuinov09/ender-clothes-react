@@ -20,26 +20,30 @@ import * as numbers from 'cldr-data/main/vi/numbers.json';
 import * as timeZoneNames from 'cldr-data/main/vi/timeZoneNames.json';
 import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
 import * as weekData from 'cldr-data/supplemental/weekData.json';// To load the culture based first day of week
-import { MultiSelectComponent  } from '@syncfusion/ej2-react-dropdowns';
+import { MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
+import FileUploadComponent from '../../FileUploadComponent/FileUploadComponent';
 
 function ProductEdit(props) {
     const dispatch = useDispatch();
     // const params = useParams(); prams.cartId
     console.log(props.productId, props.viewMode);
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
-    const [cart, setCart] = useState({});
+    const [product, setProduct] = useState({ hinhAnhSanPham: [], chiTietSanPham: [] });
     const [flag, setFlag] = useState(false);
     const [categories, setCategories] = useState([]);
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
+    const [errorMessage, setErrorMessage] = useState({ errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "" });
 
 
     removeSyncfusionLicenseMessage();
+    const multiSelectSizes = useRef();
+    const multiSelectColors = useRef();
     const categoryDropdownList = useRef();
     const grid = useRef();
     const datePicker = useRef();
-    const multiSelectColorsFields = {text: 'TEN_MAU', value: 'MA_MAU' }
-    const multiSelectSizesFields = {text: 'TEN_SIZE', value: 'MA_SIZE' }
+    const multiSelectColorsFields = { text: 'TEN_MAU', value: 'MA_MAU' }
+    const multiSelectSizesFields = { text: 'TEN_SIZE', value: 'MA_SIZE' }
     const onColorFiltering = (e) => {
         let query = new Query();
         //frame the query based on search string with filter type.
@@ -54,6 +58,13 @@ function ProductEdit(props) {
         //pass the filter data source, filter query to updateData method.
         e.updateData(sizes, query);
     };
+
+    const onChangeColors = (e) => {
+        const initHinhAnhSanPham = multiSelectColors.current.value.map(item => {
+            return { MA_MAU: item, HINH_ANH: null };
+        })
+        setProduct({ ...product, hinhAnhSanPham: initHinhAnhSanPham })
+    }
 
     useEffect(() => {
         try {
@@ -242,8 +253,54 @@ function ProductEdit(props) {
     //         console.error(error);
     //     }
     // }
-    const save = () => {
 
+    const validate = () => {
+        console.log(product, categoryDropdownList.current.value, multiSelectColors.current.value, multiSelectSizes.current.value)
+        let hasError = false;
+        let tmpErrorMsg = { errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "" };
+        if (!product.TEN_SP) {
+            tmpErrorMsg = { ...tmpErrorMsg, errorTEN_SP: "*Vui lòng nhập tên sản phẩm" }
+            //setErrorMessage({...errorMessage, errorName: "Vui lòng nhập tên người nhận"});
+            hasError = true;
+        }
+
+        if (!categoryDropdownList.current.value) {
+            tmpErrorMsg = { ...tmpErrorMsg, errorTHE_LOAI: "*Vui lòng chọn thể loại" }
+            hasError = true;
+        }
+        if (!multiSelectColors.current.value) {
+            tmpErrorMsg = { ...tmpErrorMsg, errorBANG_MAU: "*Vui lòng chọn các màu" }
+            // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
+            hasError = true;
+        }
+        if (!multiSelectSizes.current.value) {
+            tmpErrorMsg = { ...tmpErrorMsg, errorBANG_SIZE: "*Vui lòng chọn các màu" }
+            // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
+            hasError = true;
+        }
+        setErrorMessage(tmpErrorMsg)
+        return hasError
+    }
+
+    const save = () => {
+        if (validate()) {
+            return;
+        }
+
+        product.MA_TL = categoryDropdownList.current.value;
+        let chiTietSP = [];
+
+        multiSelectColors.current.value.forEach(maMau => {
+
+            multiSelectSizes.current.value.forEach(maSize => {
+                chiTietSP.push({ MA_MAU: maMau, MA_SIZE: maSize })
+            });
+        });
+
+        setProduct({ ...product, chiTietSanPham: chiTietSP })
+
+        console.log('pass', chiTietSP)
+        return;
         const selectedItem = categoryDropdownList.current.itemData;
         console.log(categoryDropdownList.current.value);
         const assignedEmpID = categoryDropdownList.current.value;
@@ -253,14 +310,14 @@ function ProductEdit(props) {
         }
         try {
             axios.put(`http://localhost:22081/api/GioHang/assign-delivery`, {
-                ID_GH: cart.ID_GH,
+                ID_GH: product.ID_GH,
                 MA_NV_GIAO: assignedEmpID,
                 MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
             }).then(res => {
                 const response = res.data;
                 // console.log('res: ' + response);
-                setCart({
-                    ...cart, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao hàng',
+                setProduct({
+                    ...product, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao hàng',
                     MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN
                     , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
                 })
@@ -275,17 +332,17 @@ function ProductEdit(props) {
     }
 
     const cancel = () => {
-        if (cart.TRANG_THAI === -1 || cart.TRANG_THAI === 1 || cart.TRANG_THAI === 2) {
+        if (product.TRANG_THAI === -1 || product.TRANG_THAI === 1 || product.TRANG_THAI === 2) {
             notify("Đơn hàng đã được duyệt, không thể hủy.");
             return;
         }
         try {
-            axios.put(`http://localhost:22081/api/KhachHang/cancel-cart`, {
-                ID_GH: cart.ID_GH
+            axios.put(`http://localhost:22081/api/KhachHang/cancel-product`, {
+                ID_GH: product.ID_GH
             }).then(res => {
                 const response = res.data;
                 // console.log('res: ' + response);
-                setCart({ ...cart, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' })
+                setProduct({ ...product, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' })
                 notify("Hủy đơn hàng thành công");
                 props.rerender();
             });
@@ -294,17 +351,7 @@ function ProductEdit(props) {
         }
 
     }
-    // const print = () => {
-    //     const maHD = newInvoiceIdByDate();
-    //     //tạo hóa đơn
-    //     axios.post(`http://localhost:22081/api/HoaDon/`, {
-    //         ID_GH: cart.ID_GH,
-    //         MA_HD: maHD,
-    //         MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
-    //     }).then(res => {
-    //         setPreparePrint(true);
-    //     })
-    // }
+
     let fields = { text: 'TEN_TL', value: 'MA_TL' };
     // filtering event handler to filter a Country
 
@@ -325,6 +372,25 @@ function ProductEdit(props) {
         return props.viewMode === 'view' ? `Chi tiết sản phẩm ${props.productId}` : props.viewMode === 'edit' ? `Chỉnh sửa sản phẩm ${props.productId}` : `Thêm mới sản phẩm`
     }
 
+    console.log('rerender, product: ', product)
+
+    const generalFileChange = (file) => {
+        console.log('11111111111', file)
+        setProduct({ ...product, HINH_ANH: file.file.name })
+    }
+
+    const detailFileChange = (file) => {
+        console.log('11111111111', file)
+
+        let oldProduct = product;
+        oldProduct.hinhAnhSanPham = oldProduct.hinhAnhSanPham.filter(item => item.MA_MAU !== file.field)
+        setProduct(oldProduct);
+
+        setProduct({ ...product, hinhAnhSanPham: [...product.hinhAnhSanPham, { MA_MAU: file.field, HINH_ANH: file.file.name }] })
+    }
+
+    const [selectedColors, setSelectedColor] = useState([]);
+
     return (
         // preparePrint ? <CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId} /> 
         // :
@@ -344,24 +410,16 @@ function ProductEdit(props) {
                     {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
 
                         <>
-                            {/* <button onClick={() => {
-                        approve();
-                    }} className={clsx(style.checkButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
-                        <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
-                    </button> */}
+
                             <button onClick={() => {
                                 save();
-                            }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
+                            }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: props.viewMode === 'view' })}>
                                 <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
                             </button>
 
                         </>
                         : <></>
-                        // <><button onClick={() => {
-                        //     cancel();
-                        // }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
-                        //     <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
-                        // </button></>
+
                     }
 
                 </div>
@@ -370,13 +428,13 @@ function ProductEdit(props) {
                     <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Tên sản phẩm:</label>
                         <input onChange={(e) => {
-                            // setPassword(e.target.value.trim());
-                            // handleChange("name1", e.target.value);
+                            console.log(e.target.value, "fired")
+                            setProduct({ ...product, TEN_SP: e.target.value })
                         }} type="text" name='TEN_SP'
-                            value={cart.TEN_SP}
+                            value={product.TEN_SP}
                             placeholder="" className={clsx(style.input)}
                         />
-                        {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
+                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorTEN_SP}</p>}
                     </div>
 
                     <div className={clsx(style.inputGroup)}>
@@ -389,7 +447,7 @@ function ProductEdit(props) {
                             </div>
 
                         </div>
-                        {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
+                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorTHE_LOAI}</p>}
                     </div>
 
                     {/* <div className={clsx(style.inputGroup)}>
@@ -405,15 +463,6 @@ function ProductEdit(props) {
                     </div> */}
 
                     <div className={clsx(style.inputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Mô tả:</label>
-                        <textarea onChange={(e) => {
-                            // setEmail(e.target.value.trim());
-                            // handleChange("note", e.target.value);
-                        }} type="text" placeholder="" /*value={email}*/
-                            value={cart.MO_TA} name='MO_TA' className={clsx(style.input)} />
-                    </div>
-
-                    <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
                         <div className={clsx(style.datePickerContainer, style.readOnly)}>
                             <DatePickerComponent onChange={() => {
@@ -427,73 +476,86 @@ function ProductEdit(props) {
                         <div className={clsx(style.dropdownList, style.datePickerContainer)}>
                             <div className='control-section'>
                                 <div id='filtering'>
-                                    <MultiSelectComponent id="multiSelectColors" dataSource={colors} fields={multiSelectColorsFields} filtering={onColorFiltering} filterBarPlaceholder='Tìm màu' allowFiltering={true} placeholder="Chọn các màu của sản phẩm"/>
+                                    <MultiSelectComponent onChange={onChangeColors} ref={multiSelectColors} id="multiSelectColors" dataSource={colors} fields={multiSelectColorsFields} filtering={onColorFiltering} filterBarPlaceholder='Tìm màu' allowFiltering={true} placeholder="Chọn các màu của sản phẩm" />
                                 </div>
-                        
+
                             </div>
                         </div>
+                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorBANG_MAU}</p>}
                     </div>
-               
+
                     <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Bảng size:</label>
                         <div className={clsx(style.dropdownList, style.datePickerContainer)}>
                             <div className='control-section'>
                                 <div id='filtering'>
-                                    <MultiSelectComponent id="multiSelectSizes" dataSource={sizes} fields={multiSelectSizesFields} filtering={onSizeFiltering} filterBarPlaceholder='Tìm size' allowFiltering={true} placeholder="Chọn các size của sản phẩm" />
+                                    <MultiSelectComponent ref={multiSelectSizes} id="multiSelectSizes" dataSource={sizes} fields={multiSelectSizesFields} filtering={onSizeFiltering} filterBarPlaceholder='Tìm size' allowFiltering={true} placeholder="Chọn các size của sản phẩm" />
                                 </div>
-                        
+
                             </div>
                         </div>
+                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorBANG_SIZE}</p>}
                     </div>
-                </div>
-                {/* <div className={clsx(style.buttonWrapper)}>
-            <div onClick={() => {
-            
-            }} >
-                <Button text="ĐỒNG Ý" className={clsx(style.buttonConfirm)} />
-            </div>
-            <div onClick={() => {
-            }} >
-                <Button text="HỦY" className={clsx(style.buttonCancek)} />
-            </div>
 
-        </div> */}
-                {/* detail */}
-                <div className={clsx(style.cartDetail)}>
-                    <GridComponent ref={grid}
-                        // toolbar={toolbarOptions}
-                        //  actionComplete={actionComplete} 
-                        //  actionBegin={actionBegin}
-                        locale='vi-VN'
-                        // editSettings={editOptions}
-                        pageSettings={pageSettings}
-                        dataSource={cart.chiTietGioHang2} allowPaging={true} /*allowGrouping={true}*/
-                        allowSorting={true} allowFiltering={true}
-                        filterSettings={filterOptions} height={150}
-                        // rowSelected={rowSelected}
-                        gridLines='Both'
-                    >
-                        <ColumnsDirective>
-                            <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
-                            <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
-                            <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
-                            <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
-                            <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
-                            <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
-                            {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
-                            {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                            {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}
-                            {/*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */}
-                            {/* <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='200' textAlign="Left"  /> 
-                    <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ' width='200' textAlign="Left" />
-                    <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='200' textAlign="Left" />
-                    <ColumnDirective field='MA_NV_DUYET' headerTextAlign='Center' headerText='Mã NV duyệt' width='200' textAlign="Left" />
-                    <ColumnDirective field='MA_NV_GIAO' headerTextAlign='Center' headerText='Mã NV giao' width='200' textAlign="Left" /> */}
-                        </ColumnsDirective>
-                        <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
-                    </GridComponent>
-                    {/* <div className={clsx(style.total)}>Tổng trị giá: {intToVNDCurrencyFormat(cart.TONG_TRI_GIA) + " ₫"}</div> */}
+                    <div className={clsx(style.inputGroup)}>
+                        <label className={clsx(style.inputLabel)}>Mô tả:</label>
+                        <textarea maxLength={500} onChange={(e) => {
+                            setProduct({ ...product, MO_TA: e.target.value })
+                        }} type="text" placeholder="" /*value={email}*/
+                            value={product.MO_TA} name='MO_TA' className={clsx(style.input)} />
+                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorMO_TA}</p>}
+                    </div>
+                    
                 </div>
+
+
+                <FileUploadComponent field={'HINH_ANH_CHUNG'} title = {'Chọn hình ảnh chung'} onSelectedOptionsChange={generalFileChange} />
+                    <div>Chọn hình ảnh chi tiết cho các màu: </div>
+                    {
+
+                        product.hinhAnhSanPham.map((item, index) => {
+                            return (
+                                <div className={clsx(style.inputGroup)}>
+                                    <FileUploadComponent key={index} field={item.MA_MAU} title = {colors.find(color => color.MA_MAU === item.MA_MAU).TEN_MAU} onSelectedOptionsChange={detailFileChange} />
+                                </div>
+                            )
+                        })
+                    }
+
+                {/* detail */}
+                {
+                    /* <div className={clsx(style.cartDetail)}>
+                        <GridComponent ref={grid}
+                            // toolbar={toolbarOptions}
+                            //  actionComplete={actionComplete} 
+                            //  actionBegin={actionBegin}
+                            locale='vi-VN'
+                            // editSettings={editOptions}
+                            pageSettings={pageSettings}
+                            dataSource={product.chiTietGioHang2} allowPaging={true} //allowGrouping={true}
+                            allowSorting={true} allowFiltering={true}
+                            filterSettings={filterOptions} height={150}
+                            // rowSelected={rowSelected}
+                            gridLines='Both'
+                        >
+                            <ColumnsDirective>
+                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" //isPrimaryKey={true}*
+                                />
+                                <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" //isPrimaryKey={true}
+                                />
+                                <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
+                                <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
+                                <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
+                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
+                                
+                            </ColumnsDirective>
+                            <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
+                        </GridComponent>
+                        { //<div className={clsx(style.total)}>Tổng trị giá: {intToVNDCurrencyFormat(cart.TONG_TRI_GIA) + " ₫"}</div> 
+                        }
+                    </div> 
+                    */
+                }
 
             </div>
         </div> : <></>);
