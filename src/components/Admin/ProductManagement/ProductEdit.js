@@ -33,7 +33,7 @@ function ProductEdit(props) {
     const [categories, setCategories] = useState([]);
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
-    const [errorMessage, setErrorMessage] = useState({ errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "" });
+    const [errorMessage, setErrorMessage] = useState({ errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "", errorHINH_ANH_CHITIET:"", errorHINH_ANH_CHUNG:"" });
 
 
     removeSyncfusionLicenseMessage();
@@ -72,7 +72,7 @@ function ProductEdit(props) {
                 const categoriesFromAPI = res.data.filter((item) => {
                     return !!item.MA_TL_CHA
                 });
-                console.log(categoriesFromAPI)
+                //console.log(categoriesFromAPI)
                 setCategories(categoriesFromAPI);
                 setFlag(true);
 
@@ -80,12 +80,12 @@ function ProductEdit(props) {
             })
 
             axios.get('http://localhost:22081/api/BangMau').then(res => {
-                console.log("Bang Mau: ", res.data)
+                //console.log("Bang Mau: ", res.data)
                 setColors(res.data);
             })
 
             axios.get('http://localhost:22081/api/BangSize').then(res => {
-                console.log("Bang Size: ", res.data)
+                //console.log("Bang Size: ", res.data)
                 setSizes(res.data);
             })
         } catch (e) {
@@ -255,7 +255,7 @@ function ProductEdit(props) {
     // }
 
     const validate = () => {
-        console.log(product, categoryDropdownList.current.value, multiSelectColors.current.value, multiSelectSizes.current.value)
+        //console.log(product, categoryDropdownList.current.value, multiSelectColors.current.value, multiSelectSizes.current.value)
         let hasError = false;
         let tmpErrorMsg = { errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "" };
         if (!product.TEN_SP) {
@@ -274,13 +274,50 @@ function ProductEdit(props) {
             hasError = true;
         }
         if (!multiSelectSizes.current.value) {
-            tmpErrorMsg = { ...tmpErrorMsg, errorBANG_SIZE: "*Vui lòng chọn các màu" }
+            tmpErrorMsg = { ...tmpErrorMsg, errorBANG_SIZE: "*Vui lòng chọn các size" }
+            // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
+            hasError = true;
+        }
+        if (!product.HINH_ANH) {
+            tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHUNG: "*Vui lòng chọn hình ảnh chung cho sản phẩm" }
+            // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
+            hasError = true;
+        }
+        if (
+            product.hinhAnhSanPham.some(item => !item.HINH_ANH)//nếu có màu chưa có hình ảnh
+            ) {
+            tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHITIET: "*Vui lòng chọn hình ảnh chi tiết cho tất cả các màu" }
             // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
             hasError = true;
         }
         setErrorMessage(tmpErrorMsg)
         return hasError
     }
+
+    const uploadDetailFileUploadComponents = () => {
+        let idx = 0;
+        let next = detailFileInputRefs.current[idx];
+        if (next) {
+          console.log('file upload cmpnt: ',next);
+          next.uploadHandler(); //upload ảnh từ cmpnt FileUploadComponent
+        }
+        while(next){
+            idx = idx + 1; 
+            next = detailFileInputRefs.current[idx];
+            if (next) {
+                console.log('file upload cmpnt: ',next);
+                next.uploadHandler();
+            }
+        }
+    };
+
+    const uploadGeneralFileUpload = ()=>{
+        console.log('general file cmpnt: ', generalFileInputRef.current);
+        generalFileInputRef.current.uploadHandler();
+    }
+
+    const detailFileInputRefs = useRef([]);
+    const generalFileInputRef = useRef();
 
     const save = () => {
         if (validate()) {
@@ -299,7 +336,11 @@ function ProductEdit(props) {
 
         setProduct({ ...product, chiTietSanPham: chiTietSP })
 
+        uploadGeneralFileUpload();
+        uploadDetailFileUploadComponents();
+
         console.log('pass', chiTietSP)
+
         return;
         const selectedItem = categoryDropdownList.current.itemData;
         console.log(categoryDropdownList.current.value);
@@ -383,13 +424,14 @@ function ProductEdit(props) {
         console.log('11111111111', file)
 
         let oldProduct = product;
-        oldProduct.hinhAnhSanPham = oldProduct.hinhAnhSanPham.filter(item => item.MA_MAU !== file.field)
+        oldProduct.hinhAnhSanPham.find(item=>{
+            return item.MA_MAU === file.field //field là mã màu
+        }).HINH_ANH = file.file.name; 
         setProduct(oldProduct);
 
-        setProduct({ ...product, hinhAnhSanPham: [...product.hinhAnhSanPham, { MA_MAU: file.field, HINH_ANH: file.file.name }] })
+        // setProduct({ ...product, hinhAnhSanPham: [...product.hinhAnhSanPham, { MA_MAU: file.field, HINH_ANH: file.file.name }] })
     }
 
-    const [selectedColors, setSelectedColor] = useState([]);
 
     return (
         // preparePrint ? <CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId} /> 
@@ -428,7 +470,7 @@ function ProductEdit(props) {
                     <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Tên sản phẩm:</label>
                         <input onChange={(e) => {
-                            console.log(e.target.value, "fired")
+                            //console.log(e.target.value, "fired")
                             setProduct({ ...product, TEN_SP: e.target.value })
                         }} type="text" name='TEN_SP'
                             value={product.TEN_SP}
@@ -508,54 +550,37 @@ function ProductEdit(props) {
                     
                 </div>
 
-
-                <FileUploadComponent field={'HINH_ANH_CHUNG'} title = {'Chọn hình ảnh chung'} onSelectedOptionsChange={generalFileChange} />
-                    <div>Chọn hình ảnh chi tiết cho các màu: </div>
+                <div className={clsx(style.inputGroup)}>
+                    <FileUploadComponent 
+                        ref={generalFileInputRef} 
+                        field={'HINH_ANH_CHUNG'} 
+                        title = {'Chọn hình ảnh chung'} 
+                        onSelectedOptionsChange={generalFileChange} 
+                        showUploadButton={false}
+                    />
+                    {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHUNG}</p>}
+                </div>
+                <div className={clsx(style.inputLabel, style.longLabel)}>Chọn hình ảnh chi tiết cho các màu: </div>
+                <div className={clsx(style.detailFileUploadsContainer)}>
                     {
-
                         product.hinhAnhSanPham.map((item, index) => {
                             return (
-                                <div className={clsx(style.inputGroup)}>
-                                    <FileUploadComponent key={index} field={item.MA_MAU} title = {colors.find(color => color.MA_MAU === item.MA_MAU).TEN_MAU} onSelectedOptionsChange={detailFileChange} />
+                                <div className={clsx(style.inputGroup)} key={index} >
+                                    <FileUploadComponent 
+                                        ref={el => detailFileInputRefs.current[index] = el} 
+                                        field={item.MA_MAU} 
+                                        title = {colors.find(color => color.MA_MAU === item.MA_MAU).TEN_MAU} 
+                                        onSelectedOptionsChange={detailFileChange}
+                                        showUploadButton={false}    
+                                    />
                                 </div>
                             )
                         })
                     }
+                </div>
+                {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHITIET}</p>}
 
                 {/* detail */}
-                {
-                    /* <div className={clsx(style.cartDetail)}>
-                        <GridComponent ref={grid}
-                            // toolbar={toolbarOptions}
-                            //  actionComplete={actionComplete} 
-                            //  actionBegin={actionBegin}
-                            locale='vi-VN'
-                            // editSettings={editOptions}
-                            pageSettings={pageSettings}
-                            dataSource={product.chiTietGioHang2} allowPaging={true} //allowGrouping={true}
-                            allowSorting={true} allowFiltering={true}
-                            filterSettings={filterOptions} height={150}
-                            // rowSelected={rowSelected}
-                            gridLines='Both'
-                        >
-                            <ColumnsDirective>
-                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" //isPrimaryKey={true}*
-                                />
-                                <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" //isPrimaryKey={true}
-                                />
-                                <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
-                                <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
-                                <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
-                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
-                                
-                            </ColumnsDirective>
-                            <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
-                        </GridComponent>
-                        { //<div className={clsx(style.total)}>Tổng trị giá: {intToVNDCurrencyFormat(cart.TONG_TRI_GIA) + " ₫"}</div> 
-                        }
-                    </div> 
-                    */
-                }
 
             </div>
         </div> : <></>);

@@ -292,3 +292,12 @@ svg{
     pointer-events: none;
     background-color: #eee;
 }
+
+.detailFileUploadsContainer{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.longLabel{
+    width: 100%;
+}

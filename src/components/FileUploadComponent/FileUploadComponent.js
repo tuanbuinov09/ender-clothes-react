@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import style from './FileUploadComponent.module.css';
 import clsx from 'clsx';
+import moment from 'moment';
 
 class FileUploadComponent extends React.Component {
     constructor(props) {
@@ -27,6 +28,9 @@ class FileUploadComponent extends React.Component {
         if (fileTypes.every(extension => file[0].type != extension)) {
             errMessage.push(`The file ${file.type} extension is not supported`);
         } else {
+            // let a = (moment().format('DDMMyyyyhhmmss')) +'-'+ file[0].name ;
+            // console.log(a)
+            // file[0].name = a;
             this.setState({
                 selectedFile: file[0]
             });
@@ -65,7 +69,7 @@ class FileUploadComponent extends React.Component {
                 <label className={clsx(style.label)}>{this.props.title}</label>
                 <div className={clsx(style.fileInputContainer)}>
                     <input className={clsx(style.fileInput)} type="file" accept="image/*" onChange={this.selectFileHandler} />
-                    <button className={clsx(style.fileUpLoadButton)} type="button" onClick={this.uploadHandler}>Tải lên</button>
+                    {this.props.showUploadButton?<button className={clsx(style.fileUpLoadButton)} type="button" onClick={this.uploadHandler}>Tải lên</button>:<></>}
                     {/* <div className={clsx(style.fileUpLoadProgress)}>{this.state.progress}%</div>
                     <div className={clsx(style.fileUpLoadStatus)}>{this.state.status}</div> */}
                 </div>

@@ -180,6 +180,10 @@ const loadLocaleSyncfusion = ()=>{
             datepicker: {
                 placeholder: "Nhập ngày",
                 today:"Hôm nay"
+            },
+            'multi-select': {
+                'actionFailureTemplate': "Lỗi thực thi",
+                'noRecordsTemplate': "Không có dữ liệu"
             }
         }
     });
