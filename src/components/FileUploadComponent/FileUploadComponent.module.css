@@ -1,14 +1,20 @@
 .label{
-
+    width: 200px;
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: inline-block;
 }
 .fileInputContainer{
     position: relative;
     display: flex;
 }
 .fileInput{
-    padding-right: 50px;
+    padding: 4px 50px 4px 4px;
+    border: 1px solid #ddd;
 }
-.fileInput #file-upload-button{
+.fileInput input#file-upload-button{
     background-color: white;
 }
 .fileUpLoadButton{
