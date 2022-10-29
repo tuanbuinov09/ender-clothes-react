@@ -1,7 +1,7 @@
 import {
     Link
 } from "react-router-dom";
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Icon from 'react-hero-icon';
 import style from './Item.module.css';
 import clsx from "clsx";
@@ -14,7 +14,7 @@ import {useState} from 'react';
 import ProductDetailModal from "../../ProductDetail/ProductDetailModal";
 function Item({ product, type }) {
     const [openDialog, setOpenDialog] = useState(false);
-
+    const [rerender, setRerender] = useState(false);
     const closeDialog = () => {
         setOpenDialog(false);
     }
@@ -25,13 +25,24 @@ function Item({ product, type }) {
     const dispatch = useDispatch();
     const notify = (message) => toast.error(message, {autoClose: true, closeDuration: 3000 });//error/info/add
     const quantityField = useRef();
+
+    useEffect(()=>{
+        //nếu data cũ hình sẽ có http, data mới thì k
+        if (product.HINH_ANH && !product.HINH_ANH.startsWith('http')){
+            product.HINH_ANH = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${product.HINH_ANH}`
+            setRerender(!rerender)
+        
+        }
+//vì thay props k tự render, nên ta force render lại để update hình hiển thị
+    },[rerender])
+
     let pricesString;
     let discountPricesString;
     let prices = product.GIA_STR.split(" - ");
     prices = prices.map((price) => {// 
         return parseInt(price);// chuyenr sang int để dùng toLocaleString bên dưới
     })
-    console.log(typeof (prices[0]))
+    // console.log(typeof (prices[0]))
     if (!prices[1]) {// nếu k có giá thứ 2 (bắt trường hợp sản phẩm chỉ có free size)
         pricesString = prices[0].toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) + "";
         pricesString = pricesString.substring(0, pricesString.length - 4) + " ₫";
