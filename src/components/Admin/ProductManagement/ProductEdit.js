@@ -1,33 +1,27 @@
-import React, { useEffect, useState, useRef, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import style from './ProductEdit.module.css';
 import clsx from 'clsx';
-import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter, Group, Edit, Toolbar, dataReady } from '@syncfusion/ej2-react-grids';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { loadLocaleSyncfusion, newInvoiceIdByDate, removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
+import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
 import { useDispatch } from 'react-redux/es/exports';
-import { Button } from '../../Button/Button';
 import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon } from '../../../icons';
-import { L10n } from '@syncfusion/ej2-base';
 import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
-import { intToVNDCurrencyFormat } from '../../../uitilities/utilities'
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 
-import * as gregorian from 'cldr-data/main/vi/ca-gregorian.json';
-import * as numbers from 'cldr-data/main/vi/numbers.json';
-import * as timeZoneNames from 'cldr-data/main/vi/timeZoneNames.json';
-import * as numberingSystems from 'cldr-data/supplemental/numberingSystems.json';
-import * as weekData from 'cldr-data/supplemental/weekData.json';// To load the culture based first day of week
 import { MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
 import FileUploadComponent from '../../FileUploadComponent/FileUploadComponent';
 
 function ProductEdit(props) {
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     // const params = useParams(); prams.cartId
     console.log(props.productId, props.viewMode);
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+
     const [product, setProduct] = useState({ hinhAnhSanPham: [], chiTietSanPham: [] });
     const [flag, setFlag] = useState(false);
     const [categories, setCategories] = useState([]);
@@ -65,8 +59,13 @@ function ProductEdit(props) {
         })
         setProduct({ ...product, hinhAnhSanPham: initHinhAnhSanPham })
     }
-
+    
     useEffect(() => {
+        if(!JSON.parse(localStorage.getItem('employee')).MA_NV){
+            navigate("/employee/login", true);
+            notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            return;
+        }
         try {
             axios.get('http://localhost:22081/api/TheLoai').then(res => {
                 const categoriesFromAPI = res.data.filter((item) => {
@@ -334,35 +333,24 @@ function ProductEdit(props) {
             });
         });
 
-        setProduct({ ...product, chiTietSanPham: chiTietSP })
-
         uploadGeneralFileUpload();
         uploadDetailFileUploadComponents();
 
-        console.log('pass', chiTietSP)
-
-        return;
-        const selectedItem = categoryDropdownList.current.itemData;
-        console.log(categoryDropdownList.current.value);
-        const assignedEmpID = categoryDropdownList.current.value;
-        if (!assignedEmpID) {
-            notify("Hãy chọn nhân viên vận chuyển");
-            return;
-        }
+        console.log('pass', chiTietSP, `${process.env.REACT_APP_API_URL}/api/SanPham/add`)
         try {
-            axios.put(`http://localhost:22081/api/GioHang/assign-delivery`, {
-                ID_GH: product.ID_GH,
-                MA_NV_GIAO: assignedEmpID,
-                MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
-            }).then(res => {
+            axios.post(`${process.env.REACT_APP_API_URL}/api/SanPham/add`, {...product, 
+            chiTietSanPham: chiTietSP,
+            //mã nhân viên tạo sản phẩm
+            MA_NV : JSON.parse(localStorage.getItem('employee')).MA_NV }
+            ).then(res => {
                 const response = res.data;
-                // console.log('res: ' + response);
-                setProduct({
-                    ...product, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao hàng',
-                    MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN
-                    , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
-                })
-                notify("Đã giao cho nhân viên: " + selectedItem.HO_TEN);
+                console.log('res: ' + response);
+                // setProduct({
+                //     ...product, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao hàng',
+                //     MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN
+                //     , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
+                // })
+                notify("Thêm sản phẩm thành công");
 
                 props.rerender();
             });

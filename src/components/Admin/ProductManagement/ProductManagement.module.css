@@ -29,6 +29,24 @@
     align-items: center;
     margin: -8px 8px 8px 8px;
 }
+.addButton{
+    width: fit-content;
+    background-color: rgba(4, 136, 85, 0.699);
+    border: 1px solid rgba(4, 136, 85, 0.699);
+    color: white;
+}
+.editButton{
+    width: fit-content;
+    background-color: rgba(182, 179, 1, 0.699);
+    border: 1px solid rgba(182, 179, 1, 0.699);
+    color: white;
+}
+.deleteButton{
+    width: fit-content;
+    background-color: rgba(153, 0, 33, 0.699);
+    border: 1px solid rgba(153, 0, 33, 0.699);
+    color: white;
+}
 .checkButton:hover{
     opacity: 0.8;
 }
