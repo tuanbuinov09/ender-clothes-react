@@ -5,7 +5,7 @@ import { CheckIcon, ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../i
 import axios from 'axios';
 import '../ej2-grid.css'
 import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion } from '../../../uitilities/utilities';
-import style from './ProductManagement.module.css';
+import style from './ProductImportEdit.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
