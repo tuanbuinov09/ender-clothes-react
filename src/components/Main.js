@@ -24,6 +24,8 @@ import SignUp from "./SignUp/SignUp";
 import NewArrivalsList from "./HomePage/NewArrivalsList/NewArrivalsList";
 import ItemListWithTitle from "./HomePage/NewArrivalsList/ItemListWithTitle";
 import ProductManagement from './Admin/ProductManagement/ProductManagement'
+import ProductImportManagement from "./Admin/ProductImportManagement/ProductImportManagement";
+import ProductReturnManagement from "./Admin/ProductReturnManagement/ProductReturnManagement";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -54,50 +56,52 @@ function Main() {
         }
     }
     const [headerMode, setHeaderMode] = useState('user');
-    
-    const changeHeader = (type)=>{
-        if(type==="user"){
+
+    const changeHeader = (type) => {
+        if (type === "user") {
             setHeaderMode('user')
 
         }
-        if(type==="employee"){
+        if (type === "employee") {
             setHeaderMode('employee')
         }
     }
     return (
         <BrowserRouter>
             <div className={clsx(style.main, { [style.active]: pushMain })}>
-                {headerMode==='user'?<><Header
+                {headerMode === 'user' ? <><Header
                     toggleSearchBox={handleOpenSearchBox}
                     toggleShoppingBag={handleOpenShoppingBag}
                     pushMain={togglePushMain}
-                /></>:<></>}
-                {headerMode==='employee'?<><HeaderEmployee
-                    
-                /></>:<></>}
+                /></> : <></>}
+                {headerMode === 'employee' ? <><HeaderEmployee
+
+                /></> : <></>}
                 <div className={clsx(style.container)}>
                     <Routes>
                         <Route path="" element={<Content />} />
-                        <Route path="/admin/cart-management" element={<CartManagement changeHeader={changeHeader}/>} />
+                        <Route path="/admin/cart-management" element={<CartManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/dashboard" element={<DashBoard changeHeader={changeHeader} />} />
                         <Route path="/admin/product-management" element={<ProductManagement changeHeader={changeHeader} />} />
+                        <Route path="/admin/product-import-management" element={<ProductImportManagement changeHeader={changeHeader} />} />
+                        <Route path="/admin/product-return-management" element={<ProductReturnManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/report" element={<Report changeHeader={changeHeader} />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
                         <Route path="/product/:productId" element={<ProductDetail />} />
                         <Route path="/user/login" element={<Login type="customer" />} />
                         <Route path="/user/sign-up" element={<SignUp />} />
-                        <Route path="/user/info" element={<UserInfo />}/>
-                        <Route path="/user/purchased-cart" element={<UserPurchasedCart/>} />
+                        <Route path="/user/info" element={<UserInfo />} />
+                        <Route path="/user/purchased-cart" element={<UserPurchasedCart />} />
                         <Route path="/employee/login" element={<Login type="employee" changeHeader={changeHeader} />} />
-                        <Route path="/employee/info" element={<EmpInfo changeHeader={changeHeader} />}/>
-                        <Route path="/purchase" element={<PayPal/>}/>
-                        <Route path="/purchase/ship-info" element={<ShipInfo/>}/>
+                        <Route path="/employee/info" element={<EmpInfo changeHeader={changeHeader} />} />
+                        <Route path="/purchase" element={<PayPal />} />
+                        <Route path="/purchase/ship-info" element={<ShipInfo />} />
 
-                        <Route path="/new-arrivals" element={<ItemListWithTitle type="new-arrivals"/>}/>
-                        <Route path="/most-viewed" element={<ItemListWithTitle type="most-viewed"/>}/>
-                        <Route path="/best-seller" element={<ItemListWithTitle type="best-seller"/>}/>
-                        <Route path="/sale-off" element={<ItemListWithTitle type="sale-off"/>}/>
+                        <Route path="/new-arrivals" element={<ItemListWithTitle type="new-arrivals" />} />
+                        <Route path="/most-viewed" element={<ItemListWithTitle type="most-viewed" />} />
+                        <Route path="/best-seller" element={<ItemListWithTitle type="best-seller" />} />
+                        <Route path="/sale-off" element={<ItemListWithTitle type="sale-off" />} />
                     </Routes>
                     <Footer />
                 </div>

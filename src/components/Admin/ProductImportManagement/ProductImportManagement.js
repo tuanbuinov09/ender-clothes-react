@@ -5,24 +5,19 @@ import { CheckIcon, ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../i
 import axios from 'axios';
 import '../ej2-grid.css'
 import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion } from '../../../uitilities/utilities';
-import style from './ProductManagement.module.css';
+import style from './ProductImportManagement.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
-import ProductEdit from './ProductEdit';
+import ProductImportEdit from './ProductImportEdit';
 import ToastContainer, { toast } from 'react-light-toast';
 
-function ProductManagement(props) {
+function ProductImportManagement(props) {
 
     const [viewMode, setViewMode] = useState('add');
-
-
-    props.changeHeader('employee')
-    let navigate = useNavigate();
-
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
             notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
@@ -34,10 +29,13 @@ function ProductManagement(props) {
         }
     }, [])
 
+    props.changeHeader('employee')
+    let navigate = useNavigate();
+
     const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [carts, setCarts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
-    const [selectedCart, setSelectedCart] = useState({});
+    const [selectedImport, setSelectedImport] = useState({});
     const grid = useRef();
     const [rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
@@ -49,37 +47,35 @@ function ProductManagement(props) {
 
         try {
             setIsLoading(true);
-            let url = `${process.env.REACT_APP_API_URL}/api/SanPham/all?top=`;
+            let url = `${process.env.REACT_APP_API_URL}/api/NhapHang/all?top=`;
 
             console.log(url)
             axios.get(url).then(res => {
-                const productsFromAPI = res.data;
-                // console.log(productsFromAPI);
-                productsFromAPI.forEach((product) => {
-                    if (product.NGAY_TAO) {
-                        let date = new Date(product.NGAY_TAO);
-                        product.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                const phieuNhapFromAPI = res.data;
+                // console.log(phieuNhapFromAPI);
+                phieuNhapFromAPI.forEach((phieuNhap) => {
+                    if (phieuNhap.NGAY_TAO) {
+                        let date = new Date(phieuNhap.NGAY_TAO);
+                        phieuNhap.NGAY_TAO = date.toLocaleDateString('vi-VN');
                     }
-                    if (product.SIZE_STR) {
-                        product.SIZE_STR = product.SIZE_STR.substr(1)
+
+                    if (phieuNhap.TRANG_THAI === 0) {
+                        phieuNhap.TRANG_THAI_STR = 'Chờ duyệt';
                     }
-                    // if (product.TRANG_THAI === 0) {
-                    //     product.TRANG_THAI_STR = 'Chờ duyệt';
-                    // }
-                    // if (product.TRANG_THAI === 1) {
-                    //     product.TRANG_THAI_STR = 'Đang giao hàng';
-                    // }
-                    // if (product.TRANG_THAI === 2) {
-                    //     product.TRANG_THAI_STR = 'Đã hoàn tất';
-                    // }
-                    // if (product.TRANG_THAI === -1) {
-                    //     product.TRANG_THAI_STR = 'Đã hủy';
-                    // }
+                    if (phieuNhap.TRANG_THAI === 1) {
+                        phieuNhap.TRANG_THAI_STR = 'Đang giao hàng';
+                    }
+                    if (phieuNhap.TRANG_THAI === 2) {
+                        phieuNhap.TRANG_THAI_STR = 'Đã hoàn tất';
+                    }
+                    if (phieuNhap.TRANG_THAI === -1) {
+                        phieuNhap.TRANG_THAI_STR = 'Đã hủy';
+                    }
                 })
-                // console.log(productsFromAPI);
-                setCarts(productsFromAPI);
-                console.log(productsFromAPI);
-                grid.current.dataSource = productsFromAPI;
+                // console.log(phieuNhapFromAPI);
+                setCarts(phieuNhapFromAPI);
+                console.log(phieuNhapFromAPI);
+                grid.current.dataSource = phieuNhapFromAPI;
                 setIsLoading(false);
             });
 
@@ -116,8 +112,8 @@ function ProductManagement(props) {
 
             // console.log(selectedrowindex[0] + " : " +  JSON.stringify(selectedrecords[0]));
 
-            setSelectedCart(JSON.parse(JSON.stringify(selectedrecords[0])));
-            // console.log("selectedRowData:", selectedCart);
+            setSelectedImport(JSON.parse(JSON.stringify(selectedrecords[0])));
+            // console.log("selectedRowData:", selectedImport);
         }
     }
 
@@ -126,7 +122,7 @@ function ProductManagement(props) {
     }
     const openDialogFnc = (paramViewMode) => {
         console.log('fired', paramViewMode)
-        if (!selectedCart.MA_SP && paramViewMode !== 'add') {
+        if (!selectedImport.MA_PN && paramViewMode !== 'add') {
             return;
         }
         setViewMode(paramViewMode)
@@ -150,7 +146,7 @@ function ProductManagement(props) {
     const onFiltering = (e) => {
         let query = new Query();
         //frame the query based on search string with filter type.
-        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'contains', e.text, true) : query;
+        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'startswith', e.text, true) : query;
         //pass the filter data source, filter query to updateData method.
         e.updateData(dropdpwnData, query);
     };
@@ -159,41 +155,41 @@ function ProductManagement(props) {
         setFilterState(dropdownList.current.value);
         console.log(filterState);
     }
-    const deleteProduct = () => {
-        if (!selectedCart.MA_SP) {
-            return;
-        }
-        console.log(`${process.env.REACT_APP_API_URL}/api/SanPham/delete`)
-        try {
-            axios.delete(`${process.env.REACT_APP_API_URL}/api/SanPham/delete?productId=${selectedCart.MA_SP}`
-            ).then(res => {
-                const response = res.data;
-                console.log('res delete: ' + response);
+    // const deleteProduct = () => {
+    //     if (!selectedImport.MA_SP) {
+    //         return;
+    //     }
+    //     console.log(`${process.env.REACT_APP_API_URL}/api/SanPham/delete`)
+    //     try {
+    //         axios.delete(`${process.env.REACT_APP_API_URL}/api/SanPham/delete?productId=${selectedImport.MA_SP}`
+    //         ).then(res => {
+    //             const response = res.data;
+    //             console.log('res delete: ' + response);
 
 
-                if (response.errorDesc) {
-                    notify(response.errorDesc);
-                } else {
-                    notify(response.responseMessage);
-                    setRerender(!rerender);
-                }
-            });
-        } catch (error) {
-            console.error(error);
-        }
+    //             if (response.errorDesc) {
+    //                 notify(response.errorDesc);
+    //             } else {
+    //                 notify(response.responseMessage);
+    //                 setRerender(!rerender);
+    //             }
+    //         });
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
 
-    }
+    // }
     return (
         <div className={clsx(style.ProductManagement)}>
             <div className={clsx(style.top)}>
                 <ToastContainer />
             </div>
             <SectionTitle title={
-                'Quản lý sản phẩm'} />
+                'Quản lý nhập hàng'} />
             <div className={clsx(style.toolBar)}>
                 {/* <button onClick={() => {
                     approve();
-                }} className={clsx(style.checkButton, { [style.inActive]: selectedCart.TRANG_THAI !== 0 })}>
+                }} className={clsx(style.checkButton, { [style.inActive]: selectedImport.TRANG_THAI !== 0 })}>
                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
                 </button> */}
                 {/* {((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
@@ -213,15 +209,15 @@ function ProductManagement(props) {
                 <button onClick={() => {
                     openDialogFnc('add');
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
-                <button onClick={() => {
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedImport })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button> */}
+                {/* <button onClick={() => {
                     deleteProduct();
-                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
+                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedImport })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button> */}
                 <button onClick={() => {
                     openDialogFnc('view');
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedImport })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>
@@ -246,21 +242,16 @@ function ProductManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_SP' headerTextAlign='Center' headerText='Mã SP' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" />
-                    <ColumnDirective field='TEN_TL' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" />
-                    <ColumnDirective field='SIZE_STR' headerTextAlign='Center' headerText='Size/ Màu' width='200' textAlign="Left" />
+                    <ColumnDirective field='MA_PN' headerTextAlign='Center' headerText='Mã PN' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='MA_SP' headerTextAlign='Center' headerText='Mã SP nhập' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP nhập' width='200' textAlign="Left" />
+                    <ColumnDirective field='TONG_SO_LUONG' headerTextAlign='Center' headerText='Tổng SL nhập' width='150' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='TONG_GIA_NHAP' headerTextAlign='Center' headerText='Tổng giá nhập' width='200' textAlign="Left" />
 
                     <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='LUOT_XEM' headerTextAlign='Center' headerText='Lượt xem' width='150' textAlign="Left" />
-                    {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
-                    {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                    <ColumnDirective field='HINH_ANH' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" />
-                    <ColumnDirective field='MO_TA' headerTextAlign='Center' headerText='Mô tả' width='150' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
-
-                    {/* <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
-                        <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" /> */}
-
+                    <ColumnDirective field='GHI_CHU' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
+                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Họ tên NV tạo' width='150' textAlign="Left" />
 
                 </ColumnsDirective>
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
@@ -268,9 +259,9 @@ function ProductManagement(props) {
             }
 
 
-            {openDialog && <ProductEdit productId={selectedCart.MA_SP} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
+            {openDialog && <ProductImportEdit importId={selectedImport.MA_PN} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
     );
 }
 
-export default ProductManagement;
+export default ProductImportManagement;

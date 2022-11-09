@@ -77,43 +77,7 @@ function CartManagement(props) {
 
     let editOptions, toolbarOptions;
 
-    // console.log(grid.current);
-    {//     function actionBegin(args){
-        //         if (grid.current && (args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const cols = grid.current.columns;
-        //             for (const col of cols) {
-        //                 if (col.field === "MA_SP") {
-        //                     col.visible = true;
-        //                 }
-        //                 else if (col.field === "LUOT_XEM") {
-        //                     col.visible = false;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //     function actionComplete(args) {
-        //         if ((args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const dialog = args.dialog;
-        //             dialog.showCloseIcon = false;
-        //             dialog.height = 500;
-        //             dialog.width = 600;
-        //             // change the header of the dialog
-        //             dialog.header = args.requestType === 'beginEdit' ? 'Chỉnh sửa sản phẩm ' + args.rowData['TEN_SP'] : 'Sản phẩm mới';
-        //         }
-        // // trả lại cột luot xem
-        //         if (grid.current && (args.requestType === 'beginEdit' || args.requestType === 'add')) {
-        //             const cols = grid.current.columns;
-        //             for (const col of cols) {
 
-        //                 if (col.field === "LUOT_XEM") {
-        //                     col.visible = true;
-        //             }
-        //         }
-        //     }
-        // }
-        // actionBegin = actionBegin.bind(this);
-        // actionComplete = actionComplete.bind(this);
-    }
     editOptions = { /*allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' */ };
     let pageSettings = { pageSize: 8 };
     let filterOptions = {
@@ -338,10 +302,10 @@ function CartManagement(props) {
             </div>
 
             {/* <TooltipComponent ref={tooltip} target='.e-rowcell' beforeRender={(args) => { beforeRender(args) }}></TooltipComponent> */}
-            
+
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
-            </div>:<></>}
+            </div> : <></>}
             {JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ?
 
                 <GridComponent ref={grid}
@@ -398,6 +362,8 @@ function CartManagement(props) {
                         {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
                         <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email người nhận' width='200' textAlign="Left" />
                         <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                        <ColumnDirective field='NGAY_GIAO' headerTextAlign='Center' headerText='Ngày giao' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+
                         <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
                         <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
 

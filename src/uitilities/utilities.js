@@ -1,23 +1,24 @@
 import moment from 'moment';
 import { L10n } from '@syncfusion/ej2-base';
-const intToVNDCurrencyFormat = (number, withSymbol)=>{
+
+const intToVNDCurrencyFormat = (number, withSymbol) => {
     let result;
-    if(typeof number === 'string'){
+    if (typeof number === 'string') {
         number.trim();
         number = parseInt(number);
     }
     result = number.toLocaleString('it-IT', { style: 'currency', currency: 'VND' }) + "";
-    
-    if(withSymbol){
+
+    if (withSymbol) {
         result = result.substring(0, result.length - 4) + " ₫";
-    }else{
+    } else {
         result = result.substring(0, result.length - 4);
     }
 
     return result;
 }
 
-const modifyKeyword = (keyword)=>{
+const modifyKeyword = (keyword) => {
     let result;
     result = keyword;
     result = result.trim();
@@ -26,10 +27,10 @@ const modifyKeyword = (keyword)=>{
     // console.log("res:",result)
     return result;
 }
-const removeSyncfusionLicenseMessage=()=>{
+const removeSyncfusionLicenseMessage = () => {
     var script = document.createElement("script");
-    script.innerHTML=
-    `
+    script.innerHTML =
+        `
         var element = document.getElementById('js-licensing');
         if(element){
             element.remove();
@@ -40,16 +41,16 @@ const removeSyncfusionLicenseMessage=()=>{
 
 }
 
-const newInvoiceIdByDate=()=>{
+const newInvoiceIdByDate = () => {
     const date = moment().format('DDMMyyyyhhmmss');
-    const res = "HD"+date;
-return res;
+    const res = "HD" + date;
+    return res;
 }
 
-const newIdByDate=(prefix)=>{
+const newIdByDate = (prefix) => {
     const date = moment().format('DDMMyyyyhhmmss');
     const res = prefix + date;
-return res;
+    return res;
 }
 
 // const removeAccent = (str) => {
@@ -72,7 +73,7 @@ return res;
 //     str = str.replace(/\u02C6|\u0306|\u031B/g, ""); // mũ â (ê), mũ ă, mũ ơ (ư)
 // 	return str;
 // }
-const loadLocaleSyncfusion = ()=>{
+const loadLocaleSyncfusion = () => {
     L10n.load({
         'vi-VN': {
             "grid": {
@@ -179,7 +180,7 @@ const loadLocaleSyncfusion = ()=>{
             },
             datepicker: {
                 placeholder: "Nhập ngày",
-                today:"Hôm nay"
+                today: "Hôm nay"
             },
             'multi-select': {
                 'actionFailureTemplate': "Lỗi thực thi",
@@ -189,5 +190,41 @@ const loadLocaleSyncfusion = ()=>{
     });
 }
 const isValidPhone = phone => /(([03+[2-9]|05+[6|8|9]|07+[0|6|7|8|9]|08+[1-9]|09+[1-4|6-9]]){3})+[0-9]{7}\b/g.test(phone)
-export {isValidPhone, newIdByDate}
-export {intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion}
+
+const DateDiff = {
+    inSeconds: function (d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+
+        return Math.floor((t2 - t1) / 1000);
+    },
+    inDays: function (d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+
+        return Math.floor((t2 - t1) / (24 * 3600 * 1000));
+    },
+
+    inWeeks: function (d1, d2) {
+        var t2 = d2.getTime();
+        var t1 = d1.getTime();
+
+        return parseInt((t2 - t1) / (24 * 3600 * 1000 * 7));
+    },
+
+    inMonths: function (d1, d2) {
+        var d1Y = d1.getFullYear();
+        var d2Y = d2.getFullYear();
+        var d1M = d1.getMonth();
+        var d2M = d2.getMonth();
+
+        return (d2M + 12 * d2Y) - (d1M + 12 * d1Y);
+    },
+
+    inYears: function (d1, d2) {
+        return d2.getFullYear() - d1.getFullYear();
+    }
+}
+
+export { isValidPhone, newIdByDate, DateDiff }
+export { intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion }
