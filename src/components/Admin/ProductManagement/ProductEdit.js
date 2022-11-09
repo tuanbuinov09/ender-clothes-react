@@ -27,7 +27,7 @@ function ProductEdit(props) {
     const [categories, setCategories] = useState([]);
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
-    const [errorMessage, setErrorMessage] = useState({ errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "", errorHINH_ANH_CHITIET:"", errorHINH_ANH_CHUNG:"" });
+    const [errorMessage, setErrorMessage] = useState({ errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "", errorHINH_ANH_CHITIET: "", errorHINH_ANH_CHUNG: "" });
 
 
     removeSyncfusionLicenseMessage();
@@ -59,9 +59,9 @@ function ProductEdit(props) {
         })
         setProduct({ ...product, hinhAnhSanPham: initHinhAnhSanPham })
     }
-    
+
     useEffect(() => {
-        if(!JSON.parse(localStorage.getItem('employee')).MA_NV){
+        if (!JSON.parse(localStorage.getItem('employee')).MA_NV) {
             navigate("/employee/login", true);
             notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             return;
@@ -124,134 +124,9 @@ function ProductEdit(props) {
 
 
     }, []);
-    let pageSettings = { pageSize: 6 };
-    let filterOptions = {
-        // type: 'Menu' // default là input
-        type: 'Excel'
-    };
-    // L10n.load({
-    //     'vi-VN': {
-    //         "grid": {
-    //             "EmptyRecord": "Không có mục nào để hiển thị",
-    //             "True": "Đúng",
-    //             "False": "Sai",
-    //             "InvalidFilterMessage": "Dữ liệu bộ lọc không hợp lệ",
-    //             "GroupDropArea": "Kéo một tiêu đề cột ở đây để nhóm cột của nó",
-    //             "UnGroup": "Nhấn vào đây để hủy nhóm",
-    //             "GroupDisable": "Nhóm bị vô hiệu hóa cho cột này",
-    //             "FilterbarTitle": "\"Lọc tiêu đề",
-    //             "EmptyDataSourceError": "DataSource không được để trống khi tải ban đầu vì các cột được tạo từ dataSource trong Lưới cột AutoGenerate",
-    //             "Add": "Thêm mới",
-    //             "Edit": "Chỉnh sửa",
-    //             "Cancel": "Hủy bỏ",
-    //             "Update": "Cập nhật",
-    //             "Delete": "Xóa bỏ",
-    //             "Print": "In",
-    //             "Pdfexport": "Xuất PDF",
-    //             "Excelexport": "Xuất file Excel",
-    //             "Wordexport": "Xuất từ",
-    //             "Csvexport": "Xuất CSV",
-    //             "Search": "Tìm kiếm",
-    //             "Columnchooser": "Cột",
-    //             "Save": "Lưu",
-    //             "Item": "mục",
-    //             "Items": "mặt hàng",
-    //             "EditOperationAlert": "Không có bản ghi nào được chọn cho thao tác chỉnh sửa",
-    //             "DeleteOperationAlert": "Không có bản ghi nào được chọn cho hoạt động xóa",
-    //             "SaveButton": "Lưu",
-    //             "OKButton": "Đồng ý",
-    //             "CancelButton": "Hủy bỏ",
-    //             "EditFormTitle": "Chi tiết của",
-    //             "AddFormTitle": "Thêm bản ghi mới",
-    //             "BatchSaveConfirm": "Bạn có chắc chắn muốn lưu các thay đổi?",
-    //             "BatchSaveLostChanges": "Những thay đổi chưa được lưu sẽ bị mất. Bạn có chắc chắn muốn tiếp tục?",
-    //             "ConfirmDelete": "Bạn có chắc chắn muốn xóa Bản ghi?",
-    //             "CancelEdit": "Bạn có chắc chắn muốn Hủy bỏ các thay đổi?",
-    //             "ChooseColumns": "Chọn cột",
-    //             "SearchColumns": "cột tìm kiếm",
-    //             "Matchs": "Lọc kết quả tìm thấy",
-    //             "FilterButton": "OK",
-    //             "ClearButton": "Hủy",
-    //             "StartsWith": "Bắt đầu với",
-    //             "EndsWith": "Kết thúc với",
-    //             "Contains": "Bao gồm",
-    //             "Equal": "Bằng",
-    //             "NotEqual": "Không bằng",
-    //             "LessThan": "Ít hơn",
-    //             "LessThanOrEqual": "Nhỏ hơn hoặc bằng",
-    //             "GreaterThan": "Lớn hơn",
-    //             "GreaterThanOrEqual": "Lớn hơn hoặc bằng",
-    //             "ChooseDate": "Chọn một ngày",
-    //             "EnterValue": "Nhập giá trị",
-    //             "Copy": "Sao chép",
-    //             "Group": "Nhóm theo cột này",
-    //             "Ungroup": "Ungroup theo cột này",
-    //             "autoFitAll": "Tự động điều chỉnh tất cả các cột",
-    //             "autoFit": "Tự động điều chỉnh cột này",
-    //             "Export": "Xuất",
-    //             "FirstPage": "Trang đầu",
-    //             "LastPage": "Trang cuối",
-    //             "PreviousPage": "Trang trước",
-    //             "NextPage": "Trang tiếp theo",
-    //             "SortAscending": "Sắp xếp tăng dần",
-    //             "SortDescending": "Sắp xếp giảm dần",
-    //             "EditRecord": "Chỉnh sửa bản ghi",
-    //             "DeleteRecord": "Xóa bản ghi",
-    //             "FilterMenu": "Bộ lọc",
-    //             "SelectAll": "Chọn tất cả",
-    //             "Blanks": "Khoảng trống",
-    //             "FilterTrue": "Đúng",
-    //             "FilterFalse": "Sai",
-    //             "NoResult": "Lọc kết quả tìm thấy",
-    //             "ClearFilter": "Bỏ lựa chọn lọc",
-    //             "NumberFilter": "Bộ lọc số",
-    //             "TextFilter": "Bộ lọc văn bản",
-    //             "DateFilter": "Bộ lọc ngày",
-    //             "DateTimeFilter": "Bộ lọc DateTime",
-    //             "MatchCase": "Trường hợp phù hợp",
-    //             "Between": "Giữa",
-    //             "CustomFilter": "Bộ lọc tùy chỉnh",
-    //             "CustomFilterPlaceHolder": "Nhập giá trị",
-    //             "CustomFilterDatePlaceHolder": "Chọn một ngày",
-    //             "AND": "VÀ",
-    //             "OR": "HOẶC LÀ",
-    //             "ShowRowsWhere": "Hiển thị các hàng trong đó:"
-    //         },
-    //         "pager": {
-    //             "currentPageInfo": "{0} trên {1} trang",
-    //             // "totalItemsInfo": "({0} dòng)",
-    //             "totalItemsInfo": "Tổng số dòng: {0}",
-    //             "firstPageTooltip": "Đến trang đầu tiên",
-    //             "lastPageTooltip": "Đến trang cuối",
-    //             "nextPageTooltip": "Chuyển đến trang tiếp theo",
-    //             "previousPageTooltip": "Chuyển đến trang trước",
-    //             "nextPagerTooltip": "Đi đến máy nhắn tin tiếp theo",
-    //             "previousPagerTooltip": "Đi đến máy nhắn tin trước",
-    //             "pagerDropDown": "Dòng hiển thị",
-    //             "pagerAllDropDown": "Bản ghi",
-    //             "All": "Tất cả",
-    //             // "totalItemInfo": "({0} dòng)"
-    //             "totalItemInfo": "{0} dòng"
-    //         },
-    //     }
-    // });
 
+    //chỉnh ngôn ngữ thư viện thành tiếng việt
     loadLocaleSyncfusion();
-    // const finish = () => {
-    //     try {
-    //         axios.put(`http://localhost:22081/api/NhanVien/finish-cart`, {
-    //             ID_GH: cart.ID_GH
-    //         }).then(res => {
-    //             const response = res.data;
-    //             // console.log('res: ' + response);
-    //             setCart({ ...cart, TRANG_THAI: 2, TRANG_THAI_STR: 'Đã hoàn tất' })
-    //             notify("Giao đơn hàng thành công");
-    //             props.rerender();
-    //         });
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-    // }
 
     const validate = () => {
         //console.log(product, categoryDropdownList.current.value, multiSelectColors.current.value, multiSelectSizes.current.value)
@@ -284,7 +159,7 @@ function ProductEdit(props) {
         }
         if (
             product.hinhAnhSanPham.some(item => !item.HINH_ANH)//nếu có màu chưa có hình ảnh
-            ) {
+        ) {
             tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHITIET: "*Vui lòng chọn hình ảnh chi tiết cho tất cả các màu" }
             // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
             hasError = true;
@@ -297,20 +172,20 @@ function ProductEdit(props) {
         let idx = 0;
         let next = detailFileInputRefs.current[idx];
         if (next) {
-          console.log('file upload cmpnt: ',next);
-          next.uploadHandler(); //upload ảnh từ cmpnt FileUploadComponent
+            console.log('file upload cmpnt: ', next);
+            next.uploadHandler(); //upload ảnh từ cmpnt FileUploadComponent
         }
-        while(next){
-            idx = idx + 1; 
+        while (next) {
+            idx = idx + 1;
             next = detailFileInputRefs.current[idx];
             if (next) {
-                console.log('file upload cmpnt: ',next);
+                console.log('file upload cmpnt: ', next);
                 next.uploadHandler();
             }
         }
     };
 
-    const uploadGeneralFileUpload = ()=>{
+    const uploadGeneralFileUpload = () => {
         console.log('general file cmpnt: ', generalFileInputRef.current);
         generalFileInputRef.current.uploadHandler();
     }
@@ -338,10 +213,12 @@ function ProductEdit(props) {
 
         console.log('pass', chiTietSP, `${process.env.REACT_APP_API_URL}/api/SanPham/add`)
         try {
-            axios.post(`${process.env.REACT_APP_API_URL}/api/SanPham/add`, {...product, 
-            chiTietSanPham: chiTietSP,
-            //mã nhân viên tạo sản phẩm
-            MA_NV : JSON.parse(localStorage.getItem('employee')).MA_NV }
+            axios.post(`${process.env.REACT_APP_API_URL}/api/SanPham/add`, {
+                ...product,
+                chiTietSanPham: chiTietSP,
+                //mã nhân viên tạo sản phẩm
+                MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
+            }
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);
@@ -352,27 +229,6 @@ function ProductEdit(props) {
                 // })
                 notify("Thêm sản phẩm thành công");
 
-                props.rerender();
-            });
-        } catch (error) {
-            console.error(error);
-        }
-
-    }
-
-    const cancel = () => {
-        if (product.TRANG_THAI === -1 || product.TRANG_THAI === 1 || product.TRANG_THAI === 2) {
-            notify("Đơn hàng đã được duyệt, không thể hủy.");
-            return;
-        }
-        try {
-            axios.put(`http://localhost:22081/api/KhachHang/cancel-product`, {
-                ID_GH: product.ID_GH
-            }).then(res => {
-                const response = res.data;
-                // console.log('res: ' + response);
-                setProduct({ ...product, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' })
-                notify("Hủy đơn hàng thành công");
                 props.rerender();
             });
         } catch (error) {
@@ -392,11 +248,6 @@ function ProductEdit(props) {
         e.updateData(categories, query);
     };
 
-    // const closePreparePrintDialog = () => {
-    //     setPreparePrint(false);
-    // }
-
-
     const getTitle = () => {
         return props.viewMode === 'view' ? `Chi tiết sản phẩm ${props.productId}` : props.viewMode === 'edit' ? `Chỉnh sửa sản phẩm ${props.productId}` : `Thêm mới sản phẩm`
     }
@@ -412,9 +263,9 @@ function ProductEdit(props) {
         console.log('11111111111', file)
 
         let oldProduct = product;
-        oldProduct.hinhAnhSanPham.find(item=>{
+        oldProduct.hinhAnhSanPham.find(item => {
             return item.MA_MAU === file.field //field là mã màu
-        }).HINH_ANH = file.file.name; 
+        }).HINH_ANH = file.file.name;
         setProduct(oldProduct);
 
         // setProduct({ ...product, hinhAnhSanPham: [...product.hinhAnhSanPham, { MA_MAU: file.field, HINH_ANH: file.file.name }] })
@@ -535,15 +386,15 @@ function ProductEdit(props) {
                             value={product.MO_TA} name='MO_TA' className={clsx(style.input)} />
                         {<p className={clsx(style.errorMessage)}>{errorMessage.errorMO_TA}</p>}
                     </div>
-                    
+
                 </div>
 
                 <div className={clsx(style.inputGroup)}>
-                    <FileUploadComponent 
-                        ref={generalFileInputRef} 
-                        field={'HINH_ANH_CHUNG'} 
-                        title = {'Chọn hình ảnh chung'} 
-                        onSelectedOptionsChange={generalFileChange} 
+                    <FileUploadComponent
+                        ref={generalFileInputRef}
+                        field={'HINH_ANH_CHUNG'}
+                        title={'Chọn hình ảnh chung'}
+                        onSelectedOptionsChange={generalFileChange}
                         showUploadButton={false}
                     />
                     {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHUNG}</p>}
@@ -554,12 +405,12 @@ function ProductEdit(props) {
                         product.hinhAnhSanPham.map((item, index) => {
                             return (
                                 <div className={clsx(style.inputGroup)} key={index} >
-                                    <FileUploadComponent 
-                                        ref={el => detailFileInputRefs.current[index] = el} 
-                                        field={item.MA_MAU} 
-                                        title = {colors.find(color => color.MA_MAU === item.MA_MAU).TEN_MAU} 
+                                    <FileUploadComponent
+                                        ref={el => detailFileInputRefs.current[index] = el}
+                                        field={item.MA_MAU}
+                                        title={colors.find(color => color.MA_MAU === item.MA_MAU).TEN_MAU}
                                         onSelectedOptionsChange={detailFileChange}
-                                        showUploadButton={false}    
+                                        showUploadButton={false}
                                     />
                                 </div>
                             )

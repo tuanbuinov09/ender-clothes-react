@@ -20,7 +20,7 @@ function UserPurchasedCart(props) {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedCart, setSelectedCart] = useState({});
     const grid = useRef();
-    const[rerender, setRerender] = useState();
+    const [rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
@@ -34,6 +34,10 @@ function UserPurchasedCart(props) {
                     if (cart.NGAY_TAO) {
                         let date = new Date(cart.NGAY_TAO);
                         cart.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                    }
+                    if (cart.NGAY_GIAO) {
+                        let date = new Date(cart.NGAY_GIAO);
+                        cart.NGAY_GIAO = date.toLocaleDateString('vi-VN');
                     }
                     if (cart.TRANG_THAI === 0) {
                         cart.TRANG_THAI_STR = 'Chờ duyệt';
@@ -194,7 +198,7 @@ function UserPurchasedCart(props) {
         }
     }
 
-    
+
     const closeDialog = () => {
         setOpenDialog(false);
     }
@@ -204,7 +208,7 @@ function UserPurchasedCart(props) {
     const toggleReRender = () => {
         setRerender(!rerender);
     }
-    
+
     const dropdownList = useRef();
     let dropdpwnData = [
         { TRANG_THAI: -2, TRANG_THAI_STR: 'Tất cả' },
@@ -218,12 +222,12 @@ function UserPurchasedCart(props) {
     const onFiltering = (e) => {
         let query = new Query();
         //frame the query based on search string with filter type.
-        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'startswith', e.text, true) : query;
+        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'contains', e.text, true) : query;
         //pass the filter data source, filter query to updateData method.
         e.updateData(dropdpwnData, query);
     };
 
-    const onChange = ()=>{
+    const onChange = () => {
         setFilterState(dropdownList.current.value);
         console.log(filterState);
     }
@@ -240,10 +244,10 @@ function UserPurchasedCart(props) {
                 <div className={clsx(style.dropdownList)}>
                     <div className='control-section'>
                         <div id='filtering'>
-                            <DropDownListComponent id="employeeDelivery" ref={dropdownList} 
-                            dataSource={dropdpwnData} filtering={onFiltering} filterBarPlaceholder='Tìm trạng thái' 
-                            allowFiltering={true} fields={fields} placeholder="Trạng thái" popupHeight="220px" 
-                            change={onChange}/>
+                            <DropDownListComponent id="employeeDelivery" ref={dropdownList}
+                                dataSource={dropdpwnData} filtering={onFiltering} filterBarPlaceholder='Tìm trạng thái'
+                                allowFiltering={true} fields={fields} placeholder="Trạng thái" popupHeight="220px"
+                                change={onChange} />
                         </div>
                     </div>
 
@@ -257,7 +261,7 @@ function UserPurchasedCart(props) {
             </div>
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
-            </div>:<></>}
+            </div> : <></>}
             <GridComponent ref={grid}
                 toolbar={toolbarOptions}
                 showColumnChooser={true}
@@ -273,13 +277,15 @@ function UserPurchasedCart(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    {/* <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /> */}{/*isPrimaryKey={true}*/ }
+                    {/* <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /> */}{/*isPrimaryKey={true}*/}
                     <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" />
                     <ColumnDirective field='SDT' headerTextAlign='Center' headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" />
                     {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
                     {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
                     <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email người nhận' width='200' textAlign="Left" />
                     <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                    <ColumnDirective field='NGAY_GIAO' headerTextAlign='Center' headerText='Ngày giao' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+
                     <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
                     <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
                     {/* <ColumnDirective field='MA_NV_DUYET' headerTextAlign='Center' headerText='Mã NV duyệt' width='160' textAlign="Left" /> */}

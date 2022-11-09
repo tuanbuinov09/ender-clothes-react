@@ -89,6 +89,9 @@ font-weight: bolder;
 .saveButton{
     background-color:#008829;
 }
+.finishButton{
+    width: 110px;
+}
 .btnCheckContainer{
     display:  flex;
     justify-content: flex-end;

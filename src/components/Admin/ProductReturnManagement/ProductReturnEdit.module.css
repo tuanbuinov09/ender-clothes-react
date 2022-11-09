@@ -321,6 +321,7 @@ svg{
     padding: 4px 12px 4px 0px;
     font-size: 14px;
     height: 31px;
+    width: 100%;
 }
 
 
@@ -339,4 +340,25 @@ svg{
 
 .totalLabel{
     font-size: 12px;
+}
+
+
+/* return prod */
+
+.customerCarts{
+    max-width: 100%;
+    padding-right: 20px;
+}
+
+.toolBar{
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding-right: 20px;
+    margin-bottom: 8px;
+}
+
+.selectButton{
+    background-color:#088699 ;
+    border: none;
 }

@@ -234,8 +234,8 @@ function CartDetail(props) {
     }
 
     const cancel = () => {
-     if(cart.TRANG_THAI === -1||cart.TRANG_THAI === 1||cart.TRANG_THAI === 2){
-         notify("Đơn hàng đã được duyệt, không thể hủy.");
+        if (cart.TRANG_THAI === -1 || cart.TRANG_THAI === 1 || cart.TRANG_THAI === 2) {
+            notify("Đơn hàng đã được duyệt, không thể hủy.");
             return;
         }
         try {
@@ -304,7 +304,7 @@ function CartDetail(props) {
                     </button> */}
                                 <button onClick={() => {
                                     save();
-                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI !== 0})}>
+                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
                                     <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
                                 </button>
 
@@ -323,7 +323,7 @@ function CartDetail(props) {
                             : JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' && props.type !== "userViewing" ? <>
                                 <button onClick={() => {
                                     finish();
-                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
+                                }} className={clsx(style.checkButton, style.saveButton, style.finishButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
                                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Hoàn tất
                                 </button>
                             </> :
@@ -439,6 +439,7 @@ function CartDetail(props) {
                             <ColumnsDirective>
                                 <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
                                 <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TEN_MAU' headerTextAlign='Center' headerText='Màu' width='100' textAlign="Left" />
                                 <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
                                 <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
                                 <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
