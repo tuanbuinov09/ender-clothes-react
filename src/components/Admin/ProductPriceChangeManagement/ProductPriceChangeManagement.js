@@ -5,17 +5,17 @@ import { CheckIcon, ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../i
 import axios from 'axios';
 import '../ej2-grid.css'
 import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion, intToVNDCurrencyFormat } from '../../../uitilities/utilities';
-import style from './ProductImportManagement.module.css';
+import style from './ProductPriceChangeManagement.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
-import ProductImportEdit from './ProductImportEdit';
+import ProductPriceChangeEdit from './ProductPriceChangeEdit';
 import ToastContainer, { toast } from 'react-light-toast';
 
-function ProductImportManagement(props) {
+function ProductPriceChangeManagement(props) {
 
     const [viewMode, setViewMode] = useState('add');
     useEffect(() => {
@@ -47,20 +47,23 @@ function ProductImportManagement(props) {
 
         try {
             setIsLoading(true);
-            let url = `${process.env.REACT_APP_API_URL}/api/NhapHang/all?top=`;
+            let url = `${process.env.REACT_APP_API_URL}/api/ThayDoiGia/all?top=`;
 
             console.log(url)
             axios.get(url).then(res => {
-                const phieuNhapFromAPI = res.data;
-                // console.log(phieuNhapFromAPI);
-                phieuNhapFromAPI.forEach((phieuNhap) => {
-                    if (phieuNhap.NGAY_TAO) {
-                        let date = new Date(phieuNhap.NGAY_TAO);
-                        phieuNhap.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                const thayDoiGiaFromAPI = res.data;
+                // console.log(thayDoiGiaFromAPI);
+                thayDoiGiaFromAPI.forEach((phieuNhap) => {
+                    if (phieuNhap.NGAY_THAY_DOI) {
+                        let date = new Date(phieuNhap.NGAY_THAY_DOI);
+                        phieuNhap.NGAY_THAY_DOI = date.toLocaleDateString('vi-VN');
                     }
-                    if (phieuNhap.TONG_GIA_NHAP) {
 
-                        phieuNhap.TONG_GIA_NHAP = intToVNDCurrencyFormat(phieuNhap.TONG_GIA_NHAP, true);
+                    if (phieuNhap.GIA) {
+                        phieuNhap.GIA = intToVNDCurrencyFormat(phieuNhap.GIA, true);
+                    }
+                    if (phieuNhap.GIA_THAY_DOI) {
+                        phieuNhap.GIA_THAY_DOI = intToVNDCurrencyFormat(phieuNhap.GIA_THAY_DOI, true);
                     }
 
                     if (phieuNhap.TRANG_THAI === 0) {
@@ -76,10 +79,10 @@ function ProductImportManagement(props) {
                         phieuNhap.TRANG_THAI_STR = 'Đã hủy';
                     }
                 })
-                // console.log(phieuNhapFromAPI);
-                setCarts(phieuNhapFromAPI);
-                console.log(phieuNhapFromAPI);
-                grid.current.dataSource = phieuNhapFromAPI;
+                // console.log(thayDoiGiaFromAPI);
+                setCarts(thayDoiGiaFromAPI);
+                console.log(thayDoiGiaFromAPI);
+                grid.current.dataSource = thayDoiGiaFromAPI;
                 setIsLoading(false);
             });
 
@@ -189,7 +192,7 @@ function ProductImportManagement(props) {
                 <ToastContainer />
             </div>
             <SectionTitle title={
-                'Quản lý nhập hàng'} />
+                'Quản lý thay đổi giá'} />
             <div className={clsx(style.toolBar)}>
                 {/* <button onClick={() => {
                     approve();
@@ -246,14 +249,15 @@ function ProductImportManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_PN' headerTextAlign='Center' headerText='Mã PN' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='MA_SP' headerTextAlign='Center' headerText='Mã SP nhập' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP nhập' width='200' textAlign="Left" />
-                    <ColumnDirective field='TONG_SO_LUONG' headerTextAlign='Center' headerText='Tổng SL nhập' width='150' editType='dropdownedit' textAlign="Left" />
-                    <ColumnDirective field='TONG_GIA_NHAP' headerTextAlign='Center' headerText='Tổng giá nhập' width='200' textAlign="Left" />
+                    <ColumnDirective field='MA_SP' headerTextAlign='Center' headerText='Mã SP' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" />
+                    <ColumnDirective field='TEN_MAU' headerTextAlign='Center' headerText='Màu' width='120' textAlign="Left" />
+                    <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='120' textAlign="Left" />
+                    <ColumnDirective field='GIA' headerTextAlign='Center' headerText='Giá trước thay đổi' width='250' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='GIA_THAY_DOI' headerTextAlign='Center' headerText='Giá sau thay đổi' width='250' textAlign="Left" />
 
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='GHI_CHU' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
+                    <ColumnDirective field='NGAY_THAY_DOI' headerTextAlign='Center' headerText='Ngày thay đổi' width='200' textAlign="Left" />
+                    {/* <ColumnDirective field='GHI_CHU' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" /> */}
                     <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
                     <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Họ tên NV tạo' width='150' textAlign="Left" />
 
@@ -263,9 +267,9 @@ function ProductImportManagement(props) {
             }
 
 
-            {openDialog && <ProductImportEdit importId={selectedImport.MA_PN} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
+            {openDialog && <ProductPriceChangeEdit importId={selectedImport.MA_PN} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
     );
 }
 
-export default ProductImportManagement;
+export default ProductPriceChangeManagement;
