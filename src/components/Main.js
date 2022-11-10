@@ -26,6 +26,7 @@ import ItemListWithTitle from "./HomePage/NewArrivalsList/ItemListWithTitle";
 import ProductManagement from './Admin/ProductManagement/ProductManagement'
 import ProductImportManagement from "./Admin/ProductImportManagement/ProductImportManagement";
 import ProductReturnManagement from "./Admin/ProductReturnManagement/ProductReturnManagement";
+import ProductPriceChangeManagement from "./Admin/ProductPriceChangeManagement/ProductPriceChangeManagement";
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -85,6 +86,7 @@ function Main() {
                         <Route path="/admin/product-management" element={<ProductManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/product-import-management" element={<ProductImportManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/product-return-management" element={<ProductReturnManagement changeHeader={changeHeader} />} />
+                        <Route path="/admin/product-price-management" element={<ProductPriceChangeManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/report" element={<Report changeHeader={changeHeader} />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
