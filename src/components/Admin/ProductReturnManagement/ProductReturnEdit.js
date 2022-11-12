@@ -192,7 +192,7 @@ function ProductReturnEdit(props) {
                                             item.SL_DA_TRA = 0;
                                         }
                                         let oneReturnDetail = productReturnEntityFromApi.chiTietPhieuTra.find(itemFromAPI => {
-                                            return itemFromAPI.MA_CT_GH === item.MA_CT_GH
+                                            return itemFromAPI.MA_CT_SP === item.MA_CT_SP
                                         })
                                         if (oneReturnDetail) {
                                             item.SL_TRA = oneReturnDetail.SL_TRA
@@ -295,7 +295,16 @@ function ProductReturnEdit(props) {
             // NGAY_TAO: datePicker,
             chiTietPhieuTra: data
         }
+        if (grid) {
+            /** Get the selected row indexes */
+            const selectedrowindex = grid.current.getSelectedRowIndexes();
+            /** Get the selected records. */
+            const selectedrecords = grid.current.getSelectedRecords();
 
+            _productReturnEntity.ID_GH = selectedrecords[0].ID_GH;
+        } else {
+            toast.error('Bạn chưa chọn đơn cần trả')
+        }
         setProductReturnEntity(_productReturnEntity)
 
         console.log('pass', _productReturnEntity, `${process.env.REACT_APP_API_URL}/api/TraHang/add-product-return`)
@@ -305,7 +314,8 @@ function ProductReturnEdit(props) {
                 const response = res.data;
                 console.log('res: ' + response);
                 if (response.errorDesc)
-                    notify(response.responseMessage);
+                    // notify(response.responseMessage);
+                    toast.error(response.responseMessage)
 
                 //cập nhật lại số lượng đã trả, tránh trường hợp ấn lưu 2 lần
                 let newArr = cartDetailAndReturnDetail.map(item => {
@@ -317,7 +327,7 @@ function ProductReturnEdit(props) {
 
                 setCartDetailAndReturnDetail(newArr);
 
-                notify("Thêm phiếu trả thành công");
+                toast.success("Thêm phiếu trả thành công");
                 props.rerender();
             });
         } catch (error) {
@@ -402,7 +412,8 @@ function ProductReturnEdit(props) {
             const daysDiffer = Math.abs(DateDiff.inDays(new Date(), selectedrecords[0].NGAY_GIAO_TYPE_DATE)) - 1;
 
             if (daysDiffer > 5) {
-                notify('Đơn hàng giao từ hơn 5 ngày trước không thể thực hiện trả');
+                // notify('Đơn hàng giao từ hơn 5 ngày trước không thể thực hiện trả');
+                toast.error('Đơn hàng giao từ hơn 5 ngày trước không thể thực hiện trả')
                 return;
             }
             try {
@@ -434,9 +445,7 @@ function ProductReturnEdit(props) {
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
             </div> : <></>}
-            <div className={clsx(style.top)}>
-                <ToastContainer />
-            </div>
+            <ToastContainer />
             <div className={clsx(style.modal)}>
                 <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
                     props.closeDialog();
@@ -569,7 +578,9 @@ function ProductReturnEdit(props) {
 
                             </div>
                             <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                <label className={clsx(style.inputLabel)}>Số lượng muốn trả</label>
+                                <label className={clsx(style.inputLabel)}>
+                                    {props.viewMode === 'view' ? 'Số lượng trả' : 'Số lượng muốn trả'}
+                                </label>
                                 {<p className={clsx(style.errorMessage)}>{errorMessage.errorSL_TRA_ALL}</p>}
                             </div>
                         </>
@@ -608,6 +619,8 @@ function ProductReturnEdit(props) {
                                             value={cartDetailAndReturnDetail[index].SL_DA_TRA}
                                             placeholder="" className={clsx(style.input)}
                                             min={0}
+                                            //disable scroll increase
+                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                         />
                                         {<p className={clsx(style.errorMessage)}>{item.errorSL_DA_TRA}</p>}
                                     </div>
@@ -620,6 +633,9 @@ function ProductReturnEdit(props) {
                                             value={cartDetailAndReturnDetail[index].SL_TRA}
                                             placeholder="" className={clsx(style.input)}
                                             min={0}
+                                            disabled={props.viewMode === 'view' ? true : false}
+                                            //disable scroll increase
+                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                         />
                                         {<p className={clsx(style.errorMessage)}>{item.errorSL_TRA}</p>}
                                     </div>

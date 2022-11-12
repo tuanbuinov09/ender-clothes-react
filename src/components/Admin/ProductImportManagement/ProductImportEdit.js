@@ -296,7 +296,7 @@ function ProductImportEdit(props) {
     }
     const getTotalQuantity = () => {
         return productDetailsForImport.reduce((total, item) => {
-            return total = total + (item.SO_LUONG)
+            return total = total + (item.SO_LUONG * 1)
         }, 0)
     }
     const onChangeQuantity = (MA_CT_SP, quantity) => {
@@ -478,6 +478,7 @@ function ProductImportEdit(props) {
                                             value={productDetailsForImport[index].SO_LUONG}
                                             placeholder="" className={clsx(style.input)}
                                             min={0}
+                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                         />
                                         {<p className={clsx(style.errorMessage)}>{item.errorSO_LUONG}</p>}
                                     </div>
@@ -490,6 +491,8 @@ function ProductImportEdit(props) {
                                             value={productDetailsForImport[index].GIA}
                                             placeholder="" className={clsx(style.input)}
                                             min={0}
+                                            //disable scroll increase
+                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                         />
                                         {<p className={clsx(style.errorMessage)}>{item.errorGIA_NHAP}</p>}
                                     </div>

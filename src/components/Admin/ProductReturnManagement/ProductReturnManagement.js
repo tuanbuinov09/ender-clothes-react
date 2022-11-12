@@ -181,7 +181,7 @@ function ProductReturnManagement(props) {
 
     }
     return (
-        <div className={clsx(style.ProductManagement)}>
+        <div className={clsx(style.cartManagement)}>
             <div className={clsx(style.top)}>
                 <ToastContainer />
             </div>
