@@ -5,19 +5,20 @@ import { CheckIcon, ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../i
 import axios from 'axios';
 import '../ej2-grid.css'
 import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion } from '../../../uitilities/utilities';
-import style from './ProductReturnManagement.module.css';
+import style from './ProductSaleOffManagement.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
-import ProductReturnEdit from './ProductReturnEdit';
+import ProductSaleOffEdit from './ProductSaleOffEdit';
 import ToastContainer, { toast } from 'react-light-toast';
 
-function ProductReturnManagement(props) {
+function ProductSaleOffManagement(props) {
     let navigate = useNavigate();
-
+    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    const notifySuccess = (message) => toast.success(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [viewMode, setViewMode] = useState('add');
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
@@ -32,10 +33,9 @@ function ProductReturnManagement(props) {
 
     props.changeHeader('employee')
 
-    const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [carts, setCarts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
-    const [selectedReturn, setSelectedReturn] = useState({});
+    const [selectedSaleOff, setSelectedSaleOff] = useState({});
     const grid = useRef();
     const [rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
@@ -48,20 +48,30 @@ function ProductReturnManagement(props) {
 
         try {
             setIsLoading(true);
-            let url = `${process.env.REACT_APP_API_URL}/api/TraHang/all?top=`;
+            let url = `${process.env.REACT_APP_API_URL}/api/KhuyenMai/all?top=`;
 
             console.log(url)
             axios.get(url).then(res => {
-                const phieuTraFromAPI = res.data;
-                // console.log(phieuTraFromAPI);
-                phieuTraFromAPI.forEach((phieuNhap) => {
+                const khuyenMaiFromAPI = res.data;
+                // console.log(khuyenMaiFromAPI);
+                khuyenMaiFromAPI.forEach((phieuNhap) => {
                     if (phieuNhap.NGAY_TAO) {
                         let date = new Date(phieuNhap.NGAY_TAO);
                         phieuNhap.NGAY_TAO = date.toLocaleDateString('vi-VN');
                         console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
                         phieuNhap.NGAY_TAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
                     }
-
+                    if (phieuNhap.NGAY_AP_DUNG) {
+                        let date = new Date(phieuNhap.NGAY_AP_DUNG);
+                        phieuNhap.NGAY_AP_DUNG = date.toLocaleString('vi-VN', 'dd/MM/yyyy - hh:mm a');
+                        console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date))
+                        phieuNhap.NGAY_AP_DUNG = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date)
+                    }
+                    // if (phieuNhap.NGAY_AP_DUNG) {
+                    //     let date = new Date(phieuNhap.NGAY_AP_DUNG);
+                    //     console.log(date.toLocaleTimeString('vi-VN'))
+                    //     phieuNhap.GIO_AP_DUNG = date.toLocaleTimeString('vi-VN');
+                    // }
                     if (phieuNhap.TRANG_THAI === 0) {
                         phieuNhap.TRANG_THAI_STR = 'Chờ duyệt';
                     }
@@ -75,10 +85,10 @@ function ProductReturnManagement(props) {
                         phieuNhap.TRANG_THAI_STR = 'Đã hủy';
                     }
                 })
-                // console.log(phieuTraFromAPI);
-                setCarts(phieuTraFromAPI);
-                console.log(phieuTraFromAPI);
-                grid.current.dataSource = phieuTraFromAPI;
+                // console.log(khuyenMaiFromAPI);
+                setCarts(khuyenMaiFromAPI);
+                console.log(khuyenMaiFromAPI);
+                grid.current.dataSource = khuyenMaiFromAPI;
                 setIsLoading(false);
             });
 
@@ -115,19 +125,32 @@ function ProductReturnManagement(props) {
 
             // console.log(selectedrowindex[0] + " : " +  JSON.stringify(selectedrecords[0]));
 
-            setSelectedReturn(JSON.parse(JSON.stringify(selectedrecords[0])));
-            // console.log("selectedRowData:", selectedReturn);
+            setSelectedSaleOff(JSON.parse(JSON.stringify(selectedrecords[0])));
+            // console.log("selectedRowData:", selectedSaleOff);
         }
     }
 
     const closeDialog = () => {
         setOpenDialog(false);
     }
-    const openDialogFnc = (paramViewMode) => {
+    const openDialogFnc = async (paramViewMode) => {
         console.log('fired', paramViewMode)
-        if (!selectedReturn.MA_PT && paramViewMode !== 'add') {
+
+        if (!selectedSaleOff.MA_KM && paramViewMode !== 'add') {
             return;
         }
+
+        if (paramViewMode === 'edit') {
+            let url = `${process.env.REACT_APP_API_URL}/api/KhuyenMai/?saleOffId=${selectedSaleOff.MA_KM}`;
+            const saleOffEntity = await axios.get(url);
+            console.log(saleOffEntity, 'await')
+
+            if (saleOffEntity.data.DANG_KHUYEN_MAI === 1) {
+                notify('Đợt này đang trong thời gian khuyến mãi, không thể chỉnh sửa');
+                return;
+            }
+        }
+
         setViewMode(paramViewMode)
         setOpenDialog(true);
 
@@ -158,22 +181,31 @@ function ProductReturnManagement(props) {
         setFilterState(dropdownList.current.value);
         console.log(filterState);
     }
-    const deleteProduct = () => {
-        if (!selectedReturn.MA_SP) {
+    const deleteProduct = async () => {
+        if (!selectedSaleOff.MA_KM) {
             return;
         }
-        console.log(`${process.env.REACT_APP_API_URL}/api/SanPham/delete`)
+        let url = `${process.env.REACT_APP_API_URL}/api/KhuyenMai/?saleOffId=${selectedSaleOff.MA_KM}`;
+        const saleOffEntity = await axios.get(url);
+        console.log(saleOffEntity, 'await')
+
+        if (saleOffEntity.data.DANG_KHUYEN_MAI === 1) {
+            notify('Đợt này đang trong thời gian khuyến mãi, không thể xóa');
+            return;
+        }
+
+        console.log(`${process.env.REACT_APP_API_URL}/api/KhuyenMai/delete`)
         try {
-            axios.delete(`${process.env.REACT_APP_API_URL}/api/SanPham/delete?productId=${selectedReturn.MA_SP}`
+            axios.delete(`${process.env.REACT_APP_API_URL}/api/KhuyenMai/delete?saleOffId=${selectedSaleOff.MA_KM}`
             ).then(res => {
                 const response = res.data;
                 console.log('res delete: ' + response);
 
-
                 if (response.errorDesc) {
                     notify(response.errorDesc);
+                    return
                 } else {
-                    notify(response.responseMessage);
+                    notifySuccess(response.responseMessage);
                     setRerender(!rerender);
                 }
             });
@@ -184,15 +216,13 @@ function ProductReturnManagement(props) {
     }
     return (
         <div className={clsx(style.cartManagement)}>
-            <div className={clsx(style.top)}>
-                <ToastContainer />
-            </div>
+            <ToastContainer />
             <SectionTitle title={
-                'Quản lý trả hàng'} />
+                'Quản lý đợt khuyến mãi'} />
             <div className={clsx(style.toolBar)}>
                 {/* <button onClick={() => {
                     approve();
-                }} className={clsx(style.checkButton, { [style.inActive]: selectedReturn.TRANG_THAI !== 0 })}>
+                }} className={clsx(style.checkButton, { [style.inActive]: selectedSaleOff.TRANG_THAI !== 0 })}>
                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
                 </button> */}
                 {/* {((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
@@ -212,15 +242,15 @@ function ProductReturnManagement(props) {
                 <button onClick={() => {
                     openDialogFnc('add');
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
-                {/* <button onClick={() => {
+                <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedReturn })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button> */}
-                {/* <button onClick={() => {
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedSaleOff })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
+                <button onClick={() => {
                     deleteProduct();
-                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedReturn })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button> */}
+                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedSaleOff })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
                 <button onClick={() => {
                     openDialogFnc('view');
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedReturn })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedSaleOff })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>
@@ -245,15 +275,16 @@ function ProductReturnManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_PT' headerTextAlign='Center' headerText='Mã PT' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='HO_TEN_KH' headerTextAlign='Center' headerText='Họ tên KH' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='SDT_KH' headerTextAlign='Center' headerText='SĐT KH' width='200' textAlign="Left" />
-                    <ColumnDirective field='TONG_SO_LUONG' headerTextAlign='Center' headerText='Tổng SL trả' width='150' editType='dropdownedit' textAlign="Left" />
-
+                    <ColumnDirective field='MA_KM' headerTextAlign='Center' headerText='Mã KM' width='180' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='NGAY_AP_DUNG' headerTextAlign='Center' headerText='Ngày giờ áp dụng' width='220' textAlign="Left" />
+                    {/* <ColumnDirective field='GIO_AP_DUNG' headerTextAlign='Center' headerText='Giờ áp dụng' width='200' textAlign="Left" /> */}
+                    <ColumnDirective field='THOI_GIAN' headerTextAlign='Center' headerText='Thời gian áp dụng (ngày)' width='250' textAlign="Left" />
+                    <ColumnDirective field='SO_LUONG_SP' headerTextAlign='Center' headerText='Tổng SL SP' width='200' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='MA_CAC_SP' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Các SP' width='300' editType='dropdownedit' textAlign="Left" />
                     <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
                     <ColumnDirective field='GHI_CHU' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
-                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Họ tên NV tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='200' textAlign="Left" />
+                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Họ tên NV tạo' width='200' textAlign="Left" />
 
                 </ColumnsDirective>
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
@@ -261,9 +292,9 @@ function ProductReturnManagement(props) {
             }
 
 
-            {openDialog && <ProductReturnEdit returnId={selectedReturn.MA_PT} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
+            {openDialog && <ProductSaleOffEdit saleOffId={selectedSaleOff.MA_KM} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
     );
 }
 
-export default ProductReturnManagement;
+export default ProductSaleOffManagement;

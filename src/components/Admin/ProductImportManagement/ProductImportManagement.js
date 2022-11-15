@@ -16,6 +16,7 @@ import ProductImportEdit from './ProductImportEdit';
 import ToastContainer, { toast } from 'react-light-toast';
 
 function ProductImportManagement(props) {
+    let navigate = useNavigate();
 
     const [viewMode, setViewMode] = useState('add');
     useEffect(() => {
@@ -30,7 +31,6 @@ function ProductImportManagement(props) {
     }, [])
 
     props.changeHeader('employee')
-    let navigate = useNavigate();
 
     const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [carts, setCarts] = useState([]);
@@ -57,6 +57,8 @@ function ProductImportManagement(props) {
                     if (phieuNhap.NGAY_TAO) {
                         let date = new Date(phieuNhap.NGAY_TAO);
                         phieuNhap.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                        console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                        phieuNhap.NGAY_TAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
                     }
                     if (phieuNhap.TONG_GIA_NHAP) {
 
@@ -184,7 +186,7 @@ function ProductImportManagement(props) {
 
     // }
     return (
-        <div className={clsx(style.ProductManagement)}>
+        <div className={clsx(style.cartManagement)}>
             <div className={clsx(style.top)}>
                 <ToastContainer />
             </div>

@@ -255,8 +255,10 @@ function ProductPriceChangeEdit(props) {
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);
-                if (response.errorDesc)
+                if (response.errorDesc) {
                     notify(response.responseMessage);
+                    return
+                }
 
                 notify("Thêm thay đổi giá thành công");
                 props.rerender();
@@ -469,11 +471,13 @@ function ProductPriceChangeEdit(props) {
                                         <input onChange={(e) => {
                                             // console.log(e.target.value)
                                             // onChangeQuantity(item.MA_CT_SP, e.target.value);
-                                        }} type="number"
-                                            value={productDetailsForPriceChange[index].GIA}
+                                        }} type="text"
+                                            value={intToVNDCurrencyFormat(productDetailsForPriceChange[index].GIA, true)}
                                             placeholder="" className={clsx(style.input)}
                                             min={0}
                                             disabled
+                                            //disable scroll increase
+                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                         />
                                         {/* {<p className={clsx(style.errorMessage)}>{item.errorSO_LUONG}</p>} */}
                                     </div>
@@ -485,6 +489,8 @@ function ProductPriceChangeEdit(props) {
                                             value={productDetailsForPriceChange[index].GIA_THAY_DOI}
                                             placeholder="" className={clsx(style.input)}
                                             min={0}
+                                            //disable scroll increase
+                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
                                         />
                                         {<p className={clsx(style.errorMessage)}>{item.errorGIA_THAY_DOI}</p>}
                                     </div>
