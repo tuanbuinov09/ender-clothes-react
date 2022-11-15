@@ -49,6 +49,14 @@ function CartManagement(props) {
                     if (cart.NGAY_TAO) {
                         let date = new Date(cart.NGAY_TAO);
                         cart.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                        console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                        cart.NGAY_TAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
+                    }
+                    if (cart.NGAY_GIAO) {
+                        let date = new Date(cart.NGAY_GIAO);
+                        cart.NGAY_GIAO = date.toLocaleDateString('vi-VN');
+                        console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                        cart.NGAY_GIAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
                     }
                     if (cart.TRANG_THAI === 0) {
                         cart.TRANG_THAI_STR = 'Chờ duyệt';

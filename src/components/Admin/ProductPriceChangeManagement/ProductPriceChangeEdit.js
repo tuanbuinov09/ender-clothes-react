@@ -255,8 +255,10 @@ function ProductPriceChangeEdit(props) {
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);
-                if (response.errorDesc)
+                if (response.errorDesc) {
                     notify(response.responseMessage);
+                    return
+                }
 
                 notify("Thêm thay đổi giá thành công");
                 props.rerender();

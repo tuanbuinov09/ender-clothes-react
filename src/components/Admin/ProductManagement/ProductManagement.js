@@ -59,22 +59,13 @@ function ProductManagement(props) {
                     if (product.NGAY_TAO) {
                         let date = new Date(product.NGAY_TAO);
                         product.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                        console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                        product.NGAY_TAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
                     }
                     if (product.SIZE_STR) {
                         product.SIZE_STR = product.SIZE_STR.substr(1)
                     }
-                    // if (product.TRANG_THAI === 0) {
-                    //     product.TRANG_THAI_STR = 'Chờ duyệt';
-                    // }
-                    // if (product.TRANG_THAI === 1) {
-                    //     product.TRANG_THAI_STR = 'Đang giao hàng';
-                    // }
-                    // if (product.TRANG_THAI === 2) {
-                    //     product.TRANG_THAI_STR = 'Đã hoàn tất';
-                    // }
-                    // if (product.TRANG_THAI === -1) {
-                    //     product.TRANG_THAI_STR = 'Đã hủy';
-                    // }
+
                 })
                 // console.log(productsFromAPI);
                 setCarts(productsFromAPI);
@@ -169,7 +160,6 @@ function ProductManagement(props) {
             ).then(res => {
                 const response = res.data;
                 console.log('res delete: ' + response);
-
 
                 if (response.errorDesc) {
                     notify(response.errorDesc);

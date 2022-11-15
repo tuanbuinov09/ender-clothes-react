@@ -154,6 +154,8 @@ function ProductReturnEdit(props) {
                                 if (item.NGAY_TAO) {
                                     let date = new Date(item.NGAY_TAO);
                                     item.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                                    console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                                    item.NGAY_TAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
                                 }
                                 if (item.NGAY_GIAO) {
 
@@ -162,6 +164,8 @@ function ProductReturnEdit(props) {
 
                                     let date = new Date(item.NGAY_GIAO);
                                     item.NGAY_GIAO = date.toLocaleDateString('vi-VN');
+                                    console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                                    item.NGAY_GIAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
                                 }
 
                                 if (item.TRANG_THAI === 0) {
@@ -313,9 +317,11 @@ function ProductReturnEdit(props) {
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);
-                if (response.errorDesc)
+                if (response.errorDesc) {
                     // notify(response.responseMessage);
                     toast.error(response.responseMessage)
+                    return
+                }
 
                 //cập nhật lại số lượng đã trả, tránh trường hợp ấn lưu 2 lần
                 let newArr = cartDetailAndReturnDetail.map(item => {

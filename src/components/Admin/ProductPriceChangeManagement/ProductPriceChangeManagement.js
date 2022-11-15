@@ -16,6 +16,7 @@ import ProductPriceChangeEdit from './ProductPriceChangeEdit';
 import ToastContainer, { toast } from 'react-light-toast';
 
 function ProductPriceChangeManagement(props) {
+    let navigate = useNavigate();
 
     const [viewMode, setViewMode] = useState('add');
     useEffect(() => {
@@ -30,7 +31,6 @@ function ProductPriceChangeManagement(props) {
     }, [])
 
     props.changeHeader('employee')
-    let navigate = useNavigate();
 
     const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [carts, setCarts] = useState([]);
@@ -57,6 +57,8 @@ function ProductPriceChangeManagement(props) {
                     if (phieuNhap.NGAY_THAY_DOI) {
                         let date = new Date(phieuNhap.NGAY_THAY_DOI);
                         phieuNhap.NGAY_THAY_DOI = date.toLocaleDateString('vi-VN');
+                        console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                        phieuNhap.NGAY_THAY_DOI = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
                     }
 
                     if (phieuNhap.GIA) {

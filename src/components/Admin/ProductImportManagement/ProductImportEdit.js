@@ -261,10 +261,12 @@ function ProductImportEdit(props) {
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);
-                if (response.errorDesc)
+                if (response.errorDesc) {
                     notify(response.responseMessage);
+                    return
+                }
 
-                notify("Thêm phiếu nhập thành công");
+                toast.success("Thêm phiếu nhập thành công");
                 props.rerender();
             });
         } catch (error) {
