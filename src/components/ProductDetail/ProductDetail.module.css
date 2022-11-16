@@ -234,3 +234,87 @@ z-index: 1;
 .btn:hover::after {
     color: #009eb6;
 }
+/* binhf luanaj, danh gia */
+.ratingContainer{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: white;
+    padding: 28px;
+    margin-bottom: 28px;
+}
+.ratingContainer .subtitle{width: 100%;
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: underline;
+    margin-bottom: 12px;
+}
+
+.btnComment{
+    width: fit-content;
+    margin-left: 12px;
+}
+.btnComment:after {
+    position: absolute;
+    text-align: center;
+    top: 0;
+    left: 0;
+    content: "Bình luận";
+    width: 100%;
+    display: flex;
+    height: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+    color: white;
+    transition: all 0.3s ease-in-out;
+}
+
+.input{
+    flex: 1;
+    appearance: none;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    padding: 12px 18px 12px 18px;
+    font-size: 14px;
+    height: 44px;
+}
+
+.listCommentContainer{
+    width: 100%;
+}
+.commentContainer{
+    font-size: 13px;
+    margin-top: 4px;
+    width: 100%;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #eee;
+}
+.commentContainer:first-child{
+    margin-top: 20px;
+    
+}
+.infoCommentor{
+    display: flex;
+}
+.nameAndStar{
+    flex: 1;
+    display: flex;
+}
+.ratingName{
+    margin-right: 4px;
+    font-weight: bold;
+}
+.ratingDate{
+    width: 144px;
+    text-align: right;
+    font-style: italic;
+    color: #aaa;
+    font-size: 12px;
+
+}
+.comment{
+    padding: 4px 8px 4px 12px;
+}
