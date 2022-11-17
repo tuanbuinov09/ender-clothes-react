@@ -43,11 +43,13 @@
 }
 
 .sizeQuantity{
-    width: 100%;
+    width: 50%;
     margin: 12px 0 0 0;
-    padding-right: 55px;
+    padding-right: 12px;
+    padding-top: 8px;
     font-size: 16px;
     text-align: right;
+    vertical-align: middle;
 }
 
 .disabled{
@@ -315,6 +317,26 @@ z-index: 1;
     font-size: 12px;
 
 }
+.ratingStar{
+    margin-top: -2px;
+}
 .comment{
     padding: 4px 8px 4px 12px;
+}
+.w100{
+    width: 100%;
+}
+
+.rateAndQuantityContainer{
+    display: flex;
+    justify-content: space-between;
+}
+.ratingGeneralInfo{
+    padding: 20px 0 8px 0;
+    display: flex;
+    align-items: center;
+}
+.rateCount{
+    margin-left: 8px;
+    font-size: 14px;
 }
