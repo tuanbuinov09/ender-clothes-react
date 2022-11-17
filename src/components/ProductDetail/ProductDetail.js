@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import clsx from 'clsx';
@@ -10,13 +10,15 @@ import { removeSyncfusionLicenseMessage } from '../../uitilities/utilities'
 
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
 import EJ2ImageCarousel from './EJ2ImageCarousel';
+import StarRating from '../StarRating/StarRating';
+import StarRatingSize24 from '../StarRating/StarRatingSize24';
 function ProductDetail(props) {
 
     const dispatch = useDispatch();
     const params = useParams();
     console.log(params.productId);
 
-    const [ratingComment, setRatingComment] = useState({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH, DANH_GIA: 4, NOI_DUNG: "" })
+    const [ratingComment, setRatingComment] = useState({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH, DANH_GIA: 0, NOI_DUNG: "" })
     const [allRatingComment, setAllRatingComment] = useState([])
     const [selectedProductDetail, setSelectedProductDetail] = useState({});
     const [product, setProduct] = useState({});
@@ -28,6 +30,11 @@ function ProductDetail(props) {
         return store.shoppingBag;
     })
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+
+    const setStarRatingCmt = (e) => {
+        setRatingComment({ ...ratingComment, DANH_GIA: e });
+    }
+
     removeSyncfusionLicenseMessage();
     useEffect(() => {
 
@@ -268,7 +275,15 @@ function ProductDetail(props) {
                             })}
                         </div>
                     </div>
-                    <p className={clsx(style.sizeQuantity)}>Tồn kho: {selectedProductDetail.SL_TON}</p>
+                    <div className={clsx(style.rateAndQuantityContainer)}>
+                        <div className={clsx(style.ratingGeneralInfo)}>
+                            <StarRatingSize24 readOnly={true} val={product.DIEM_TRUNG_BINH} />
+                            <span className={clsx(style.rateCount)}>{product.TONG_SO_LUOT_DANH_GIA} lượt đánh giá</span>
+                        </div>
+
+                        <p className={clsx(style.sizeQuantity)}>Tồn kho: {selectedProductDetail.SL_TON}</p>
+                    </div>
+
 
                     {product.PHAN_TRAM_GIAM ?
                         <>
@@ -307,7 +322,9 @@ function ProductDetail(props) {
             </div>
             <div className={clsx(style.ratingContainer)}>
                 <div className={clsx(style.subtitle)}>Bình luận</div>
-
+                <div className={clsx(style.w100)}>
+                    <StarRating setStarRating={setStarRatingCmt} readOnly={!ratingComment.CAN_RATE} val={ratingComment.DANH_GIA} />
+                </div>
                 <textarea maxLength={1000} onChange={(e) => {
                     console.log(e.target.value)
                     setRatingComment({ ...ratingComment, NOI_DUNG: e.target.value })
@@ -319,13 +336,31 @@ function ProductDetail(props) {
                 <div className={clsx(style.btnContainer)}
                     onClick={(e) => {
                         if (!ratingComment.CAN_RATE) {
-                            return
+                            return;
                         }
+
                         try {
                             axios.post(`http://localhost:22081/api/SanPham/rate`, ratingComment).then(res => {
                                 const response = res.data;
                                 if (response.affectedId) {
                                     toast.success('Đã thêm đánh giá')
+                                    try {
+                                        axios.get(`http://localhost:22081/api/SanPham/all-comment?productId=${params.productId}`).then(res => {
+                                            const response = res.data;
+                                            response.forEach(item => {
+                                                let date = new Date(item.NGAY_DANH_GIA);
+                                                item.NGAY_DANH_GIA = date.toLocaleDateString('vi-VN');
+                                                console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date))
+                                                item.NGAY_DANH_GIA = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date)
+                                            })
+                                            console.log(response);
+                                            setAllRatingComment(response);
+
+                                            setRatingComment({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH, DANH_GIA: 0, NOI_DUNG: "" })
+                                        });
+                                    } catch (error) {
+                                        console.error(error);
+                                    }
                                     return
                                 } else {
                                     toast.error('Đăng đánh giá thất bại')
@@ -345,7 +380,9 @@ function ProductDetail(props) {
                             <div className={clsx(style.infoCommentor)}>
                                 <div className={clsx(style.nameAndStar)}>
                                     <div className={clsx(style.ratingName)}> {item.TEN_KH}:</div>
-                                    <div className={clsx(style.ratingStar)}> {item.DANH_GIA}</div>
+                                    <div className={clsx(style.ratingStar)}>
+                                        <StarRating val={item.DANH_GIA} readOnly={true} />
+                                    </div>
                                 </div>
                                 <div className={clsx(style.ratingDate)}> {item.NGAY_DANH_GIA}</div>
                             </div>

@@ -1,0 +1,13 @@
+.ratingContainer{
+    width: calc(16*5)px;
+    display: inline-flex;
+}
+.ratingContainer img{
+    display: inline-block;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+.readOnly{
+    pointer-events: none;
+}
