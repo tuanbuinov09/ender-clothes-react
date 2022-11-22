@@ -19,7 +19,7 @@ function Login(props) {
         if (localStorage.getItem('employee') && props.type === 'employee') {
             navigate("/employee/info", { replace: true });
         }
-        return ()=>{login=null};
+        return () => { login = null };
     }, [])
     const login = (loginInfo) => {
         let url = '';
@@ -43,18 +43,22 @@ function Login(props) {
             const userInfoFromRes = res.data;
             console.log(userInfoFromRes);
 
-            if (userInfoFromRes&& props.type === 'customer') {
+            if (userInfoFromRes && props.type === 'customer') {
                 setErrorMessage('');
                 localStorage.setItem('user', JSON.stringify(userInfoFromRes));
                 console.log("---", localStorage.getItem('user'));
+                axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${userInfoFromRes.MA_KH}`).then(respListFavorite => {
+                    const listFavorite = respListFavorite.data;
+                    localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
+                });
                 navigate("/", { replace: true });
-            } else if (userInfoFromRes&& props.type === 'employee') {
+            } else if (userInfoFromRes && props.type === 'employee') {
                 setErrorMessage('');
                 localStorage.setItem('employee', JSON.stringify(userInfoFromRes));
                 console.log("---", localStorage.getItem('employee'));
-                if(JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04'){
+                if (JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
                     navigate("/admin/cart-management", { replace: true });
-                }else{
+                } else {
                     navigate("/admin/dashboard", { replace: true });
                 }
             } else {
@@ -68,13 +72,13 @@ function Login(props) {
 
             <div className={clsx(style.left)}>
                 <div className={clsx(style.imgContainer)}>
-                <img src={loginImage} alt="" className={clsx(style.loginImage)}/>
+                    <img src={loginImage} alt="" className={clsx(style.loginImage)} />
 
                 </div>
             </div>
             <div className={clsx(style.right)}>
                 {isLoading ? <LoadingAnimation /> :
-                    <><h1 className={clsx(style.title)}>{props.type==="customer"?'ĐĂNG NHẬP':'ĐĂNG NHẬP NHÂN VIÊN'}</h1>
+                    <><h1 className={clsx(style.title)}>{props.type === "customer" ? 'ĐĂNG NHẬP' : 'ĐĂNG NHẬP NHÂN VIÊN'}</h1>
                         <form className={clsx(style.form)} onSubmit={(e) => {
                             e.preventDefault();
                             login({ 'email': email, 'password': password });
@@ -92,17 +96,17 @@ function Login(props) {
                                 }} type="password" name='password' value={password} placeholder="" className={clsx(style.input)} />
                             </div>
                             <p className={clsx(style.errorMessage)}>{errorMessage}</p>
-                            
+
                             <div className={clsx(style.inputGroup)}>
                                 <Button text="ĐĂNG NHẬP" />
                             </div>
                         </form>
-                        
-                       {props.type==="customer"?<p className={clsx(style.signUpLink)}
-                            onClick={()=>{
+
+                        {props.type === "customer" ? <p className={clsx(style.signUpLink)}
+                            onClick={() => {
                                 navigate("/user/sign-up", true);
-                            }}>Đăng ký tài khoản</p>:<></>} 
-                        
+                            }}>Đăng ký tài khoản</p> : <></>}
+
                     </>
                 }
             </div>

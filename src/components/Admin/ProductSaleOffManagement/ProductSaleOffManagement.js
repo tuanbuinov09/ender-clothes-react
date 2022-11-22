@@ -84,6 +84,13 @@ function ProductSaleOffManagement(props) {
                     if (phieuNhap.TRANG_THAI === -1) {
                         phieuNhap.TRANG_THAI_STR = 'Đã hủy';
                     }
+
+                    if (phieuNhap.DANG_KHUYEN_MAI === 1) {
+                        phieuNhap.DANG_KHUYEN_MAI = 'Đang khuyến mãi';
+                    }
+                    if (phieuNhap.DANG_KHUYEN_MAI === 0) {
+                        phieuNhap.DANG_KHUYEN_MAI = 'Đã/ chờ khuyến mãi';
+                    }
                 })
                 // console.log(khuyenMaiFromAPI);
                 setCarts(khuyenMaiFromAPI);
@@ -144,11 +151,11 @@ function ProductSaleOffManagement(props) {
             let url = `${process.env.REACT_APP_API_URL}/api/KhuyenMai/?saleOffId=${selectedSaleOff.MA_KM}`;
             const saleOffEntity = await axios.get(url);
             console.log(saleOffEntity, 'await')
-
-            if (saleOffEntity.data.DANG_KHUYEN_MAI === 1) {
-                notify('Đợt này đang trong thời gian khuyến mãi, không thể chỉnh sửa');
-                return;
-            }
+            //không bắt điều kiện đang khuyến mãi thì k đc xóa nữa
+            // if (saleOffEntity.data.DANG_KHUYEN_MAI === 1) {
+            //     notify('Đợt này đang trong thời gian khuyến mãi, không thể chỉnh sửa');
+            //     return;
+            // }
         }
 
         setViewMode(paramViewMode)
@@ -189,10 +196,11 @@ function ProductSaleOffManagement(props) {
         const saleOffEntity = await axios.get(url);
         console.log(saleOffEntity, 'await')
 
-        if (saleOffEntity.data.DANG_KHUYEN_MAI === 1) {
-            notify('Đợt này đang trong thời gian khuyến mãi, không thể xóa');
-            return;
-        }
+        //không bắt điều kiện đang khuyến mãi thì k đc xóa nữa
+        // if (saleOffEntity.data.DANG_KHUYEN_MAI === 1) {
+        //     notify('Đợt này đang trong thời gian khuyến mãi, không thể xóa');
+        //     return;
+        // }
 
         console.log(`${process.env.REACT_APP_API_URL}/api/KhuyenMai/delete`)
         try {
@@ -283,6 +291,7 @@ function ProductSaleOffManagement(props) {
                     <ColumnDirective field='MA_CAC_SP' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Các SP' width='300' editType='dropdownedit' textAlign="Left" />
                     <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
                     <ColumnDirective field='GHI_CHU' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
+                    <ColumnDirective field='DANG_KHUYEN_MAI' headerTextAlign='Center' headerText='Trạng thái' width='200' textAlign="Left" />
                     <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='200' textAlign="Left" />
                     <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Họ tên NV tạo' width='200' textAlign="Left" />
 
