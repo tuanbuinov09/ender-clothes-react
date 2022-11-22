@@ -9,6 +9,7 @@
 
 .left {
     flex: 1;
+    flex-wrap: wrap;
 }
 
 .right {
@@ -79,7 +80,6 @@
     margin-left: 32px;
     margin-top: 24px;
     height: 32px;
-    width: 150px;
     display: inline-flex;
     align-items: center;
     background-color: dodgerblue;
@@ -101,8 +101,14 @@
 
 .checkButton {
     cursor: pointer;
+    transition: opacity .3s ease-out;
 }
 
 .checkButton:hover {
     opacity: 0.8;
+}
+
+.favButton{
+    width: fit-content;
+    background-color: crimson;
 }

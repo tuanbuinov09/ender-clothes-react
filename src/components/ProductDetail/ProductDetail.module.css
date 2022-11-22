@@ -340,3 +340,41 @@ z-index: 1;
     margin-left: 8px;
     font-size: 14px;
 }
+
+.title{
+    position: relative;;
+}
+
+.iconContainer{
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+.iconContainer:hover {
+    opacity: 0.8;
+}
+.iconContainer .iconSvg {
+    width: 36px;
+    height: 36px;
+}
+
+
+.addToFavList{
+    opacity: .4;
+}
+
+.addToFavList:hover{
+    opacity: 1;
+}
+.favIcon{
+    border-color: crimson;
+    cursor: pointer;
+}
+.favIcon .iconSvg path{
+    color: crimson !important;
+    stroke: pink !important;
+}

@@ -276,6 +276,20 @@ input[type="number"]{
     opacity: 0.8;
 }
 
+.addToFavList{
+    opacity: .4 !important;;
+}
+
+.addToFavList:hover{
+    opacity: 1 !important;;
+}
+.favIcon{
+    border-color: crimson !important;
+}
+.favIcon .iconSvg path{
+    color: crimson !important;
+    stroke: crimson !important;
+}
 @media (max-width: 900px) {
     .type2 {
         display: none;

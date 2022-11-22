@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from './UserInfo.module.css';
 import clsx from 'clsx';
 import { Button } from '../Button/Button';
+import Icon from 'react-hero-icon';
 import { PrintIcon, LogOutIcon } from '../../icons';
 import { useNavigate } from 'react-router-dom';
 import userImage from './128-1280406_view-user-icon-png-user-circle-icon-png.png';
@@ -46,12 +47,20 @@ function UserInfo(props) {
                     <div className={clsx(style.userImageContainer)}><img className={clsx(style.userImage)} src={userImage} alt='user'></img></div>
                     <button className={clsx(style.checkButton, style.printButton, style.logOutBtn)} onClick={() => {
                         localStorage.removeItem('user');
-                        navigate("/user/login", { replace: true })
+                        localStorage.removeItem('listFavourite');
+                        navigate("/user/login", { replace: true });
                     }}> <span className={clsx(style.iconSvg)}><LogOutIcon /></span> Đăng xuất</button>
-                    <button className={clsx(style.checkButton, style.printButton)}
-                        onClick={() => {
-                            navigate("/user/purchased-cart", { replace: true })
-                        }}><span className={clsx(style.iconSvg)}><PrintIcon /></span> Lịch sử mua hàng</button>
+                    <div>
+                        <button className={clsx(style.checkButton, style.printButton)}
+                            onClick={() => {
+                                navigate("/user/purchased-cart", { replace: true });
+                            }}><span className={clsx(style.iconSvg)}><PrintIcon /></span> Lịch sử mua hàng</button>
+                        <button className={clsx(style.checkButton, style.printButton, style.favButton)}
+                            onClick={() => {
+                                navigate("/user/favorite", { replace: true });
+                            }}><span className={clsx(style.iconSvg)}> <Icon icon="heart" type="solid" /></span> Danh sách yêu thích</button>
+                    </div>
+
                 </div>
                 <div className={clsx(style.right)}>
                     <><h1 className={clsx(style.title)}>THÔNG TIN CÁ NHÂN</h1>

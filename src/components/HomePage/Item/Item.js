@@ -1,7 +1,7 @@
 import {
     Link
 } from "react-router-dom";
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, navigate } from 'react';
 import Icon from 'react-hero-icon';
 import style from './Item.module.css';
 import clsx from "clsx";
@@ -9,12 +9,17 @@ import { MinusIcon, PlusIcon } from "../../../icons";
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../../features/shoppingBag/shoppingBagSlice.js';
 import { useDispatch } from "react-redux";
 import { intToVNDCurrencyFormat } from "../../../uitilities/utilities";
-import ToastContainer, { toast } from 'react-light-toast'; 
-import {useState} from 'react';
+import ToastContainer, { toast } from 'react-light-toast';
+import { useState } from 'react';
 import ProductDetailModal from "../../ProductDetail/ProductDetailModal";
+import { useNavigate } from 'react-router-dom';
+import axios from "axios";
+
 function Item({ product, type }) {
+    let navigate = useNavigate();
     const [openDialog, setOpenDialog] = useState(false);
     const [rerender, setRerender] = useState(false);
+    const [isInFavoriteList, setIsInFavoriteList] = useState(false);
     const closeDialog = () => {
         setOpenDialog(false);
     }
@@ -23,18 +28,38 @@ function Item({ product, type }) {
     }
 
     const dispatch = useDispatch();
-    const notify = (message) => toast.error(message, {autoClose: true, closeDuration: 3000 });//error/info/add
+    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const quantityField = useRef();
 
-    useEffect(()=>{
+    useEffect(() => {
         //nếu data cũ hình sẽ có http, data mới thì k
-        if (product.HINH_ANH && !product.HINH_ANH.startsWith('http')){
+        if (product.HINH_ANH && !product.HINH_ANH.startsWith('http')) {
             product.HINH_ANH = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${product.HINH_ANH}`
             setRerender(!rerender)
-        
+
         }
-//vì thay props k tự render, nên ta force render lại để update hình hiển thị
-    },[rerender])
+
+        //vì thay props k tự render, nên ta force render lại để update hình hiển thị
+    }, [rerender]);
+
+    //xét có trong dnah sách yêu thích của user k
+    useEffect(() => {
+        const listFavorite = JSON.parse(localStorage.getItem('listFavourite'));
+        if (!listFavorite) {
+            return;
+        }
+
+        const isInList = listFavorite.find(item => {
+            return item.MA_SP === product.MA_SP;
+        })
+
+        if (isInList) {
+            setIsInFavoriteList(true);
+        } else {
+            setIsInFavoriteList(false);
+        }
+
+    }, []);
 
     let pricesString;
     let discountPricesString;
@@ -88,7 +113,7 @@ function Item({ product, type }) {
                     {`HẾT HÀNG`}
                 </div> : <></>}
                 <div className={clsx(style.itemMenu)}>
-                    <div className={clsx(style.iconContainer)} title="Add to bag"
+                    <div className={clsx(style.iconContainer)} title="Thêm vào giỏ hàng"
                         onClick={() => {
                             // dispatch(addItem(product));
                             // dispatch(caculateTotalAmountAndPrice());
@@ -96,7 +121,27 @@ function Item({ product, type }) {
 
 
                         }}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
-                    <div className={clsx(style.iconContainer)} title="Add to favourites" ><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
+                    <div className={clsx(style.iconContainer, style.favIcon, { [style.addToFavList]: !isInFavoriteList })} title={!isInFavoriteList ? "Thêm vào danh sách yêu thích" : "Xóa khỏi danh sách yêu thích"}
+                        onClick={() => {
+                            const user = JSON.parse(localStorage.getItem('user'));
+                            if (!user) {
+                                navigate("/user/login", { replace: true });
+                            } else {
+                                const url = `http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}&productId=${product.MA_SP}`;
+                                axios.post(url).then(res => {
+                                    const response = res.data;
+                                    setIsInFavoriteList(!isInFavoriteList);
+                                    axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}`).then(respListFavorite => {
+                                        const listFavorite = respListFavorite.data;
+                                        localStorage.removeItem('listFavourite');
+                                        localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
+                                    });
+                                    toast.success(response.responseMessage);
+                                })
+                            }
+                        }}>
+                        <Icon icon="heart" type="solid" className={clsx(style.iconSvg)} />
+                    </div>
                 </div>
                 <div>
                     <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
@@ -110,7 +155,10 @@ function Item({ product, type }) {
                         <p className={clsx(style.price)}><span>{discountPricesString}</span></p>
                     </>
                     : <p className={clsx(style.price)}><span>{pricesString}</span></p>}
-{openDialog && <ProductDetailModal productId={product.MA_SP}closeDialog={closeDialog} />}
+                {openDialog && <ProductDetailModal productId={product.MA_SP} closeDialog={closeDialog} />}
+                <div className={clsx(style.top)}>
+                    <ToastContainer />
+                </div>
             </div >
         );
     }
@@ -134,13 +182,13 @@ function Item({ product, type }) {
                         }}><Icon icon="shopping-bag" type="solid" className={clsx(style.iconSvg)} /></div>
                     <div className={clsx(style.iconContainer)}><Icon icon="heart" type="solid" className={clsx(style.iconSvg)} /></div>
                 </div>
-                    
+
                 <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
                     <img src={product.HINH_ANH} alt="item" />
 
                 </Link>
 
-                {openDialog && <ProductDetailModal productId={product.MA_SP}closeDialog={closeDialog} />}
+                {openDialog && <ProductDetailModal productId={product.MA_SP} closeDialog={closeDialog} />}
             </div>
         );
     }
@@ -162,8 +210,8 @@ function Item({ product, type }) {
                         <img src={product.HINH_ANH} alt="item" />
 
                         {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
-                    {`- ${product.PHAN_TRAM_GIAM}%`}
-                </div> : <></>}
+                            {`- ${product.PHAN_TRAM_GIAM}%`}
+                        </div> : <></>}
                     </Link>
                     <Link to={`/product/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
                 </div>
@@ -180,7 +228,7 @@ function Item({ product, type }) {
             </div>
         );
     }
-    
+
     if (type === "bag-item") {
         return (
 
@@ -188,7 +236,7 @@ function Item({ product, type }) {
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
                     {`- ${product.PHAN_TRAM_GIAM}%`}
                 </div> : <></>}
-                    {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
                     {`HẾT HÀNG`}
                 </div> : <></>}
                 <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
@@ -218,9 +266,9 @@ function Item({ product, type }) {
 
                                 <button className={clsx(style.buttonPlus)}
                                     onClick={(e) => {
-                                        if(quantityField.current.innerHTML.trim()===product.chiTietSanPham[0].SO_LUONG_TON+""){
+                                        if (quantityField.current.innerHTML.trim() === product.chiTietSanPham[0].SO_LUONG_TON + "") {
                                             notify("Đạt giới hạn tồn kho của sản phẩm");
-                                        }else{
+                                        } else {
                                             dispatch(increaseAmount({ id: product.chiTietSanPham[0].MA_CT_SP }));
                                             dispatch(caculateTotalAmountAndPrice());
                                         }
@@ -237,7 +285,7 @@ function Item({ product, type }) {
                     </div>
                 </div>
                 <div className={clsx(style.top)}>
-                    <ToastContainer /> 
+                    <ToastContainer />
                 </div>
             </div >
         )
@@ -249,7 +297,7 @@ function Item({ product, type }) {
                 {product.PHAN_TRAM_GIAM > 0 ? <div className={clsx(style.salePercentTag)}>
                     {`- ${product.PHAN_TRAM_GIAM}%`}
                 </div> : <></>}
-                    {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
+                {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
                     {`HẾT HÀNG`}
                 </div> : <></>}
                 <Link to={`/product/${product.MA_SP}`} className={clsx(style.imgContainer)}>
@@ -260,12 +308,12 @@ function Item({ product, type }) {
                     <div>
                         <Link to={`/product/${product.MA_SP}`} className={clsx(style.label)}>{product.TEN_SP}</Link>
                         {discountPricesString ?
-                        <><p className={clsx(style.oldPrice)}><span>{pricesString}</span></p>
-                            <p className={clsx(style.price)}><span>{discountPricesString}</span></p>
-                        </>
-                        : <p className={clsx(style.price)}><span>{pricesString}</span></p>}
-                        <p>SIZE: {product.SIZE_STR? product.SIZE_STR.substring(1, product.SIZE_STR.length):""}</p>
-                    {/* <div className="add-to-cart-button">Add to cart</div> */}
+                            <><p className={clsx(style.oldPrice)}><span>{pricesString}</span></p>
+                                <p className={clsx(style.price)}><span>{discountPricesString}</span></p>
+                            </>
+                            : <p className={clsx(style.price)}><span>{pricesString}</span></p>}
+                        <p>SIZE: {product.SIZE_STR ? product.SIZE_STR.substring(1, product.SIZE_STR.length) : ""}</p>
+                        {/* <div className="add-to-cart-button">Add to cart</div> */}
                     </div>
                 </div>
             </div >

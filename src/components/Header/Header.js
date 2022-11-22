@@ -137,7 +137,7 @@ function Header(props) {
     useEffect(function () {
         axios.get(`http://localhost:22081/api/TheLoai`).then(res => {
             const categoriesFromAPI = res.data;
-            console.log(categoriesFromAPI);
+            // console.log(categoriesFromAPI);
 
             categoriesFromAPI.map((category, index) => {
                 let subCategories;
@@ -147,14 +147,14 @@ function Header(props) {
                 category.subCategories = subCategories;
             })
 
-            console.log(categoriesFromAPI);
+            // console.log(categoriesFromAPI);
 
             let categoriesLevel1; // chỉ lấy thể loại cha, trong thể loại cha có thể loại con
             categoriesLevel1 = categoriesFromAPI.filter((category, index) => {
                 return category.CAP_TL === 1;
             });
 
-            console.log(categoriesLevel1);
+            // console.log(categoriesLevel1);
 
             setCategories(categoriesLevel1);
         });
@@ -216,7 +216,7 @@ function Header(props) {
                                 categories.map((category, index) => {
                                     let isSubmenuContainer = false;
                                     isSubmenuContainer = category.subCategories.length > 0;
-                                    // console.log(isSubmenuContainer);
+
                                     return (
                                         <Link key={index} to={"products/category/" + category.MA_TL} className={clsx(style.navLink, { [style.submenuContainer]: isSubmenuContainer, [style.submenuContainer2]: isSubmenuContainer })}>
                                             {category.TEN_TL.substring(0, 1).toUpperCase() + category.TEN_TL.substring(1, category.TEN_TL.length)}
@@ -234,7 +234,7 @@ function Header(props) {
                                                                     </Link>
                                                                 )
                                                             })}
-                                                        
+
                                                     </ul>
                                                 </>
                                                 :
@@ -243,8 +243,8 @@ function Header(props) {
                                     )
                                 })}
 
-<>
-{/* <Link to={"products/category/"} className={clsx(style.navLink, style.submenuContainer2)}>
+                            <>
+                                {/* <Link to={"products/category/"} className={clsx(style.navLink, style.submenuContainer2)}>
                                            qaaaaaaaaa
                                                     <Icon icon="chevron-down" className={clsx(style.chevronDownToLeft)} />
                                                     <ul className={clsx(style.submenu2)} >
@@ -263,7 +263,7 @@ function Header(props) {
                                                         
                                                     </ul>
                                         </Link> */
-                                    }</>
+                                }</>
                             <Link to="/all" className={clsx(style.navLink, style.lastNavLink)}>Tất cả</Link>
                         </ul>
                     </li>

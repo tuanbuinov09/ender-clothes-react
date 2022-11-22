@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import Icon from 'react-hero-icon';
+import { useNavigate } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import clsx from 'clsx';
 import axios from 'axios';
@@ -13,11 +15,11 @@ import EJ2ImageCarousel from './EJ2ImageCarousel';
 import StarRating from '../StarRating/StarRating';
 import StarRatingSize24 from '../StarRating/StarRatingSize24';
 function ProductDetail(props) {
-
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const params = useParams();
     console.log(params.productId);
-
+    const pd = params.productId;
     const [ratingComment, setRatingComment] = useState({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH, DANH_GIA: 0, NOI_DUNG: "" })
     const [allRatingComment, setAllRatingComment] = useState([])
     const [selectedProductDetail, setSelectedProductDetail] = useState({});
@@ -26,6 +28,8 @@ function ProductDetail(props) {
     const [mapped, setMapped] = useState([]);
     const [mappedSize, setMappedSize] = useState([]);
     const [productImages, setProductImages] = useState();
+    const [isInFavoriteList, setIsInFavoriteList] = useState(false);
+
     const { bagProducts, amount, total } = useSelector((store) => {
         return store.shoppingBag;
     })
@@ -34,6 +38,25 @@ function ProductDetail(props) {
     const setStarRatingCmt = (e) => {
         setRatingComment({ ...ratingComment, DANH_GIA: e });
     }
+
+    //xét có trong dnah sách yêu thích của user k
+    useEffect(() => {
+        const listFavorite = JSON.parse(localStorage.getItem('listFavourite'));
+        if (!listFavorite) {
+            return;
+        }
+        const isInList = listFavorite.find(item => {
+
+            return pd === item.MA_SP;
+        })
+
+        if (isInList) {
+            setIsInFavoriteList(true);
+        } else {
+            setIsInFavoriteList(false);
+        }
+
+    }, []);
 
     removeSyncfusionLicenseMessage();
     useEffect(() => {
@@ -237,7 +260,28 @@ function ProductDetail(props) {
                     </div>
                 </div>
                 <div className={clsx(style.right)}>
-                    <h2 className={clsx(style.title)}>{product.TEN_SP}</h2>
+                    <h2 className={clsx(style.title)}>{product.TEN_SP}
+                        <div className={clsx(style.iconContainer, style.favIcon, { [style.addToFavList]: !isInFavoriteList })} title={!isInFavoriteList ? "Thêm vào danh sách yêu thích" : "Xóa khỏi danh sách yêu thích"}
+                            onClick={() => {
+                                const user = JSON.parse(localStorage.getItem('user'));
+                                if (!user) {
+                                    navigate("/user/login", { replace: true });
+                                } else {
+                                    const url = `http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}&productId=${params.productId}`;
+                                    axios.post(url).then(res => {
+                                        const response = res.data;
+                                        setIsInFavoriteList(!isInFavoriteList);
+                                        axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}`).then(respListFavorite => {
+                                            const listFavorite = respListFavorite.data;
+                                            localStorage.removeItem('listFavourite');
+                                            localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
+                                        });
+                                        toast.success(response.responseMessage);
+                                    })
+                                }
+                            }}>
+                            <Icon icon="heart" type="solid" className={clsx(style.iconSvg)} />
+                        </div></h2>
 
                     <div className={clsx(style.flex)}>
                         <div className={clsx(style.subtitle)}>Màu: </div>

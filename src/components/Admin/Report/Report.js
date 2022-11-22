@@ -27,8 +27,10 @@ function Report(props) {
     }, [])
     const fromDate = useRef();
     const toDate = useRef();
+    const fromDateProfit = useRef();
 
     const [selectedDates, setSelectedDates] = useState({});
+    const [selectedDateProfit, setSelectedDateProfit] = useState({ 'type': 'day' });
 
     const linkExport = () => {
         try {
@@ -59,7 +61,25 @@ function Report(props) {
         } catch (e) {
 
         }
-console.log(selectedDates);
+        console.log(selectedDates);
+    }
+    const linkProfitExport = () => {
+        try {
+            setSelectedDateProfit({
+                ...selectedDateProfit, 'from': fromDateProfit.current.value.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                })
+            })
+        } catch (e) {
+
+        }
+
+        console.log(selectedDateProfit);
     }
     props.changeHeader('employee')
     const excel = () => {
@@ -98,7 +118,7 @@ console.log(selectedDates);
         }
     });
     setCulture('vi')
-const [data, setData] = useState(null);
+    const [data, setData] = useState(null);
     const print2 = () => {
         try {
             let to = toDate.current.value.toLocaleString('en-US', {
@@ -119,42 +139,85 @@ const [data, setData] = useState(null);
             })
             console.log(`http://localhost:22081/api/NhanVien/report-sale?from=${from}&to=${to}`);
             axios
-              .get(`http://localhost:22081/api/NhanVien/report-sale?from=${from}&to=${to}`)
-              .then((res) => {
-                const dataFromApi = res.data;
-                console.log(dataFromApi);
-                dataFromApi.TONG_DOANH_THU = dataFromApi.reduce((total, dat)=>{
-                     return total + dat.TONG_TRI_GIA;
-                 }, 0)
-                 dataFromApi.fromDate =  fromDate.current.value.toLocaleString('vi-VN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    // hour: '2-digit',
-                    // minute: '2-digit',
-                    // second: '2-digit',
-                })
-                 dataFromApi.toDate = toDate.current.value.toLocaleString('vi-VN', {
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                    // hour: '2-digit',
-                    // minute: '2-digit',
-                    // second: '2-digit',
-                })
-                // console.log(cartsFromApi);
-                setData(dataFromApi);
-              });
-          } catch (error) {
+                .get(`http://localhost:22081/api/NhanVien/report-sale?from=${from}&to=${to}`)
+                .then((res) => {
+                    const dataFromApi = res.data;
+                    console.log(dataFromApi);
+                    dataFromApi.TONG_DOANH_THU = dataFromApi.reduce((total, dat) => {
+                        return total + dat.TONG_TRI_GIA;
+                    }, 0)
+                    dataFromApi.fromDate = fromDate.current.value.toLocaleString('vi-VN', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        // hour: '2-digit',
+                        // minute: '2-digit',
+                        // second: '2-digit',
+                    })
+                    dataFromApi.toDate = toDate.current.value.toLocaleString('vi-VN', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        // hour: '2-digit',
+                        // minute: '2-digit',
+                        // second: '2-digit',
+                    })
+                    // console.log(cartsFromApi);
+                    setData(dataFromApi);
+                });
+        } catch (error) {
             console.error(error);
-          }
+        }
     }
-   
+
+    const print3 = () => {
+        try {
+
+            let from = fromDateProfit.current.value.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                // hour: '2-digit',
+                // minute: '2-digit',
+                // second: '2-digit',
+            })
+            console.log(`http://localhost:22081/api/NhanVien/report-profit?from=${from}&type=${selectedDateProfit.type}`);
+            axios
+                .get(`http://localhost:22081/api/NhanVien/report-profit?from=${from}&type=${selectedDateProfit.type}`)
+                .then((res) => {
+                    // const dataFromApi = res.data;
+                    // console.log(dataFromApi);
+                    // dataFromApi.TONG_DOANH_THU = dataFromApi.reduce((total, dat) => {
+                    //     return total + dat.TONG_TRI_GIA;
+                    // }, 0)
+                    // dataFromApi.fromDate = fromDate.current.value.toLocaleString('vi-VN', {
+                    //     year: 'numeric',
+                    //     month: '2-digit',
+                    //     day: '2-digit',
+                    //     // hour: '2-digit',
+                    //     // minute: '2-digit',
+                    //     // second: '2-digit',
+                    // })
+                    // dataFromApi.toDate = toDate.current.value.toLocaleString('vi-VN', {
+                    //     year: 'numeric',
+                    //     month: '2-digit',
+                    //     day: '2-digit',
+                    //     // hour: '2-digit',
+                    //     // minute: '2-digit',
+                    //     // second: '2-digit',
+                    // })
+                    // // console.log(cartsFromApi);
+                    // setData(dataFromApi);
+                });
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <div >
-            {data && <SaleReportToPrint data={data} setData={setData}/>}
-           <SectionTitle title={"BÁO CÁO"} />
+            {data && <SaleReportToPrint data={data} setData={setData} />}
+            <SectionTitle title={"BÁO CÁO"} />
 
             <div className={clsx(style.reportContainer)}>
                 <div>
@@ -173,6 +236,49 @@ const [data, setData] = useState(null);
                     </div>
                     <button className={clsx(style.btnExport)} onClick={() => {
                         print2();
+                    }}>In báo cáo</button>
+                    {/* {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>} */}
+
+                </div>
+
+            </div>
+            <div className={clsx(style.reportContainer)}>
+                <div>
+                    <h1>Lợi nhuận theo khoảng thời gian</h1>
+                    <div className={clsx(style.datePickerContainer)}>
+                        <label>Chọn ngày:</label>
+                        <DatePickerComponent onChange={() => {
+                            linkProfitExport();
+                        }} ref={fromDateProfit} format={'dd/MM/yyyy'} locale='vi' />
+                    </div>
+                    <div className={clsx(style.datePickerContainer)}>
+                        <label>Chọn khoảng thời gian:</label>
+                        <div className={clsx(style.radioButtonsContainer)}>
+                            <input type={'radio'} checked={selectedDateProfit.type === 'day'} name='typeExport' value={'day'} onChange={e => {
+                                setSelectedDateProfit({ ...selectedDateProfit, 'type': 'day' });
+                            }} id='r1' />
+                            <label for="r1"> Theo ngày</label>
+
+                            <input type={'radio'} checked={selectedDateProfit.type === 'month'} name='typeExport' value={'month'} onChange={e => {
+                                setSelectedDateProfit({ ...selectedDateProfit, 'type': 'month' });
+                            }} id='r2' />
+                            <label for="r2"> Theo tháng</label>
+
+                            <input type={'radio'} checked={selectedDateProfit.type === 'quarter'} name='typeExport' value={'quarter'} onChange={e => {
+                                setSelectedDateProfit({ ...selectedDateProfit, 'type': 'quarter' });
+                            }} id='r3' />
+                            <label for="r3"> Theo quý</label>
+
+                            <input type={'radio'} checked={selectedDateProfit.type === 'year'} name='typeExport' value={'year'} onChange={e => {
+                                setSelectedDateProfit({ ...selectedDateProfit, 'type': 'year' });
+                            }} id='r4' />
+                            <label for="r4"> Theo năm</label>
+
+                        </div>
+
+                    </div>
+                    <button className={clsx(style.btnExport)} onClick={() => {
+                        print3();
                     }}>In báo cáo</button>
                     {/* {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>} */}
 

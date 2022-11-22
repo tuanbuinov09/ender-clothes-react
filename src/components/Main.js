@@ -106,6 +106,8 @@ function Main() {
                         <Route path="/most-viewed" element={<ItemListWithTitle type="most-viewed" />} />
                         <Route path="/best-seller" element={<ItemListWithTitle type="best-seller" />} />
                         <Route path="/sale-off" element={<ItemListWithTitle type="sale-off" />} />
+
+                        <Route path="/user/favorite" element={<ItemListWithTitle type="favorite" />} />
                     </Routes>
                     <Footer />
                 </div>
