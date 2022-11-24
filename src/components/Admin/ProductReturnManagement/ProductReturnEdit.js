@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { ColumnChooser, ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter, Group, Edit, Toolbar, dataReady } from '@syncfusion/ej2-react-grids';
 
-import { DateDiff, intToVNDCurrencyFormat, loadLocaleSyncfusion, removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
+import { DateDiff, intToVNDCurrencyFormat, loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from '../../../uitilities/utilities';
 import { XIcon, CheckIcon, SaveIcon, PrintIcon } from '../../../icons';
 import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
@@ -16,6 +16,7 @@ import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation';
 function ProductReturnEdit(props) {
     let navigate = useNavigate();
+    setupInterceptors(navigate, 'employee');
     //const params = useParams(); prams.cartId
     console.log(props.returnId, props.viewMode);
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
@@ -313,7 +314,12 @@ function ProductReturnEdit(props) {
 
         console.log('pass', _productReturnEntity, `${process.env.REACT_APP_API_URL}/api/TraHang/add-product-return`)
         try {
-            axios.post(`${process.env.REACT_APP_API_URL}/api/TraHang/add-product-return`, _productReturnEntity
+            axios.post(`${process.env.REACT_APP_API_URL}/api/TraHang/add-product-return`, _productReturnEntity,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);

@@ -4,7 +4,7 @@ import { ColumnChooser, ColumnDirective, ColumnsDirective, GridComponent, Inject
 import { CheckIcon, ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../icons';
 import axios from 'axios';
 import '../ej2-grid.css'
-import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion } from '../../../uitilities/utilities';
+import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion, setupInterceptors } from '../../../uitilities/utilities';
 import style from './ProductManagement.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
@@ -22,7 +22,7 @@ function ProductManagement(props) {
 
     props.changeHeader('employee')
     let navigate = useNavigate();
-
+    setupInterceptors(navigate, 'employee');
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
             notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
@@ -157,17 +157,22 @@ function ProductManagement(props) {
         console.log(`${process.env.REACT_APP_API_URL}/api/SanPham/delete`)
         try {
             axios.delete(`${process.env.REACT_APP_API_URL}/api/SanPham/delete?productId=${selectedCart.MA_SP}`
-            ).then(res => {
-                const response = res.data;
-                console.log('res delete: ' + response);
+                ,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }).then(res => {
+                    const response = res.data;
+                    console.log('res delete: ' + response);
 
-                if (response.errorDesc) {
-                    notify(response.errorDesc);
-                } else {
-                    notify(response.responseMessage);
-                    setRerender(!rerender);
-                }
-            });
+                    if (response.errorDesc) {
+                        notify(response.errorDesc);
+                    } else {
+                        notify(response.responseMessage);
+                        setRerender(!rerender);
+                    }
+                });
         } catch (error) {
             console.error(error);
         }

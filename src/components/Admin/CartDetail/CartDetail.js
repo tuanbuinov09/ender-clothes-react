@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import style from './CartDetail.module.css';
 import clsx from 'clsx';
 import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter, Group, Edit, Toolbar, dataReady } from '@syncfusion/ej2-react-grids';
@@ -12,11 +12,15 @@ import { L10n } from '@syncfusion/ej2-base';
 import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
-import { intToVNDCurrencyFormat } from '../../../uitilities/utilities'
+import { intToVNDCurrencyFormat, setupInterceptors } from '../../../uitilities/utilities'
 import CartDetailToPrint from './CartDetailToPrint';
 import { useReactToPrint } from 'react-to-print';
 function CartDetail(props) {
     const dispatch = useDispatch();
+
+    let navigate = useNavigate();
+    setupInterceptors(navigate, props.type !== 'userViewing' ? 'employee' : 'user');
+
     // const params = useParams(); prams.cartId
     console.log(props.cartId);
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
@@ -185,13 +189,18 @@ function CartDetail(props) {
         try {
             axios.put(`http://localhost:22081/api/NhanVien/finish-cart`, {
                 ID_GH: cart.ID_GH
-            }).then(res => {
-                const response = res.data;
-                // console.log('res: ' + response);
-                setCart({ ...cart, TRANG_THAI: 2, TRANG_THAI_STR: 'Đã hoàn tất' })
-                notify("Giao đơn hàng thành công");
-                props.rerender();
-            });
+            },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }).then(res => {
+                    const response = res.data;
+                    // console.log('res: ' + response);
+                    setCart({ ...cart, TRANG_THAI: 2, TRANG_THAI_STR: 'Đã hoàn tất' })
+                    notify("Giao đơn hàng thành công");
+                    props.rerender();
+                });
         } catch (error) {
             console.error(error);
         }
@@ -215,18 +224,23 @@ function CartDetail(props) {
                 ID_GH: cart.ID_GH,
                 MA_NV_GIAO: assignedEmpID,
                 MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
-            }).then(res => {
-                const response = res.data;
-                // console.log('res: ' + response);
-                setCart({
-                    ...cart, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao hàng',
-                    MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN
-                    , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
-                })
-                notify("Đã giao cho nhân viên: " + selectedItem.HO_TEN);
+            },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }).then(res => {
+                    const response = res.data;
+                    // console.log('res: ' + response);
+                    setCart({
+                        ...cart, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao hàng',
+                        MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN
+                        , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
+                    })
+                    notify("Đã giao cho nhân viên: " + selectedItem.HO_TEN);
 
-                props.rerender();
-            });
+                    props.rerender();
+                });
         } catch (error) {
             console.error(error);
         }
@@ -241,13 +255,18 @@ function CartDetail(props) {
         try {
             axios.put(`http://localhost:22081/api/KhachHang/cancel-cart`, {
                 ID_GH: cart.ID_GH
-            }).then(res => {
-                const response = res.data;
-                // console.log('res: ' + response);
-                setCart({ ...cart, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' })
-                notify("Hủy đơn hàng thành công");
-                props.rerender();
-            });
+            },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+                    }
+                }).then(res => {
+                    const response = res.data;
+                    // console.log('res: ' + response);
+                    setCart({ ...cart, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' })
+                    notify("Hủy đơn hàng thành công");
+                    props.rerender();
+                });
         } catch (error) {
             console.error(error);
         }
@@ -260,9 +279,14 @@ function CartDetail(props) {
             ID_GH: cart.ID_GH,
             MA_HD: maHD,
             MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
-        }).then(res => {
-            setPreparePrint(true);
-        })
+        },
+            {
+                headers: {
+                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                }
+            }).then(res => {
+                setPreparePrint(true);
+            })
     }
     let fields = { text: 'HO_TEN_STR', value: 'MA_NV' };
     // filtering event handler to filter a Country

@@ -10,12 +10,13 @@ import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
+import { setupInterceptors } from '../../../uitilities/utilities';
 
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation';
 function ProductPriceChangeEdit(props) {
     console.log('dredner')
     let navigate = useNavigate();
-
+    setupInterceptors(navigate, 'employee');
     //const params = useParams(); prams.cartId
     console.log(props.importId, props.viewMode);
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
@@ -252,6 +253,12 @@ function ProductPriceChangeEdit(props) {
         console.log('pass', _productPriceChangeEntity, `${process.env.REACT_APP_API_URL}/api/ThayDoiGia/add-price-change`)
         try {
             axios.post(`${process.env.REACT_APP_API_URL}/api/ThayDoiGia/add-price-change`, _productPriceChangeEntity
+                ,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);

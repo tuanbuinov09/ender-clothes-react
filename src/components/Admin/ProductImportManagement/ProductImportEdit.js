@@ -4,7 +4,7 @@ import style from './ProductImportEdit.module.css';
 import clsx from 'clsx';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { intToVNDCurrencyFormat, loadLocaleSyncfusion, removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
+import { intToVNDCurrencyFormat, loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from '../../../uitilities/utilities';
 import { XIcon, CheckIcon, SaveIcon, PrintIcon } from '../../../icons';
 import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
@@ -15,6 +15,8 @@ import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation';
 function ProductImportEdit(props) {
     console.log('dredner')
     let navigate = useNavigate();
+
+    setupInterceptors(navigate, 'employee');
 
     //const params = useParams(); prams.cartId
     console.log(props.importId, props.viewMode);
@@ -257,7 +259,12 @@ function ProductImportEdit(props) {
 
         console.log('pass', _importProductEntity, `${process.env.REACT_APP_API_URL}/api/NhapHang/add-product-import`)
         try {
-            axios.post(`${process.env.REACT_APP_API_URL}/api/NhapHang/add-product-import`, _importProductEntity
+            axios.post(`${process.env.REACT_APP_API_URL}/api/NhapHang/add-product-import`, _importProductEntity,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);
@@ -268,7 +275,12 @@ function ProductImportEdit(props) {
 
                 toast.success("Thêm phiếu nhập thành công");
                 props.rerender();
-            });
+            },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                });
         } catch (error) {
             console.error(error);
         }
