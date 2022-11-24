@@ -19,7 +19,7 @@ function Login(props) {
         if (localStorage.getItem('employee') && props.type === 'employee') {
             navigate("/employee/info", { replace: true });
         }
-        return () => { login = null };
+        // return () => { login = null };
     }, [])
     const login = (loginInfo) => {
         let url = '';

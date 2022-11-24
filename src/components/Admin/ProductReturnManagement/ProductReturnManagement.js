@@ -158,30 +158,7 @@ function ProductReturnManagement(props) {
         setFilterState(dropdownList.current.value);
         console.log(filterState);
     }
-    const deleteProduct = () => {
-        if (!selectedReturn.MA_SP) {
-            return;
-        }
-        console.log(`${process.env.REACT_APP_API_URL}/api/SanPham/delete`)
-        try {
-            axios.delete(`${process.env.REACT_APP_API_URL}/api/SanPham/delete?productId=${selectedReturn.MA_SP}`
-            ).then(res => {
-                const response = res.data;
-                console.log('res delete: ' + response);
 
-
-                if (response.errorDesc) {
-                    notify(response.errorDesc);
-                } else {
-                    notify(response.responseMessage);
-                    setRerender(!rerender);
-                }
-            });
-        } catch (error) {
-            console.error(error);
-        }
-
-    }
     return (
         <div className={clsx(style.cartManagement)}>
             <div className={clsx(style.top)}>

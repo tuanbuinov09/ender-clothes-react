@@ -4,7 +4,7 @@ import { ColumnChooser, ColumnDirective, ColumnsDirective, GridComponent, Inject
 import { CheckIcon, ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../icons';
 import axios from 'axios';
 import '../ej2-grid.css'
-import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion } from '../../../uitilities/utilities';
+import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion, setupInterceptors } from '../../../uitilities/utilities';
 import style from './ProductSaleOffManagement.module.css';
 import { useNavigate, Link } from "react-router-dom";
 import clsx from 'clsx';
@@ -17,6 +17,7 @@ import ToastContainer, { toast } from 'react-light-toast';
 
 function ProductSaleOffManagement(props) {
     let navigate = useNavigate();
+    setupInterceptors(navigate, 'employee');
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const notifySuccess = (message) => toast.success(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [viewMode, setViewMode] = useState('add');
@@ -204,7 +205,12 @@ function ProductSaleOffManagement(props) {
 
         console.log(`${process.env.REACT_APP_API_URL}/api/KhuyenMai/delete`)
         try {
-            axios.delete(`${process.env.REACT_APP_API_URL}/api/KhuyenMai/delete?saleOffId=${selectedSaleOff.MA_KM}`
+            axios.delete(`${process.env.REACT_APP_API_URL}/api/KhuyenMai/delete?saleOffId=${selectedSaleOff.MA_KM}`,
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }
             ).then(res => {
                 const response = res.data;
                 console.log('res delete: ' + response);

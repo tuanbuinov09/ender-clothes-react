@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { MinusIcon, PlusIcon } from "../../../icons";
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../../features/shoppingBag/shoppingBagSlice.js';
 import { useDispatch } from "react-redux";
-import { intToVNDCurrencyFormat } from "../../../uitilities/utilities";
+import { intToVNDCurrencyFormat, setupInterceptors } from "../../../uitilities/utilities";
 import ToastContainer, { toast } from 'react-light-toast';
 import { useState } from 'react';
 import ProductDetailModal from "../../ProductDetail/ProductDetailModal";
@@ -17,6 +17,7 @@ import axios from "axios";
 
 function Item({ product, type }) {
     let navigate = useNavigate();
+    setupInterceptors(navigate, 'user');
     const [openDialog, setOpenDialog] = useState(false);
     const [rerender, setRerender] = useState(false);
     const [isInFavoriteList, setIsInFavoriteList] = useState(false);
@@ -128,16 +129,22 @@ function Item({ product, type }) {
                                 navigate("/user/login", { replace: true });
                             } else {
                                 const url = `http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}&productId=${product.MA_SP}`;
-                                axios.post(url).then(res => {
-                                    const response = res.data;
-                                    setIsInFavoriteList(!isInFavoriteList);
-                                    axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}`).then(respListFavorite => {
-                                        const listFavorite = respListFavorite.data;
-                                        localStorage.removeItem('listFavourite');
-                                        localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
-                                    });
-                                    toast.success(response.responseMessage);
-                                })
+
+                                axios.post(url, {},
+                                    {
+                                        headers: {
+                                            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+                                        }
+                                    }).then(res => {
+                                        const response = res.data;
+                                        setIsInFavoriteList(!isInFavoriteList);
+                                        axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}`).then(respListFavorite => {
+                                            const listFavorite = respListFavorite.data;
+                                            localStorage.removeItem('listFavourite');
+                                            localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
+                                        });
+                                        toast.success(response.responseMessage);
+                                    })
                             }
                         }}>
                         <Icon icon="heart" type="solid" className={clsx(style.iconSvg)} />

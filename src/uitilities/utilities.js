@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { L10n } from '@syncfusion/ej2-base';
-
+import axios from 'axios';
 const intToVNDCurrencyFormat = (number, withSymbol) => {
     let result;
     if (typeof number === 'string') {
@@ -225,6 +225,20 @@ const DateDiff = {
         return d2.getFullYear() - d1.getFullYear();
     }
 }
+const setupInterceptors = (navigateTo, typeLogin) => {
 
-export { isValidPhone, newIdByDate, DateDiff }
+    axios.interceptors.response.use(function (response) {
+        return response;
+    }, function (error) {
+
+        if (error.response.status === 401) {
+            localStorage.removeItem(typeLogin);
+            navigateTo('/' + typeLogin + '/login', { replace: true });
+        }
+
+        return Promise.reject(error);
+    });
+}
+
+export { isValidPhone, newIdByDate, DateDiff, setupInterceptors }
 export { intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion }

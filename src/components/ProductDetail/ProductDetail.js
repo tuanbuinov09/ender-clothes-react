@@ -8,7 +8,7 @@ import axios from 'axios';
 import ToastContainer, { toast } from 'react-light-toast';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
-import { removeSyncfusionLicenseMessage } from '../../uitilities/utilities'
+import { removeSyncfusionLicenseMessage, setupInterceptors } from '../../uitilities/utilities'
 
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
 import EJ2ImageCarousel from './EJ2ImageCarousel';
@@ -16,6 +16,7 @@ import StarRating from '../StarRating/StarRating';
 import StarRatingSize24 from '../StarRating/StarRatingSize24';
 function ProductDetail(props) {
     let navigate = useNavigate();
+    setupInterceptors(navigate, 'user');
     const dispatch = useDispatch();
     const params = useParams();
     console.log(params.productId);
@@ -268,16 +269,21 @@ function ProductDetail(props) {
                                     navigate("/user/login", { replace: true });
                                 } else {
                                     const url = `http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}&productId=${params.productId}`;
-                                    axios.post(url).then(res => {
-                                        const response = res.data;
-                                        setIsInFavoriteList(!isInFavoriteList);
-                                        axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}`).then(respListFavorite => {
-                                            const listFavorite = respListFavorite.data;
-                                            localStorage.removeItem('listFavourite');
-                                            localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
-                                        });
-                                        toast.success(response.responseMessage);
-                                    })
+                                    axios.post(url, {},
+                                        {
+                                            headers: {
+                                                Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+                                            }
+                                        }).then(res => {
+                                            const response = res.data;
+                                            setIsInFavoriteList(!isInFavoriteList);
+                                            axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}`).then(respListFavorite => {
+                                                const listFavorite = respListFavorite.data;
+                                                localStorage.removeItem('listFavourite');
+                                                localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
+                                            });
+                                            toast.success(response.responseMessage);
+                                        })
                                 }
                             }}>
                             <Icon icon="heart" type="solid" className={clsx(style.iconSvg)} />
@@ -384,33 +390,38 @@ function ProductDetail(props) {
                         }
 
                         try {
-                            axios.post(`http://localhost:22081/api/SanPham/rate`, ratingComment).then(res => {
-                                const response = res.data;
-                                if (response.affectedId) {
-                                    toast.success('Đã thêm đánh giá')
-                                    try {
-                                        axios.get(`http://localhost:22081/api/SanPham/all-comment?productId=${params.productId}`).then(res => {
-                                            const response = res.data;
-                                            response.forEach(item => {
-                                                let date = new Date(item.NGAY_DANH_GIA);
-                                                item.NGAY_DANH_GIA = date.toLocaleDateString('vi-VN');
-                                                console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date))
-                                                item.NGAY_DANH_GIA = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date)
-                                            })
-                                            console.log(response);
-                                            setAllRatingComment(response);
-
-                                            setRatingComment({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH, DANH_GIA: 0, NOI_DUNG: "" })
-                                        });
-                                    } catch (error) {
-                                        console.error(error);
+                            axios.post(`http://localhost:22081/api/SanPham/rate`, ratingComment,
+                                {
+                                    headers: {
+                                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
                                     }
-                                    return
-                                } else {
-                                    toast.error('Đăng đánh giá thất bại')
-                                    return
-                                }
-                            });
+                                }).then(res => {
+                                    const response = res.data;
+                                    if (response.affectedId) {
+                                        toast.success('Đã thêm đánh giá')
+                                        try {
+                                            axios.get(`http://localhost:22081/api/SanPham/all-comment?productId=${params.productId}`).then(res => {
+                                                const response = res.data;
+                                                response.forEach(item => {
+                                                    let date = new Date(item.NGAY_DANH_GIA);
+                                                    item.NGAY_DANH_GIA = date.toLocaleDateString('vi-VN');
+                                                    console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date))
+                                                    item.NGAY_DANH_GIA = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date)
+                                                })
+                                                console.log(response);
+                                                setAllRatingComment(response);
+
+                                                setRatingComment({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH, DANH_GIA: 0, NOI_DUNG: "" })
+                                            });
+                                        } catch (error) {
+                                            console.error(error);
+                                        }
+                                        return
+                                    } else {
+                                        toast.error('Đăng đánh giá thất bại')
+                                        return
+                                    }
+                                });
                         } catch (error) {
                             console.error(error);
                         }

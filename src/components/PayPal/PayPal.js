@@ -11,16 +11,16 @@ export default function PayPal(props) {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     let tiGia = 0;
-    
+
     useEffect(() => {
-        try{
+        try {
             axios.get('http://localhost:22081/api/TiGia/current').then(res => {
                 const tiGiaFromApi = res.data;
                 // console.log(productsFromApi[0]);
                 tiGia = tiGiaFromApi;
                 console.log("tigia usd: ", tiGia);
             })
-        }catch(e){
+        } catch (e) {
             console.log(e);
         }
     }, [])
@@ -50,15 +50,16 @@ export default function PayPal(props) {
     console.log("total: ", (total / 23000).toFixed(2));
 
     let cartDetail = bagProducts.map((product) => {
-        return {description: product.chiTietSanPham[0].TEN_SP + "; Size: "+product.chiTietSanPham[0].TEN_SIZE+"; SL: "+product.chiTietSanPham[0].SO_LUONG,
-        amount: {
-            currency_code: "USD",
-            value: ((product.chiTietSanPham[0].GIA* product.chiTietSanPham[0].SO_LUONG)/ tiGia).toFixed(2),
-        }
+        return {
+            description: product.chiTietSanPham[0].TEN_SP + "; Size: " + product.chiTietSanPham[0].TEN_SIZE + "; SL: " + product.chiTietSanPham[0].SO_LUONG,
+            amount: {
+                currency_code: "USD",
+                value: ((product.chiTietSanPham[0].GIA * product.chiTietSanPham[0].SO_LUONG) / tiGia).toFixed(2),
+            }
         };
 
     })
-console.log(cartDetail);
+    console.log(cartDetail);
     useEffect(() => {
 
         window.paypal
@@ -66,17 +67,17 @@ console.log(cartDetail);
                 createOrder: (data, actions, err) => {
                     return actions.order.create({
                         intent: "CAPTURE",
-                        purchase_units: 
-                        //cartDetail
-                        [
-                            {
-                                description: "Cool looking table",
-                                amount: {
-                                    currency_code: "USD",
-                                    value: (total / tiGia).toFixed(2),
+                        purchase_units:
+                            //cartDetail
+                            [
+                                {
+                                    description: "Cool looking table",
+                                    amount: {
+                                        currency_code: "USD",
+                                        value: (total / tiGia).toFixed(2),
+                                    },
                                 },
-                            },
-                        ],
+                            ],
                     });
                 },
                 onApprove: async (data, actions) => {
@@ -115,7 +116,7 @@ console.log(cartDetail);
                     });
 
                     navigate("/", { replace: true });
-                    
+
                 },
                 onError: (err) => {
                     console.log(err);

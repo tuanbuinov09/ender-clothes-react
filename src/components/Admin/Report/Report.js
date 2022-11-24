@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import "../ej2-grid.css";
 import clsx from "clsx";
-import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage } from "../../../uitilities/utilities";
+import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from "../../../uitilities/utilities";
 import style from './Report.module.css';
 import SectionTitle from "../../HomePage/SectionTitle/SectionTitle";
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
@@ -16,8 +16,13 @@ import * as weekData from 'cldr-data/supplemental/weekData.json';// To load the 
 import { useReactToPrint } from 'react-to-print';
 import '../ej2-grid.css'
 import SaleReportToPrint from "./SaleReportToPrint";
+import { useNavigate } from 'react-router-dom';
+
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames, weekData);
+
 function Report(props) {
+    let navigate = useNavigate();
+    setupInterceptors(navigate, 'employee');
     useEffect(() => {
         removeSyncfusionLicenseMessage();
         //khi unmount trả lại header
@@ -103,11 +108,16 @@ function Report(props) {
                 minute: '2-digit',
                 second: '2-digit',
             })
-        }).then((response) => {
-            console.log(response);
-            // var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-            // FileSaver.saveAs(blob, 'fixi.xlsx');
-        });
+        },
+            {
+                headers: {
+                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                }
+            }).then((response) => {
+                console.log(response);
+                // var blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                // FileSaver.saveAs(blob, 'fixi.xlsx');
+            });
     }
     L10n.load({
         'vi': {

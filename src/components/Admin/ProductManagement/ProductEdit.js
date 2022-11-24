@@ -4,7 +4,7 @@ import style from './ProductEdit.module.css';
 import clsx from 'clsx';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage } from '../../../uitilities/utilities';
+import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from '../../../uitilities/utilities';
 import { useDispatch } from 'react-redux/es/exports';
 import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon } from '../../../icons';
 import ToastContainer, { toast } from 'react-light-toast';
@@ -17,6 +17,8 @@ import FileUploadComponent from '../../FileUploadComponent/FileUploadComponent';
 
 function ProductEdit(props) {
     let navigate = useNavigate();
+
+    setupInterceptors(navigate, 'employee');
     const dispatch = useDispatch();
     // const params = useParams(); prams.cartId
     console.log(props.productId, props.viewMode);
@@ -218,7 +220,12 @@ function ProductEdit(props) {
                 chiTietSanPham: chiTietSP,
                 //mã nhân viên tạo sản phẩm
                 MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
-            }
+            },
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }
             ).then(res => {
                 const response = res.data;
                 console.log('res: ' + response);
