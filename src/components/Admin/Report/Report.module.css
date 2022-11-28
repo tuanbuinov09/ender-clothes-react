@@ -35,3 +35,9 @@
     font-size: 13px;
     font-weight: normal;
 }
+
+.total{
+    width: 203px;
+    display: inline-block;
+    float: right;
+}

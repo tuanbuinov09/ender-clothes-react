@@ -7,7 +7,7 @@ import ToastContainer, { toast } from 'react-light-toast';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import EJ2ImageCarousel from './EJ2ImageCarousel';
-import {removeSyncfusionLicenseMessage} from '../../uitilities/utilities'
+import { removeSyncfusionLicenseMessage } from '../../uitilities/utilities'
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
 function ProductDetailForModal(props) {
     const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function ProductDetailForModal(props) {
     const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     removeSyncfusionLicenseMessage();
     useEffect(() => {
-        
+
         console.log(`http://localhost:22081/api/SanPham/?productId=${props.productId}`);
         try {
             axios.put(`http://localhost:22081/api/SanPham/incre-view?productId=${props.productId}`).then(res => {
@@ -43,12 +43,12 @@ function ProductDetailForModal(props) {
                 const productsFromApi = res.data;
                 // console.log(productsFromApi[0]);
                 //nếu data cũ hình sẽ có http, data mới thì k
-                if (productsFromApi[0].HINH_ANH && !productsFromApi[0].HINH_ANH.startsWith('http')){
+                if (productsFromApi[0].HINH_ANH && !productsFromApi[0].HINH_ANH.startsWith('http')) {
                     productsFromApi[0].HINH_ANH = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${productsFromApi[0].HINH_ANH}`
                 }
-                productsFromApi[0].chiTietSanPham.forEach(item=>{
+                productsFromApi[0].chiTietSanPham.forEach(item => {
                     //nếu data cũ hình sẽ có http, data mới thì k
-                    if (item.HINH_ANH && !item.HINH_ANH.startsWith('http')){
+                    if (item.HINH_ANH && !item.HINH_ANH.startsWith('http')) {
                         item.HINH_ANH = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${item.HINH_ANH}`
                     }
                 })
@@ -64,22 +64,22 @@ function ProductDetailForModal(props) {
                         tempMau = [...tempMau, ctsp]
                     }
                 })
-                console.log("mau: ", tempMau.reduce((total, item)=>{
-                    return total + item.MA_MAU+ ", "
+                console.log("mau: ", tempMau.reduce((total, item) => {
+                    return total + item.MA_MAU + ", "
                 }, ''))
                 // sap xep lai mau
-                tempMau= tempMau.sort((a,b)=>{
-                    if(a.MA_MAU < b.MA_MAU){
+                tempMau = tempMau.sort((a, b) => {
+                    if (a.MA_MAU < b.MA_MAU) {
                         return -1;
                     }
-                    if(a.MA_MAU > b.MA_MAU){
+                    if (a.MA_MAU > b.MA_MAU) {
                         return 1;
                     }
                     return 0;
                 })
                 setMapped(tempMau);
-                console.log("mau mapped: ", mapped.reduce((total, item)=>{
-                    return total + item.MA_MAU+ ", "
+                console.log("mau mapped: ", mapped.reduce((total, item) => {
+                    return total + item.MA_MAU + ", "
                 }, ''))
                 // laays ra cac soze cua san pham
                 let tempSize = [];
@@ -91,12 +91,12 @@ function ProductDetailForModal(props) {
                         tempSize = [...tempSize, ctsp]
                     }
                 })
-                console.log("size: ", tempSize.reduce((total, item)=>{
-                    return total + item.MA_SIZE+ ", "
+                console.log("size: ", tempSize.reduce((total, item) => {
+                    return total + item.MA_SIZE + ", "
                 }, ''))
                 setMappedSize(tempSize);
-                console.log("size mapped: ", mappedSize.reduce((total, item)=>{
-                    return total + item.MA_SIZE+ ", "
+                console.log("size mapped: ", mappedSize.reduce((total, item) => {
+                    return total + item.MA_SIZE + ", "
                 }, ''))
 
                 setSelectedProductDetail(productsFromApi[0].chiTietSanPham.find((item) => {
@@ -109,19 +109,19 @@ function ProductDetailForModal(props) {
                         return tempHinhAnh.MA_MAU === ctsp.MA_MAU
                     })
                     if (!img) {
-                        tempHinhAnh = [...tempHinhAnh, {MA_MAU: ctsp.MA_MAU, TEN_MAU: ctsp.TEN_MAU, HINH_ANH: ctsp.HINH_ANH,}]
+                        tempHinhAnh = [...tempHinhAnh, { MA_MAU: ctsp.MA_MAU, TEN_MAU: ctsp.TEN_MAU, HINH_ANH: ctsp.HINH_ANH, }]
                     }
                 })
-                console.log("hinh anh: ", tempHinhAnh.reduce((total, item)=>{
-                    return total + item.HINH_ANH+ ", "
+                console.log("hinh anh: ", tempHinhAnh.reduce((total, item) => {
+                    return total + item.HINH_ANH + ", "
                 }, ''))
 
                 // sap xep lai hinh anh theo ma_mau
-                tempHinhAnh= tempHinhAnh.sort((a,b)=>{
-                    if(a.MA_MAU < b.MA_MAU){
+                tempHinhAnh = tempHinhAnh.sort((a, b) => {
+                    if (a.MA_MAU < b.MA_MAU) {
                         return -1;
                     }
-                    if(a.MA_MAU > b.MA_MAU){
+                    if (a.MA_MAU > b.MA_MAU) {
                         return 1;
                     }
                     return 0;
@@ -164,15 +164,15 @@ function ProductDetailForModal(props) {
 
 
     const updateSelectedProductDetail = (p) => {
-//         console.log("before update: ", selectedProductDetail.MA_MAU, selectedProductDetail.MA_SIZE)
-// console.log(product)
-        if(p.type==='updatecolor'){
+        //         console.log("before update: ", selectedProductDetail.MA_MAU, selectedProductDetail.MA_SIZE)
+        // console.log(product)
+        if (p.type === 'updatecolor') {
             const x = product.chiTietSanPham.find((item) => {
                 return item.MA_MAU === p.MA_MAU && item.MA_SIZE === selectedProductDetail.MA_SIZE
             })
             console.log("xxxxxxxxxx: ", x)
             setSelectedProductDetail(x)
-        }else if(p.type==='updatesize'){
+        } else if (p.type === 'updatesize') {
             const y = product.chiTietSanPham.find((item) => {
                 return item.MA_MAU === selectedProductDetail.MA_MAU && item.MA_SIZE === p.MA_SIZE
             })
@@ -193,7 +193,7 @@ function ProductDetailForModal(props) {
                 {product.TONG_SL_TON <= 0 ? <div className={clsx(style.outOfStockTag)}>
                     {`HẾT HÀNG`}
                 </div> : <></>}
-                {productImages && <EJ2ImageCarousel productImages={productImages} selectedProductDetail={selectedProductDetail}/>}
+                {productImages && <EJ2ImageCarousel productImages={productImages} selectedProductDetail={selectedProductDetail} />}
                 {/* {<img src={product.HINH_ANH} className={clsx(style.img)} alt={`${product.TEN_SP}`} />} */}
             </div>
         </div>
@@ -209,9 +209,9 @@ function ProductDetailForModal(props) {
                             <div key={index} className={clsx(style.color, { [style.active]: ctsp.MA_MAU === selectedProductDetail.MA_MAU },
                             )}//trong csdl s07 la free size
                                 onClick={() => {
-                                   
-                                    updateSelectedProductDetail({type:'updatecolor', MA_MAU: ctsp.MA_MAU});
-                                    
+
+                                    updateSelectedProductDetail({ type: 'updatecolor', MA_MAU: ctsp.MA_MAU });
+
                                 }}
 
                                 style={{ backgroundColor: ctsp.TEN_TIENG_ANH }}>{ }</div>
@@ -229,8 +229,8 @@ function ProductDetailForModal(props) {
                             <div key={index} className={clsx(style.size, { [style.active]: ctsp.MA_SIZE === selectedProductDetail.MA_SIZE },
                                 { [style.freeSize]: ctsp.MA_SIZE === 'S07' })}//trong csdl s07 la free size
                                 onClick={() => {
-                                    updateSelectedProductDetail({type:'updatesize', MA_SIZE: ctsp.MA_SIZE});
-                                    
+                                    updateSelectedProductDetail({ type: 'updatesize', MA_SIZE: ctsp.MA_SIZE });
+
                                 }}>{ctsp.TEN_SIZE}</div>
                         );
                     })}
