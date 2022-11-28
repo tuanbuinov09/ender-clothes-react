@@ -13,17 +13,17 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
 import ProductSaleOffEdit from './ProductSaleOffEdit';
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 
 function ProductSaleOffManagement(props) {
     let navigate = useNavigate();
     setupInterceptors(navigate, 'employee');
-    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
-    const notifySuccess = (message) => toast.success(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notifySuccess = (message) => toast.success(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [viewMode, setViewMode] = useState('add');
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
-            notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             navigate("/employee/login", true);
         }
         //khi unmount trả lại header
@@ -216,10 +216,10 @@ function ProductSaleOffManagement(props) {
                 console.log('res delete: ' + response);
 
                 if (response.errorDesc) {
-                    notify(response.errorDesc);
+                    toast.error(response.errorDesc);
                     return
                 } else {
-                    notifySuccess(response.responseMessage);
+                    toast.success(response.responseMessage);
                     setRerender(!rerender);
                 }
             });
@@ -230,7 +230,7 @@ function ProductSaleOffManagement(props) {
     }
     return (
         <div className={clsx(style.cartManagement)}>
-            <ToastContainer />
+            {/* <ToastContainer /> */}
             <SectionTitle title={
                 'Quản lý đợt khuyến mãi'} />
             <div className={clsx(style.toolBar)}>

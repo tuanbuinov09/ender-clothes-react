@@ -13,7 +13,7 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
 import ProductPriceChangeEdit from './ProductPriceChangeEdit';
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 
 function ProductPriceChangeManagement(props) {
     let navigate = useNavigate();
@@ -21,18 +21,18 @@ function ProductPriceChangeManagement(props) {
     const [viewMode, setViewMode] = useState('add');
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
-            notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             navigate("/employee/login", true);
         }
         //khi unmount trả lại header
         return () => {
-            props.changeHeader('user')
+            props.changeHeader('user');
         }
     }, [])
 
-    props.changeHeader('employee')
+    props.changeHeader('employee');
 
-    const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [carts, setCarts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedImport, setSelectedImport] = useState({});
@@ -191,7 +191,7 @@ function ProductPriceChangeManagement(props) {
     return (
         <div className={clsx(style.cartManagement)}>
             <div className={clsx(style.top)}>
-                <ToastContainer />
+                {/* <ToastContainer /> */}
             </div>
             <SectionTitle title={
                 'Quản lý thay đổi giá'} />

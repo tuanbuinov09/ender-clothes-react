@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import clsx from 'clsx';
 import axios from 'axios';
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import EJ2ImageCarousel from './EJ2ImageCarousel';
@@ -25,7 +25,7 @@ function ProductDetailForModal(props) {
     const { bagProducts, amount, total } = useSelector((store) => {
         return store.shoppingBag;
     })
-    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     removeSyncfusionLicenseMessage();
     useEffect(() => {
 
@@ -256,7 +256,7 @@ function ProductDetailForModal(props) {
 
                     if ((quantityInCart) === selectedProductDetail.SL_TON || selectedProductDetail.SL_TON === 0) {
                         console.log("Đạt giới hạn tồn kho của sản phẩm")
-                        notify("Đạt giới hạn tồn kho của sản phẩm");
+                        toast.error("Đạt giới hạn tồn kho của sản phẩm");
                         return;
                     }
 
@@ -267,7 +267,7 @@ function ProductDetailForModal(props) {
             </div>
 
             <div className={clsx(style.top)}>
-                <ToastContainer />
+                {/* <ToastContainer /> */}
             </div>
         </div>
     </div>);

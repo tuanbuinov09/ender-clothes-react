@@ -8,7 +8,7 @@ import { ColumnChooser, ColumnDirective, ColumnsDirective, GridComponent, Inject
 
 import { DateDiff, intToVNDCurrencyFormat, loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from '../../../uitilities/utilities';
 import { XIcon, CheckIcon, SaveIcon, PrintIcon } from '../../../icons';
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import { DatePickerComponent, DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
@@ -19,7 +19,7 @@ function ProductSaleOffEdit(props) {
     setupInterceptors(navigate, 'employee');
     //const params = useParams(); prams.cartId
     console.log(props.saleOffId, props.viewMode);
-    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
 
     const [flag, setFlag] = useState(false);
 
@@ -104,7 +104,7 @@ function ProductSaleOffEdit(props) {
 
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
-            notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             navigate("/employee/login", true);
         }
         setIsLoading(true);
@@ -435,9 +435,9 @@ function ProductSaleOffEdit(props) {
                     }
                 ).then(res => {
                     const response = res.data;
-                    console.log('res: ' + response.errorDesc)
+                    console.log('res: ' + response.errorDesc);
                     if (response.errorDesc !== '') {
-                        notify(response.responseMessage)
+                        toast.error(response.responseMessage);
                         return
                     }
                     toast.success("Sửa đợt khuyến mãi thành công");
@@ -562,7 +562,7 @@ function ProductSaleOffEdit(props) {
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
             </div> : <></>}
-            <ToastContainer />
+            {/* <ToastContainer /> */}
             <div className={clsx(style.modal)}>
                 <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
                     props.closeDialog();

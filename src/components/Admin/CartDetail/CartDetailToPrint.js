@@ -9,7 +9,6 @@ import { useDispatch } from 'react-redux/es/exports';
 import { Button } from '../../Button/Button';
 import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon } from '../../../icons';
 import { L10n } from '@syncfusion/ej2-base';
-import ToastContainer, { toast } from 'react-light-toast';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import { intToVNDCurrencyFormat } from '../../../uitilities/utilities';

@@ -13,7 +13,7 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
 import ProductEdit from './ProductEdit';
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 
 function ProductManagement(props) {
 
@@ -25,7 +25,7 @@ function ProductManagement(props) {
     setupInterceptors(navigate, 'employee');
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
-            notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             navigate("/employee/login", true);
         }
         //khi unmount trả lại header
@@ -34,7 +34,7 @@ function ProductManagement(props) {
         }
     }, [])
 
-    const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [carts, setCarts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedCart, setSelectedCart] = useState({});
@@ -167,9 +167,9 @@ function ProductManagement(props) {
                     console.log('res delete: ' + response);
 
                     if (response.errorDesc) {
-                        notify(response.errorDesc);
+                        toast.error(response.errorDesc);
                     } else {
-                        notify(response.responseMessage);
+                        toast.success(response.responseMessage);
                         setRerender(!rerender);
                     }
                 });
@@ -181,7 +181,7 @@ function ProductManagement(props) {
     return (
         <div className={clsx(style.cartManagement)}>
             <div className={clsx(style.top)}>
-                <ToastContainer />
+                {/* <ToastContainer /> */}
             </div>
             <SectionTitle title={
                 'Quản lý sản phẩm'} />

@@ -5,7 +5,7 @@ import { caculateTotalAmountAndPrice, clearBag } from '../../features/shoppingBa
 import style from './PayPal.module.css';
 import axios from "axios";
 import clsx from "clsx";
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 export default function PayPal(props) {
     const paypal = useRef();
     let navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function PayPal(props) {
     const { bagProducts, amount, total } = useSelector((store) => {
         return store.shoppingBag;
     })
-    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     console.log("total: ", (total / 23000).toFixed(2));
 
     let cartDetail = bagProducts.map((product) => {
@@ -111,8 +111,8 @@ export default function PayPal(props) {
                         const result = res.data;
                         // console.log(productsFromApi);
                         console.log(result);
-                        alert(result);
-                        notify(result);
+                        // alert(result);
+                        toast.success(result);
                     });
 
                     navigate("/", { replace: true });
@@ -130,7 +130,7 @@ export default function PayPal(props) {
             <h1 className={clsx(style.title)}>Chọn phương thức thanh toán</h1>
             <div ref={paypal}></div>
             <div className={clsx(style.top)}>
-                <ToastContainer />
+                {/* <ToastContainer /> */}
             </div>
         </div>
     );
