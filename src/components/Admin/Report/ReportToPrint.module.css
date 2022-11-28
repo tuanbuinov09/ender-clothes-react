@@ -217,3 +217,15 @@ svg{
     font-size: 14px;
     text-align: center;
 }
+
+
+
+.total{
+    width: 232px;
+    display: inline-block;
+}
+
+.totalContainer{
+    display: flex;
+    justify-content: flex-end;
+}

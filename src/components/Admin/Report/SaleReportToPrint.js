@@ -18,7 +18,30 @@ function SaleReportToPrint(props) {
     useEffect(() => {
         props.data.forEach((dat, index) => {
             dat.STT = index + 1;
+
             dat.TONG_TRI_GIA_STR = intToVNDCurrencyFormat(dat.TONG_TRI_GIA, true)
+
+
+            dat.TONG_DOANH_THU_STR = intToVNDCurrencyFormat(dat.TONG_DOANH_THU, true)
+            dat.TONG_GIA_NHAP_STR = intToVNDCurrencyFormat(dat.TONG_GIA_NHAP, true)
+            dat.TONG_LOI_NHUAN_STR = intToVNDCurrencyFormat(dat.TONG_LOI_NHUAN, true)
+
+            dat.THOI_GIAN = dat.THANG;
+            if (props.typeView === 'profit') {
+                if (props.type === "day") {
+                    dat.THOI_GIAN = dat.NGAY;
+                }
+                if (props.type === "month") {
+                    dat.THOI_GIAN = dat.THANG;
+                }
+                if (props.type === "quarter") {
+                    dat.THOI_GIAN = dat.QUY;
+                }
+                if (props.type === "year") {
+                    dat.THOI_GIAN = dat.NAM;
+                }
+            }
+
         })
     }, []);
 
@@ -151,8 +174,10 @@ function SaleReportToPrint(props) {
             <div className={clsx(style.container)} ref={componentRef}>
                 <div className={clsx(style.modal)}>
                     <p className={clsx(style.subtitleCompanyName)}>Công ty TNHH END_CLOTHES</p>
-                    <h1 className={clsx(style.title)}>Báo cáo doanh thu theo tháng</h1>
-                    <p className={clsx(style.subtitle)}>Từ ngày: <span>{props.data.fromDate }</span>     tới ngày: <span>{props.data.toDate }</span></p>
+                    <h1 className={clsx(style.title)}>Báo cáo {props.data.TONG_GIA_NHAP ? "lợi nhuận" : "doanh thu"} theo
+                        {/* nếu k có tổng giá nhập thì là xem doanh thu, xem doanh thu thì chỉ theo tháng */}
+                        {!props.data.TONG_GIA_NHAP ? ' tháng' : props.type === 'quarter' ? ' quý' : props.type === 'year' ? ' năm' : props.type === 'day' ? ' ngày' : ' tháng'}</h1>
+                    <p className={clsx(style.subtitle)}>Từ ngày: <span>{props.data.fromDate}</span>     tới ngày: <span>{props.data.toDate}</span></p>
                     {/* <p className={clsx(style.subtitle)}>Nhân viên xuất báo cáo: <span>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</span></p> */}
 
                     {/* detail */}
@@ -173,13 +198,25 @@ function SaleReportToPrint(props) {
                         >
                             <ColumnsDirective>
                                 <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='THANG' headerTextAlign='Center' headerText='Tháng' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='TONG_TRI_GIA_STR' headerTextAlign='Center' headerText='Doanh Thu' width='300' textAlign="Right" />
+                                <ColumnDirective field='THOI_GIAN' headerTextAlign='Center' headerText='Thời gian' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TONG_TRI_GIA_STR' headerTextAlign='Center' headerText='Doanh Thu' width='200' textAlign="Right" />
+
+                                {props.data.TONG_GIA_NHAP ? <ColumnDirective field='TONG_GIA_NHAP_STR' headerTextAlign='Center' headerText='Giá nhập' width='200' textAlign="Right" /> : <></>}
+                                {props.data.TONG_LOI_NHUAN ? <ColumnDirective field='TONG_LOI_NHUAN_STR' headerTextAlign='Center' headerText='Lợi nhuận' width='200' textAlign="Right" /> : <></>}
+
 
                             </ColumnsDirective>
+
+
                             <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
                         </GridComponent>
-                        <div className={clsx(style.total)}>Tổng doanh thu: {intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
+                        <div className={clsx(style.totalContainer)}>
+                            <div className={clsx(style.total)}>Tổng doanh thu: {intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
+                            {props.data.TONG_GIA_NHAP ? <div className={clsx(style.total)}>Tổng giá nhập: {intToVNDCurrencyFormat(props.data.TONG_GIA_NHAP) + " ₫"}</div> : <></>}
+                            {props.data.TONG_LOI_NHUAN ? <div className={clsx(style.total)}>Tổng lợi nhuận: {intToVNDCurrencyFormat(props.data.TONG_LOI_NHUAN) + " ₫"}</div> : <></>}
+
+                        </div>
+
                     </div>
 
                     <div className={clsx(style.saleReportFooter)}>

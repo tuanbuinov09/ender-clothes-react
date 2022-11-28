@@ -33,11 +33,13 @@ function Report(props) {
     const fromDate = useRef();
     const toDate = useRef();
     const fromDateProfit = useRef();
+    const toDateProfit = useRef();
 
     const [selectedDates, setSelectedDates] = useState({});
     const [selectedDateProfit, setSelectedDateProfit] = useState({ 'type': 'day' });
-
+    const [typeView, setTypeView] = useState('income');
     const linkExport = () => {
+        setTypeView('income');
         try {
             setSelectedDates({
                 ...selectedDates, 'from': fromDate.current.value.toLocaleString('en-US', {
@@ -69,9 +71,25 @@ function Report(props) {
         console.log(selectedDates);
     }
     const linkProfitExport = () => {
+        setTypeView('profit');
         try {
             setSelectedDateProfit({
                 ...selectedDateProfit, 'from': fromDateProfit.current.value.toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                })
+            })
+        } catch (e) {
+
+        }
+
+        try {
+            setSelectedDateProfit({
+                ...selectedDateProfit, 'to': toDateProfit.current.value.toLocaleString('en-US', {
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
@@ -149,7 +167,12 @@ function Report(props) {
             })
             console.log(`http://localhost:22081/api/NhanVien/report-sale?from=${from}&to=${to}`);
             axios
-                .get(`http://localhost:22081/api/NhanVien/report-sale?from=${from}&to=${to}`)
+                .get(`http://localhost:22081/api/NhanVien/report-sale?from=${from}&to=${to}`,
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                        }
+                    })
                 .then((res) => {
                     const dataFromApi = res.data;
                     console.log(dataFromApi);
@@ -191,33 +214,57 @@ function Report(props) {
                 // minute: '2-digit',
                 // second: '2-digit',
             })
-            console.log(`http://localhost:22081/api/NhanVien/report-profit?from=${from}&type=${selectedDateProfit.type}`);
+            let to = toDateProfit.current.value.toLocaleString('en-US', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                // hour: '2-digit',
+                // minute: '2-digit',
+                // second: '2-digit',
+            })
+            console.log(`http://localhost:22081/api/NhanVien/report-profit?from=${from}&to=${to}&type=${selectedDateProfit.type}`);
             axios
-                .get(`http://localhost:22081/api/NhanVien/report-profit?from=${from}&type=${selectedDateProfit.type}`)
+                .get(`http://localhost:22081/api/NhanVien/report-profit?from=${from}&to=${to}&type=${selectedDateProfit.type}`,
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                        }
+                    })
                 .then((res) => {
-                    // const dataFromApi = res.data;
-                    // console.log(dataFromApi);
-                    // dataFromApi.TONG_DOANH_THU = dataFromApi.reduce((total, dat) => {
-                    //     return total + dat.TONG_TRI_GIA;
-                    // }, 0)
-                    // dataFromApi.fromDate = fromDate.current.value.toLocaleString('vi-VN', {
-                    //     year: 'numeric',
-                    //     month: '2-digit',
-                    //     day: '2-digit',
-                    //     // hour: '2-digit',
-                    //     // minute: '2-digit',
-                    //     // second: '2-digit',
-                    // })
-                    // dataFromApi.toDate = toDate.current.value.toLocaleString('vi-VN', {
-                    //     year: 'numeric',
-                    //     month: '2-digit',
-                    //     day: '2-digit',
-                    //     // hour: '2-digit',
-                    //     // minute: '2-digit',
-                    //     // second: '2-digit',
-                    // })
-                    // // console.log(cartsFromApi);
-                    // setData(dataFromApi);
+                    const dataFromApi = res.data;
+                    console.log(dataFromApi);
+                    // do saleReportToPrint đang dùng tong_tri_gia làm cột doanh thu
+                    dataFromApi.forEach(item => {
+                        item.TONG_TRI_GIA = item.TONG_DOANH_THU;
+                    })
+                    dataFromApi.TONG_DOANH_THU = dataFromApi.reduce((total, dat) => {
+                        return total + dat.TONG_DOANH_THU;
+                    }, 0)
+                    // dataFromApi.TONG_TRI_GIA = dataFromApi.TONG_DOANH_THU;
+                    dataFromApi.TONG_GIA_NHAP = dataFromApi.reduce((total, dat) => {
+                        return total + dat.TONG_GIA_NHAP;
+                    }, 0)
+                    dataFromApi.TONG_LOI_NHUAN = dataFromApi.reduce((total, dat) => {
+                        return total + dat.TONG_LOI_NHUAN;
+                    }, 0)
+                    dataFromApi.fromDate = fromDateProfit.current.value.toLocaleString('vi-VN', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        // hour: '2-digit',
+                        // minute: '2-digit',
+                        // second: '2-digit',
+                    })
+                    dataFromApi.toDate = toDateProfit.current.value.toLocaleString('vi-VN', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        // hour: '2-digit',
+                        // minute: '2-digit',
+                        // second: '2-digit',
+                    })
+                    // console.log(cartsFromApi);
+                    setData(dataFromApi);
                 });
         } catch (error) {
             console.error(error);
@@ -226,7 +273,7 @@ function Report(props) {
 
     return (
         <div >
-            {data && <SaleReportToPrint data={data} setData={setData} />}
+            {data && <SaleReportToPrint data={data} setData={setData} type={selectedDateProfit.type} typeView={typeView} />}
             <SectionTitle title={"BÁO CÁO"} />
 
             <div className={clsx(style.reportContainer)}>
@@ -256,13 +303,7 @@ function Report(props) {
                 <div>
                     <h1>Lợi nhuận theo khoảng thời gian</h1>
                     <div className={clsx(style.datePickerContainer)}>
-                        <label>Chọn ngày:</label>
-                        <DatePickerComponent onChange={() => {
-                            linkProfitExport();
-                        }} ref={fromDateProfit} format={'dd/MM/yyyy'} locale='vi' />
-                    </div>
-                    <div className={clsx(style.datePickerContainer)}>
-                        <label>Chọn khoảng thời gian:</label>
+                        <label>Chọn loại báo cáo:</label>
                         <div className={clsx(style.radioButtonsContainer)}>
                             <input type={'radio'} checked={selectedDateProfit.type === 'day'} name='typeExport' value={'day'} onChange={e => {
                                 setSelectedDateProfit({ ...selectedDateProfit, 'type': 'day' });
@@ -287,6 +328,19 @@ function Report(props) {
                         </div>
 
                     </div>
+                    <div className={clsx(style.datePickerContainer)}>
+                        <label>Từ ngày:</label>
+                        <DatePickerComponent onChange={() => {
+                            linkProfitExport();
+                        }} ref={fromDateProfit} format={'dd/MM/yyyy'} locale='vi' />
+                    </div>
+                    <div className={clsx(style.datePickerContainer)}>
+                        <label>Tới ngày:</label>
+                        <DatePickerComponent onChange={() => {
+                            linkProfitExport();
+                        }} ref={toDateProfit} format={'dd/MM/yyyy'} locale='vi' />
+                    </div>
+
                     <button className={clsx(style.btnExport)} onClick={() => {
                         print3();
                     }}>In báo cáo</button>
