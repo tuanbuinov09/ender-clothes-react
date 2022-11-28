@@ -9,7 +9,7 @@ import { MinusIcon, PlusIcon } from "../../../icons";
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../../features/shoppingBag/shoppingBagSlice.js';
 import { useDispatch } from "react-redux";
 import { intToVNDCurrencyFormat, setupInterceptors } from "../../../uitilities/utilities";
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 import { useState } from 'react';
 import ProductDetailModal from "../../ProductDetail/ProductDetailModal";
 import { useNavigate } from 'react-router-dom';
@@ -29,7 +29,7 @@ function Item({ product, type }) {
     }
 
     const dispatch = useDispatch();
-    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const quantityField = useRef();
 
     useEffect(() => {
@@ -164,7 +164,7 @@ function Item({ product, type }) {
                     : <p className={clsx(style.price)}><span>{pricesString}</span></p>}
                 {openDialog && <ProductDetailModal productId={product.MA_SP} closeDialog={closeDialog} />}
                 <div className={clsx(style.top)}>
-                    <ToastContainer />
+                    {/* <ToastContainer /> */}
                 </div>
             </div >
         );
@@ -274,7 +274,7 @@ function Item({ product, type }) {
                                 <button className={clsx(style.buttonPlus)}
                                     onClick={(e) => {
                                         if (quantityField.current.innerHTML.trim() === product.chiTietSanPham[0].SO_LUONG_TON + "") {
-                                            notify("Đạt giới hạn tồn kho của sản phẩm");
+                                            toast.error("Đạt giới hạn tồn kho của sản phẩm");
                                         } else {
                                             dispatch(increaseAmount({ id: product.chiTietSanPham[0].MA_CT_SP }));
                                             dispatch(caculateTotalAmountAndPrice());
@@ -292,7 +292,7 @@ function Item({ product, type }) {
                     </div>
                 </div>
                 <div className={clsx(style.top)}>
-                    <ToastContainer />
+                    {/* <ToastContainer /> */}
                 </div>
             </div >
         )

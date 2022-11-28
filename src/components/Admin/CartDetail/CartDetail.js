@@ -9,7 +9,8 @@ import { useDispatch } from 'react-redux/es/exports';
 import { Button } from '../../Button/Button';
 import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon } from '../../../icons';
 import { L10n } from '@syncfusion/ej2-base';
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
+
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import { intToVNDCurrencyFormat, setupInterceptors } from '../../../uitilities/utilities'
@@ -23,7 +24,7 @@ function CartDetail(props) {
 
     // const params = useParams(); prams.cartId
     console.log(props.cartId);
-    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
     const [cart, setCart] = useState({});
     const [flag, setFlag] = useState(false);
     const [preparePrint, setPreparePrint] = useState(false);
@@ -198,7 +199,7 @@ function CartDetail(props) {
                     const response = res.data;
                     // console.log('res: ' + response);
                     setCart({ ...cart, TRANG_THAI: 2, TRANG_THAI_STR: 'Đã hoàn tất' })
-                    notify("Giao đơn hàng thành công");
+                    toast.success("Giao đơn hàng thành công");
                     props.rerender();
                 });
         } catch (error) {
@@ -216,7 +217,8 @@ function CartDetail(props) {
         console.log(dropdownList.current.value);
         const assignedEmpID = dropdownList.current.value;
         if (!assignedEmpID) {
-            notify("Hãy chọn nhân viên vận chuyển");
+            console.log("here")
+            toast.info("Hãy chọn nhân viên vận chuyển");
             return;
         }
         try {
@@ -237,7 +239,7 @@ function CartDetail(props) {
                         MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN
                         , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
                     })
-                    notify("Đã giao cho nhân viên: " + selectedItem.HO_TEN);
+                    toast.success("Đã giao cho nhân viên: " + selectedItem.HO_TEN);
 
                     props.rerender();
                 });
@@ -249,7 +251,7 @@ function CartDetail(props) {
 
     const cancel = () => {
         if (cart.TRANG_THAI === -1 || cart.TRANG_THAI === 1 || cart.TRANG_THAI === 2) {
-            notify("Đơn hàng đã được duyệt, không thể hủy.");
+            toast.info("Đơn hàng đã được duyệt, không thể hủy.");
             return;
         }
         try {
@@ -264,7 +266,7 @@ function CartDetail(props) {
                     const response = res.data;
                     // console.log('res: ' + response);
                     setCart({ ...cart, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' })
-                    notify("Hủy đơn hàng thành công");
+                    toast.success("Hủy đơn hàng thành công");
                     props.rerender();
                 });
         } catch (error) {
@@ -308,7 +310,7 @@ function CartDetail(props) {
             flag ? <div className={clsx(style.modalWrapper)}>
 
                 <div className={clsx(style.top)}>
-                    <ToastContainer />
+                    {/* <ToastContainer /> */}
                 </div>
                 <div className={clsx(style.modal)}>
                     <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {

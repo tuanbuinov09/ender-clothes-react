@@ -47,3 +47,13 @@ html {
     display: flex;
     flex-wrap: wrap;
 }
+
+/* custom toast */
+.custom-toastify{
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.custom-toastify .Toastify__toast{
+border-radius: 0px !important;
+}

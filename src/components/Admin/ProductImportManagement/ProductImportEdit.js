@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { intToVNDCurrencyFormat, loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from '../../../uitilities/utilities';
 import { XIcon, CheckIcon, SaveIcon, PrintIcon } from '../../../icons';
-import ToastContainer, { toast } from 'react-light-toast';
+import { toast } from 'react-toastify';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
@@ -20,7 +20,7 @@ function ProductImportEdit(props) {
 
     //const params = useParams(); prams.cartId
     console.log(props.importId, props.viewMode);
-    const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    // const notify = (message) => toast.error(message, { autoClose: true, closeDuration: 3000 });//error/info/add
 
     const [flag, setFlag] = useState(false);
 
@@ -65,7 +65,7 @@ function ProductImportEdit(props) {
 
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
-            notify("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             navigate("/employee/login", true);
         }
         setIsLoading(true);
@@ -269,7 +269,7 @@ function ProductImportEdit(props) {
                 const response = res.data;
                 console.log('res: ' + response);
                 if (response.errorDesc) {
-                    notify(response.responseMessage);
+                    toast.error(response.responseMessage);
                     return
                 }
 
@@ -348,7 +348,7 @@ function ProductImportEdit(props) {
                 <LoadingAnimation />
             </div> : <></>}
             <div className={clsx(style.top)}>
-                <ToastContainer />
+                {/* <ToastContainer /> */}
             </div>
             <div className={clsx(style.modal)}>
                 <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
