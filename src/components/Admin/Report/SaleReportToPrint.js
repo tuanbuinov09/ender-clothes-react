@@ -19,12 +19,13 @@ function SaleReportToPrint(props) {
         props.data.forEach((dat, index) => {
             dat.STT = index + 1;
 
-            dat.TONG_TRI_GIA_STR = intToVNDCurrencyFormat(dat.TONG_TRI_GIA, true)
+            dat.TONG_TRI_GIA_STR = intToVNDCurrencyFormat(dat.TONG_TRI_GIA, true);
 
 
-            dat.TONG_DOANH_THU_STR = intToVNDCurrencyFormat(dat.TONG_DOANH_THU, true)
-            dat.TONG_GIA_NHAP_STR = intToVNDCurrencyFormat(dat.TONG_GIA_NHAP, true)
-            dat.TONG_LOI_NHUAN_STR = intToVNDCurrencyFormat(dat.TONG_LOI_NHUAN, true)
+            dat.TONG_DOANH_THU_STR = intToVNDCurrencyFormat(dat.TONG_DOANH_THU, true);
+            dat.TONG_GIA_NHAP_STR = intToVNDCurrencyFormat(dat.TONG_GIA_NHAP, true);
+            dat.TONG_GIA_TRA_STR = intToVNDCurrencyFormat(dat.TONG_GIA_TRA, true);
+            dat.TONG_LOI_NHUAN_STR = intToVNDCurrencyFormat(dat.TONG_LOI_NHUAN, true);
 
             dat.THOI_GIAN = dat.THANG;
             if (props.typeView === 'profit') {
@@ -199,10 +200,11 @@ function SaleReportToPrint(props) {
                             <ColumnsDirective>
                                 <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
                                 <ColumnDirective field='THOI_GIAN' headerTextAlign='Center' headerText='Thời gian' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='TONG_TRI_GIA_STR' headerTextAlign='Center' headerText='Doanh Thu' width='200' textAlign="Right" />
+                                <ColumnDirective field='TONG_TRI_GIA_STR' headerTextAlign='Center' headerText='Doanh Thu' width='180' textAlign="Right" />
 
-                                {props.data.TONG_GIA_NHAP ? <ColumnDirective field='TONG_GIA_NHAP_STR' headerTextAlign='Center' headerText='Giá nhập' width='200' textAlign="Right" /> : <></>}
-                                {props.data.TONG_LOI_NHUAN ? <ColumnDirective field='TONG_LOI_NHUAN_STR' headerTextAlign='Center' headerText='Lợi nhuận' width='200' textAlign="Right" /> : <></>}
+                                {props.data.TONG_GIA_NHAP ? <ColumnDirective field='TONG_GIA_NHAP_STR' headerTextAlign='Center' headerText='Giá nhập' width='180' textAlign="Right" /> : <></>}
+                                {props.data.TONG_GIA_TRA ? <ColumnDirective field='TONG_GIA_TRA_STR' headerTextAlign='Center' headerText='Giá trả' width='180' textAlign="Right" /> : <></>}
+                                {props.data.TONG_LOI_NHUAN ? <ColumnDirective field='TONG_LOI_NHUAN_STR' headerTextAlign='Center' headerText='Lợi nhuận' width='180' textAlign="Right" /> : <></>}
 
 
                             </ColumnsDirective>
@@ -211,9 +213,10 @@ function SaleReportToPrint(props) {
                             <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
                         </GridComponent>
                         <div className={clsx(style.totalContainer)}>
-                            <div className={clsx(style.total)}>Tổng doanh thu: {intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
-                            {props.data.TONG_GIA_NHAP ? <div className={clsx(style.total)}>Tổng giá nhập: {intToVNDCurrencyFormat(props.data.TONG_GIA_NHAP) + " ₫"}</div> : <></>}
-                            {props.data.TONG_LOI_NHUAN ? <div className={clsx(style.total)}>Tổng lợi nhuận: {intToVNDCurrencyFormat(props.data.TONG_LOI_NHUAN) + " ₫"}</div> : <></>}
+                            <div className={clsx(style.total)}>{intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
+                            {props.data.TONG_GIA_NHAP ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_GIA_NHAP) + " ₫"}</div> : <></>}
+                            {props.data.TONG_GIA_TRA ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_GIA_TRA) + " ₫"}</div> : <></>}
+                            {props.data.TONG_LOI_NHUAN ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_LOI_NHUAN) + " ₫"}</div> : <></>}
 
                         </div>
 

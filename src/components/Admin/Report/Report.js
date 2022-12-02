@@ -244,6 +244,9 @@ function Report(props) {
                     dataFromApi.TONG_GIA_NHAP = dataFromApi.reduce((total, dat) => {
                         return total + dat.TONG_GIA_NHAP;
                     }, 0)
+                    dataFromApi.TONG_GIA_TRA = dataFromApi.reduce((total, dat) => {
+                        return total + dat.TONG_GIA_TRA;
+                    }, 0)
                     dataFromApi.TONG_LOI_NHUAN = dataFromApi.reduce((total, dat) => {
                         return total + dat.TONG_LOI_NHUAN;
                     }, 0)
