@@ -1,6 +1,8 @@
 import moment from 'moment';
 import { L10n } from '@syncfusion/ej2-base';
 import axios from 'axios';
+
+import { toast } from 'react-toastify';
 const intToVNDCurrencyFormat = (number, withSymbol) => {
     let result;
     if (typeof number === 'string') {
@@ -233,6 +235,7 @@ const setupInterceptors = (navigateTo, typeLogin) => {
 
         if (error.response.status === 401) {
             localStorage.removeItem(typeLogin);
+            // toast.error("Phiên đăng nhập đã hết hạn")
             navigateTo('/' + typeLogin + '/login', { replace: true });
         }
 

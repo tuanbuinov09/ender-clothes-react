@@ -21,7 +21,7 @@ function ProductDetail(props) {
     const params = useParams();
     console.log(params.productId);
     const pd = params.productId;
-    const [ratingComment, setRatingComment] = useState({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH, DANH_GIA: 0, NOI_DUNG: "" })
+    const [ratingComment, setRatingComment] = useState({ CAN_RATE: false, MA_SP: params.productId, MA_KH: JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')).MA_KH : null, DANH_GIA: 0, NOI_DUNG: "" })
     const [allRatingComment, setAllRatingComment] = useState([])
     const [selectedProductDetail, setSelectedProductDetail] = useState({});
     const [product, setProduct] = useState({});
@@ -42,15 +42,19 @@ function ProductDetail(props) {
 
     //xét có trong dnah sách yêu thích của user k
     useEffect(() => {
+        if (!JSON.parse(localStorage.getItem('user'))) {
+            setIsInFavoriteList(false);
+            return;
+        }
         const listFavorite = JSON.parse(localStorage.getItem('listFavourite'));
         if (!listFavorite) {
+            setIsInFavoriteList(false);
             return;
         }
         const isInList = listFavorite.find(item => {
-
             return pd === item.MA_SP;
         })
-
+        console.log(isInList + "aaaaaaaaaaaaaaaaaaa")
         if (isInList) {
             setIsInFavoriteList(true);
         } else {

@@ -45,6 +45,11 @@ function Item({ product, type }) {
 
     //xét có trong dnah sách yêu thích của user k
     useEffect(() => {
+        if (!JSON.parse(localStorage.getItem('user'))) {
+            setIsInFavoriteList(false);
+            return;
+        }
+
         const listFavorite = JSON.parse(localStorage.getItem('listFavourite'));
         if (!listFavorite) {
             return;
