@@ -9,6 +9,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: auto;
+}
+.paypalWrapper>div{
+    width: 600px;
 }
 .title{
     font-size: 28px;

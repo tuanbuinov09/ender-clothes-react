@@ -16,6 +16,8 @@ import { Query } from '@syncfusion/ej2-data';
 import { intToVNDCurrencyFormat, setupInterceptors } from '../../../uitilities/utilities'
 import CartDetailToPrint from './CartDetailToPrint';
 import { useReactToPrint } from 'react-to-print';
+import { ModalConfirmDialog } from '../../ModalConfirmDialog/ModalConfirmDialog';
+
 function CartDetail(props) {
     const dispatch = useDispatch();
 
@@ -218,7 +220,7 @@ function CartDetail(props) {
         const assignedEmpID = dropdownList.current.value;
         if (!assignedEmpID) {
             console.log("here")
-            toast.info("Hãy chọn nhân viên vận chuyển");
+            toast.error("Hãy chọn nhân viên vận chuyển");
             return;
         }
         try {
@@ -250,17 +252,19 @@ function CartDetail(props) {
     }
 
     const cancel = () => {
+
         if (cart.TRANG_THAI === -1 || cart.TRANG_THAI === 1 || cart.TRANG_THAI === 2) {
             toast.info("Đơn hàng đã được duyệt, không thể hủy.");
             return;
         }
+        const accessToken = props.type === "userViewing" ? JSON.parse(localStorage.getItem('user')).accessToken : JSON.parse(localStorage.getItem('employee')).accessToken;
         try {
             axios.put(`http://localhost:22081/api/KhachHang/cancel-cart`, {
                 ID_GH: cart.ID_GH
             },
                 {
                     headers: {
-                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+                        Authorization: 'Bearer ' + accessToken,
                     }
                 }).then(res => {
                     const response = res.data;
@@ -304,10 +308,43 @@ function CartDetail(props) {
     const closePreparePrintDialog = () => {
         setPreparePrint(false);
     }
+    // 
+    const [showConfirmDialogSave, setShowConfirmDialogSave] = useState(false);
+    const [showConfirmDialogCancel, setShowConfirmDialogCancel] = useState(false);
+    const [showConfirmDialogFinish, setShowConfirmDialogFinish] = useState(false);
+    const [confirmDialogTitle, setConfirmDialogTitle] = useState('');
 
+    const onConfirmSave = () => {
+        save();
+        setShowConfirmDialogSave(false);
+    }
+    const onDenySave = () => {
+        setShowConfirmDialogSave(false);
+    }
+
+    const onConfirmFinish = () => {
+        finish();
+        setShowConfirmDialogFinish(false);
+    }
+    const onDenyFinish = () => {
+        setShowConfirmDialogFinish(false);
+    }
+
+    const onConfirmCancel = () => {
+        cancel();
+        setShowConfirmDialogCancel(false);
+    }
+    const onDenyCancel = () => {
+        setShowConfirmDialogCancel(false);
+    }
+    //
     return (
         preparePrint ? <CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId} /> :
             flag ? <div className={clsx(style.modalWrapper)}>
+
+                {showConfirmDialogSave && <ModalConfirmDialog onConfirm={onConfirmSave} onDeny={onDenySave} title={confirmDialogTitle} />}
+                {showConfirmDialogFinish && <ModalConfirmDialog onConfirm={onConfirmFinish} onDeny={onDenyFinish} title={confirmDialogTitle} />}
+                {showConfirmDialogCancel && <ModalConfirmDialog onConfirm={onConfirmCancel} onDeny={onDenyCancel} title={confirmDialogTitle} />}
 
                 <div className={clsx(style.top)}>
                     {/* <ToastContainer /> */}
@@ -329,7 +366,9 @@ function CartDetail(props) {
                         <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
                     </button> */}
                                 <button onClick={() => {
-                                    save();
+                                    // save();
+                                    setShowConfirmDialogSave(true);
+                                    setConfirmDialogTitle('Xác nhận duyệt đơn hàng');
                                 }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
                                     <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
                                 </button>
@@ -338,6 +377,13 @@ function CartDetail(props) {
                                     print();
                                 }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
                                     <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
+                                </button>
+                                <button onClick={() => {
+                                    // cancel();
+                                    setShowConfirmDialogCancel(true);
+                                    setConfirmDialogTitle('Xác nhận hủy đơn hàng');
+                                }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 || cart.TRANG_THAI === 2 })}>
+                                    <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
                                 </button>
 
                                 {/* <><button onClick={() => {
@@ -348,13 +394,24 @@ function CartDetail(props) {
                             </>
                             : JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' && props.type !== "userViewing" ? <>
                                 <button onClick={() => {
-                                    finish();
+                                    // finish();
+                                    setShowConfirmDialogFinish(true);
+                                    setConfirmDialogTitle('Xác nhận hoàn tất đơn hàng');
                                 }} className={clsx(style.checkButton, style.saveButton, style.finishButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
                                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Hoàn tất
                                 </button>
+                                <button onClick={() => {
+                                    // cancel();
+                                    setShowConfirmDialogCancel(true);
+                                    setConfirmDialogTitle('Xác nhận hủy đơn hàng');
+                                }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 || cart.TRANG_THAI === 2 })}>
+                                    <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
+                                </button>
                             </> :
                                 <><button onClick={() => {
-                                    cancel();
+                                    // cancel();
+                                    setShowConfirmDialogCancel(true);
+                                    setConfirmDialogTitle('Xác nhận hủy đơn hàng');
                                 }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
                                     <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
                                 </button></>
@@ -463,7 +520,7 @@ function CartDetail(props) {
                             gridLines='Both'
                         >
                             <ColumnsDirective>
-                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='90' textAlign="Center" /*isPrimaryKey={true}*/ />
                                 <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
                                 <ColumnDirective field='TEN_MAU' headerTextAlign='Center' headerText='Màu' width='100' textAlign="Left" />
                                 <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
