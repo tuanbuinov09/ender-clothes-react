@@ -14,6 +14,8 @@ import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
 import ProductEdit from './ProductEdit';
 import { toast } from 'react-toastify';
+import { ModalConfirmDialog } from '../../ModalConfirmDialog/ModalConfirmDialog';
+
 
 function ProductManagement(props) {
 
@@ -178,8 +180,22 @@ function ProductManagement(props) {
         }
 
     }
+
+    // 
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [confirmDialogTitle, setConfirmDialogTitle] = useState('');
+
+    const onConfirmDelete = () => {
+        deleteProduct();
+        setShowConfirmDialog(false);
+    }
+    const onDeny = () => {
+        setShowConfirmDialog(false);
+    }
+    //
     return (
         <div className={clsx(style.cartManagement)}>
+            {showConfirmDialog && <ModalConfirmDialog onConfirm={onConfirmDelete} onDeny={onDeny} title={confirmDialogTitle} />}
             <div className={clsx(style.top)}>
                 {/* <ToastContainer /> */}
             </div>
@@ -208,11 +224,16 @@ function ProductManagement(props) {
                 <button onClick={() => {
                     openDialogFnc('add');
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
-                <button onClick={() => {
+                {/* <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button> */}
                 <button onClick={() => {
-                    deleteProduct();
+                    // deleteProduct();
+                    if (!selectedCart.TEN_SP) {
+                        return;
+                    }
+                    setShowConfirmDialog(true);
+                    setConfirmDialogTitle('Xác nhận xóa sản phẩm ' + selectedCart.TEN_SP);
                 }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
                 <button onClick={() => {
                     openDialogFnc('view');

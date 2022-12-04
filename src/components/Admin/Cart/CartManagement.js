@@ -359,7 +359,7 @@ function CartManagement(props) {
                     gridLines='Both'
                 >
                     <ColumnsDirective>
-                        <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /*isPrimaryKey={true}*/ />
+                        <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='170' textAlign="Left" /*isPrimaryKey={true}*/ />
                         <ColumnDirective field='HO_TEN_KH' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
                         <ColumnDirective field='SDT_KH' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
                         <ColumnDirective field='EMAIL_KH' headerTextAlign='Center' headerText='Email KH' width='200' textAlign="Left" />
