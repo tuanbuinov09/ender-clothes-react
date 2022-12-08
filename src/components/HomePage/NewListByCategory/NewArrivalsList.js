@@ -6,10 +6,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation';
-import SectionTitle from '../SectionTitle/SectionTitle';
-import { useNavigate } from 'react-router-dom';
-function ItemListWithTitle({ products, type, top }) {
-    let navigate = useNavigate();
+function NewArrivalsList({ products, type , top}) {
     const [products2, setproducts2] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
@@ -20,9 +17,9 @@ function ItemListWithTitle({ products, type, top }) {
         //         setproducts2(productsFromApi);
         //     });
         let topToFind;
-        if (!top) {
+        if(!top){
             topToFind = '';
-        } else {
+        }else{
             topToFind = top;
         }
         console.log(topToFind)
@@ -47,7 +44,7 @@ function ItemListWithTitle({ products, type, top }) {
         }
         if (type === 'most-viewed') {
             try {
-                axios.get(`http://localhost:22081/api/SanPham/most-viewed?${topToFind}`).then(res => {
+                axios.get(`http://localhost:22081/api/SanPham/most-viewed?top=${topToFind}`).then(res => {
                     const productsFromApi = res.data;
                     // console.log(productsFromApi);
                     setproducts2(productsFromApi);
@@ -83,44 +80,19 @@ function ItemListWithTitle({ products, type, top }) {
                 console.error(error);
             }
         }
-        if (type === 'favorite') {
-            const user = JSON.parse(localStorage.getItem('user'));
-            if (!user) {
-                navigate("/user/login", { replace: true });
-            }
-            try {
-                axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${user.MA_KH}&populated=1`).then(res => {
-                    const productsFromApi = res.data;
-                    // console.log(productsFromApi);
-                    setproducts2(productsFromApi);
-                    setIsLoading(false);
-                });
-
-
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    }, [type]);
+    }, []);
     return (
-        <><SectionTitle title={type === 'new-arrivals' ? "HÀNG MỚI VỀ" :
-            type === 'best-seller' ? "SẢN PHẨM BÁN CHẠY" :
-                type === 'sale-off' ? "KHUYẾN MÃI" :
-                    type === 'most-viewed' ? "ĐƯỢC XEM NHIỀU" :
-                        type === 'favorite' ? "DANH SÁCH YÊU THÍCH" : ""} />
-            <div className="section">
+        <div className="section">
+            {isLoading ? <div className={clsx(style.flex_1, style.list)}>
+                <LoadingAnimation />
+            </div> : <div className={style.itemList}>
+                {products2.map((product, index) => {
+                    return (<Item key={index} product={product} type={1} />);
+                })}
+            </div>}
 
-                {isLoading ? <div className={clsx(style.flex_1, style.list)}>
-                    <LoadingAnimation />
-                </div> : <div className={style.itemList}>
-                    {products2.map((product, index) => {
-                        return (<Item key={index} product={product} type={1} />);
-                    })}
-                </div>}
-
-                {top ? <div className={clsx(style.btnContainer)}><Link to={type === 'new-arrivals' ? "/new-arrivals" : type === 'most-viewed' ? "/most-viewed" : type === "sale-off" ? '/sale-off' : type === "best-seller" ? '/best-seller' : {}} className={clsx(style.btn)}>XEM THÊM</Link></div> : <></>}
-            </div>
-        </>);
+            <div className={clsx(style.btnContainer)}><Link to={type === 'new-arrivals' ? "/new-arrivals" : type === 'most-viewed' ? "/most-viewed" : type === "sale-off" ? '/sale-off' : type === "best-seller" ? '/best-seller' : {}} className={clsx(style.btn)}>XEM THÊM</Link></div>
+        </div>);
 }
 
-export default ItemListWithTitle;
+export default NewArrivalsList;

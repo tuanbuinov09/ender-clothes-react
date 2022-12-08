@@ -266,7 +266,7 @@ function CartManagement(props) {
     const onFiltering = (e) => {
         let query = new Query();
         //frame the query based on search string with filter type.
-        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'startswith', e.text, true) : query;
+        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'contains', e.text, true) : query;
         //pass the filter data source, filter query to updateData method.
         e.updateData(dropdpwnData, query);
     };
@@ -281,7 +281,7 @@ function CartManagement(props) {
             <SectionTitle title={((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
                 'Vận chuyển bởi bạn'
                 :
-                'Quản lý giỏ hàng'} />
+                'Quản lý đơn hàng'} />
             <div className={clsx(style.toolBar)}>
                 {/* <button onClick={() => {
                     approve();

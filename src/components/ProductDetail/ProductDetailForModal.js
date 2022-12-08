@@ -9,6 +9,7 @@ import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import EJ2ImageCarousel from './EJ2ImageCarousel';
 import { removeSyncfusionLicenseMessage } from '../../uitilities/utilities'
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
+import { REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL, REACT_APP_API_URL } from '../../uitilities/CONSTANT';
 function ProductDetailForModal(props) {
     const dispatch = useDispatch();
     const params = useParams();
@@ -44,12 +45,12 @@ function ProductDetailForModal(props) {
                 // console.log(productsFromApi[0]);
                 //nếu data cũ hình sẽ có http, data mới thì k
                 if (productsFromApi[0].HINH_ANH && !productsFromApi[0].HINH_ANH.startsWith('http')) {
-                    productsFromApi[0].HINH_ANH = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${productsFromApi[0].HINH_ANH}`
+                    productsFromApi[0].HINH_ANH = `${REACT_APP_API_URL}/${REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${productsFromApi[0].HINH_ANH}`
                 }
                 productsFromApi[0].chiTietSanPham.forEach(item => {
                     //nếu data cũ hình sẽ có http, data mới thì k
                     if (item.HINH_ANH && !item.HINH_ANH.startsWith('http')) {
-                        item.HINH_ANH = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${item.HINH_ANH}`
+                        item.HINH_ANH = `${REACT_APP_API_URL}/${REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${item.HINH_ANH}`
                     }
                 })
                 setProduct(productsFromApi[0]);

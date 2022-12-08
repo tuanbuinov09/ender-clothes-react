@@ -61,19 +61,32 @@
 
 .userImageContainer {
     width: 100%;
-    padding: 64px 156px 32px 128px;
+    /* padding: 64px 156px 32px 128px; */
+    display: flex;
+    margin-top: 56px;
+    padding-right: 56px;
+    padding-left: 56px;
+    justify-content: center;
 }
 
 .userImage {
     width: 100%;
+    max-width: 400px;
 }
 
 .logOutBtn {
     height: 32px;
-    width: 100px !important;
+    width: 180px !important;
     background-color: #ddd !important;
     color: #333 !important;
     border: 1px solid #333 !important;
+}
+.changePassButton {
+    height: 32px;
+    width: 180px !important;
+    background-color: rgb(228, 183, 128) !important;
+    color: white !important;
+    border: 1px solid rgb(228, 183, 128) !important;
 }
 
 .printButton {
@@ -85,6 +98,7 @@
     background-color: dodgerblue;
     color: white;
     border: 1px solid transparent;
+    width: 180px;
     /* border-radius: 4px; */
 }
 
@@ -109,6 +123,14 @@
 }
 
 .favButton{
-    width: fit-content;
+    width: 180px;
     background-color: crimson;
+}
+
+.changePasswordButtonGroup{
+    display: flex;
+    justify-content: space-between;
+}
+.changePasswordButtonGroup button{
+    width: 180px;
 }

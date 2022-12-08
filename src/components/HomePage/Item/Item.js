@@ -14,6 +14,7 @@ import { useState } from 'react';
 import ProductDetailModal from "../../ProductDetail/ProductDetailModal";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
+import { REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL, REACT_APP_API_URL } from "../../../uitilities/CONSTANT";
 
 function Item({ product, type }) {
     let navigate = useNavigate();
@@ -35,7 +36,7 @@ function Item({ product, type }) {
     useEffect(() => {
         //nếu data cũ hình sẽ có http, data mới thì k
         if (product.HINH_ANH && !product.HINH_ANH.startsWith('http')) {
-            product.HINH_ANH = `${process.env.REACT_APP_API_URL}/${process.env.REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${product.HINH_ANH}`
+            product.HINH_ANH = `${REACT_APP_API_URL}/${REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${product.HINH_ANH}`
             setRerender(!rerender)
 
         }

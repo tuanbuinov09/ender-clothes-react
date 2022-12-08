@@ -249,7 +249,7 @@ function SignUp(props) {
                                     <label className={clsx(style.inputLabel)}>Mật khẩu:</label>
                                     <input autoComplete='new-password' onChange={(e) => {
                                         // setEmail(e.target.value.trim());
-                                        handleChange("password", e.target.value);
+                                        handleChange("password", e.target.value.trim());
                                     }} type="password" placeholder="" /*value={email}*/ value={shipInfo ? shipInfo.password : ""} name='password' className={clsx(style.input)} />
                                     {errorMessage.errorPassword ? <p className={clsx(style.errorMessage)}>{errorMessage.errorPassword}</p> : ""}
                                 </div>
@@ -257,7 +257,7 @@ function SignUp(props) {
                                     <label className={clsx(style.inputLabel)}>Xác nhận mật khẩu:</label>
                                     <input autoComplete='new-password' onChange={(e) => {
                                         // setEmail(e.target.value.trim());
-                                        handleChange("confirmPassword", e.target.value);
+                                        handleChange("confirmPassword", e.target.value.trim());
                                     }} type="password" placeholder="" /*value={email}*/ value={shipInfo ? shipInfo.confirmPassword : ""} name='confirmPassword' className={clsx(style.input)} />
                                     {errorMessage.errorConfirmPassword ? <p className={clsx(style.errorMessage)}>{errorMessage.errorConfirmPassword}</p> : ""}
                                 </div>
