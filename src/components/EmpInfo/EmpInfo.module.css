@@ -49,14 +49,20 @@ flex: 1;
     text-align: right;
     font-weight: bold;
 }
-.userImageContainer{
-   width: 100%;
-   padding: 64px 156px 32px 128px;
-}
-.userImage{
+.userImageContainer {
     width: 100%;
+    /* padding: 64px 156px 32px 128px; */
+    display: flex;
+    margin-top: 56px;
+    padding-right: 56px;
+    padding-left: 56px;
+    justify-content: center;
 }
 
+.userImage {
+    width: 100%;
+    max-width: 400px;
+}
 .logOutBtn {
     height: 32px;
     width: 100px !important;
@@ -94,4 +100,66 @@ flex: 1;
 
 .checkButton:hover {
     opacity: 0.8;
+}
+
+
+.logOutBtn {
+    height: 32px;
+    width: 180px !important;
+    background-color: #ddd !important;
+    color: #333 !important;
+    border: 1px solid #333 !important;
+}
+.changePassButton {
+    height: 32px;
+    width: 180px !important;
+    background-color: rgb(228, 183, 128) !important;
+    color: white !important;
+    border: 1px solid rgb(228, 183, 128) !important;
+}
+
+.printButton {
+    margin-left: 32px;
+    margin-top: 24px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    background-color: dodgerblue;
+    color: white;
+    border: 1px solid transparent;
+    width: 180px;
+    /* border-radius: 4px; */
+}
+
+.printButton span {
+    margin-right: 4px;
+}
+
+.printButtonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 32px;
+}
+
+.checkButton {
+    cursor: pointer;
+    transition: opacity .3s ease-out;
+}
+
+.checkButton:hover {
+    opacity: 0.8;
+}
+
+.favButton{
+    width: 180px;
+    background-color: crimson;
+}
+
+.changePasswordButtonGroup{
+    display: flex;
+    justify-content: space-between;
+}
+.changePasswordButtonGroup button{
+    width: 180px;
 }

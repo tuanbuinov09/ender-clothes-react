@@ -28,6 +28,8 @@ import ProductImportManagement from "./Admin/ProductImportManagement/ProductImpo
 import ProductReturnManagement from "./Admin/ProductReturnManagement/ProductReturnManagement";
 import ProductPriceChangeManagement from "./Admin/ProductPriceChangeManagement/ProductPriceChangeManagement";
 import ProductSaleOffManagement from "./Admin/ProductSaleOffManagement/ProductSaleOffManagement";
+import ItemListWithTitle2 from "./HomePage/NewListByCategory/ItemListWithTitle2";
+
 function Main() {
     const [pushMain, setPushMain] = useState(false);
     const togglePushMain = () => {
@@ -106,6 +108,8 @@ function Main() {
                         <Route path="/most-viewed" element={<ItemListWithTitle type="most-viewed" />} />
                         <Route path="/best-seller" element={<ItemListWithTitle type="best-seller" />} />
                         <Route path="/sale-off" element={<ItemListWithTitle type="sale-off" />} />
+
+                        <Route path="/products/category/:categoryId/" element={<ItemListWithTitle2 />} />
 
                         <Route path="/user/favorite" element={<ItemListWithTitle type="favorite" />} />
                     </Routes>

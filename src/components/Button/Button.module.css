@@ -70,7 +70,9 @@
 .btnCancel:after{
     content: "HỦY";
 }
-
+.btnCancel:hover:after {
+    color: crimson;
+}
 .btnClearAll:after{
     content: "XÓA TẤT CẢ";
 }
@@ -128,5 +130,23 @@
     content: "ĐĂNG KÝ";
 }
 .btnSignUp:hover::after {
+    color: #009eb6;
+}
+
+.btnSave::after{
+    content: "ĐĂNG KÝ";
+}
+
+.btnSave {
+    background-color: #009eb6;
+}
+.btnSave:hover {
+    color: var(--light);
+    border: 1px solid #009eb6;
+}
+.btnSave:after{
+    content: "LƯU THÔNG TIN";
+}
+.btnSave:hover::after {
     color: #009eb6;
 }

@@ -9,6 +9,7 @@ import SectionTitle from "./SectionTitle/SectionTitle";
 import products from "../../products.js";
 import HomeSaleUpList from "./HomeSaleUpList/HomeSaleUpList";
 import NewArrivalsList from "./NewArrivalsList/NewArrivalsList";
+import mesIMG from '../icons8_facebook_messenger_60px.png';
 const productsArray = products;
 
 function Home() {
@@ -27,19 +28,24 @@ function Home() {
     return (
 
         <div className="">
+
+            <button style={{ position: 'fixed', bottom: '12vh', right: '16px', width: 60, height: 60, zIndex: 10, backgroundColor: 'white', appearance: "none", border: '2px solid', borderRadius: '50%', borderColor: '#ff7faa', cursor: 'pointer' }} id="myBtn2" onClick={() => {
+                window.open('https://m.me/tuanenderman555', '_blank');
+            }}><img src={mesIMG} title='Chat với END_CLOTHES' width='64px' style={{ marginBottom: -4 }} /></button>
+
             <Banner />
             <SectionTitle title="Hàng mới về" />
-            <NewArrivalsList products={products} type={'new-arrivals'} top={'10'}/>
+            <NewArrivalsList products={products} type={'new-arrivals'} top={'10'} />
             <SectionTitle title="Sản phẩm bán chạy" />
-            <NewArrivalsList products={products} type={'best-seller'} top={'5'}/>
+            <NewArrivalsList products={products} type={'best-seller'} top={'5'} />
             <SectionTitle title="Được xem nhiều" />
-            <NewArrivalsList products={products} type={'most-viewed'} top={'10'}/>
+            <NewArrivalsList products={products} type={'most-viewed'} top={'10'} />
             {/* <SectionTitle title="Khuyến mãi" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
             {/* <NewArrivalsList products={top4products} type={'sale-off'}/> */}
             <SectionTitle title="Khuyến mãi" />
             {/* <h1 className="section section-title">HIGH RATING</h1> */}
-            <HomeSaleUpList products={products} top={'5'}/>
+            <HomeSaleUpList products={products} top={'5'} />
         </div >
     );
 }
