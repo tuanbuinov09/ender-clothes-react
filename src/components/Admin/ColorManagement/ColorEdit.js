@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-
+import "../ej2-grid.css";
 import style from './ColorEdit.module.css';
 import clsx from 'clsx';
 import { useNavigate } from "react-router-dom";
@@ -8,11 +8,11 @@ import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors
 import { XIcon, SaveIcon } from '../../../icons';
 import { toast } from 'react-toastify';
 import { ColorPickerComponent } from '@syncfusion/ej2-react-inputs';
-
+import reactCSS from 'reactcss';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { L10n, setCulture } from '@syncfusion/ej2-base';
 import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
-
+import { SketchPicker } from 'react-color';
 function ColorEdit(props) {
     let navigate = useNavigate();
 
@@ -33,16 +33,8 @@ function ColorEdit(props) {
     const datePicker = useRef();
     const colorPicker = useRef();
     //chỉnh ngôn ngữ thư viện thành tiếng việt
-    loadLocaleSyncfusion();
-    L10n.load({
-        'vi-VN': {
-            'colorpicker': {
-                'apply': 'Áp dụng',
-                'cancel': 'Hủy',
-                'modeSwitcher': 'Đổi chế độ'
-            }
-        }
-    });
+    // loadLocaleSyncfusion();
+
 
     // end syncfusion react declaration
     useEffect(() => {
@@ -77,6 +69,7 @@ function ColorEdit(props) {
         } else {
             // setFlag(true);
             // datePicker.current.value = new Date();
+            setInputModel({ ...inputModel, TEN_TIENG_ANH: '#333333' })
         }
 
     }, []);
@@ -103,7 +96,7 @@ function ColorEdit(props) {
 
     const save = () => {
 
-        inputModel.TEN_TIENG_ANH = colorPicker.current.value;
+        // inputModel.TEN_TIENG_ANH = colorPicker.current.value;
 
         if (validate()) {
             return;
@@ -171,7 +164,58 @@ function ColorEdit(props) {
     const getTitle = () => {
         return props.viewMode === 'view' ? `Chi tiết màu ${props.colorId}` : props.viewMode === 'edit' ? `Chỉnh sửa màu ${props.colorId}` : `Thêm mới màu`
     }
+    L10n.load({
+        'vi': {
+            colorpicker: {
+                'Apply': 'Áp dụng',
+                'Cancel': 'Hủy',
+                'ModeSwitcher': 'Đổi chế độ'
+            }
+        }
+    });
+    const styles = reactCSS({
+        'default': {
+            color: {
+                width: '36px',
+                height: '14px',
+                borderRadius: '2px',
+                background: inputModel.TEN_TIENG_ANH,
+            },
+            swatch: {
+                padding: '5px',
+                background: '#fff',
+                borderRadius: '1px',
+                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                display: 'inline-block',
+                cursor: 'pointer',
+                marginTop: '4px',
+                marginLeft: '12px',
+            },
+            popover: {
+                position: 'absolute',
+                zIndex: '2',
+            },
+            cover: {
+                position: 'fixed',
+                top: '0px',
+                right: '0px',
+                bottom: '0px',
+                left: '0px',
+            },
+        },
+    });
+    const [displayColorPicker, setDisplayColorPicker] = useState(false);
+    const handleChangeColor = (e) => {
+        setInputModel({ ...inputModel, TEN_TIENG_ANH: e.hex })
+    }
 
+    const handleClick = () => {
+        setDisplayColorPicker(!displayColorPicker)
+    };
+
+    const handleClose = () => {
+        setDisplayColorPicker(!displayColorPicker)
+    };
     console.log('rerender, inputModel: ', inputModel)
 
     return (
@@ -215,9 +259,19 @@ function ColorEdit(props) {
                                 value={inputModel.TEN_MAU}
                                 placeholder="" className={clsx(style.input)}
                             />
-                            <div className={clsx(style.colorPicker)}>
-                                <ColorPickerComponent onChange={() => {
-                                }} ref={colorPicker} locale='vi-VN' />
+                            <div className={clsx(style.colorPicker)} id='container'>
+                                {/* <ColorPickerComponent id='colorPicker' onChange={() => {
+                                }} ref={colorPicker} locale='vi' /> */}
+                                <div>
+                                    <div style={styles.swatch} onClick={handleClick}>
+                                        <div style={styles.color} />
+                                    </div>
+                                    {displayColorPicker ? <div style={styles.popover}>
+                                        <div style={styles.cover} onClick={handleClose} />
+                                        <SketchPicker color={inputModel.TEN_TIENG_ANH} onChange={handleChangeColor} />
+                                    </div> : null}
+
+                                </div>
                             </div>
 
                         </div>

@@ -45,15 +45,27 @@ function Login(props) {
 
             if (userInfoFromRes && props.type === 'customer') {
                 setErrorMessage('');
-                localStorage.setItem('user', JSON.stringify(userInfoFromRes));
-                console.log("---", localStorage.getItem('user'));
-                axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${userInfoFromRes.MA_KH}`).then(respListFavorite => {
-                    const listFavorite = respListFavorite.data;
-                    localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
-                });
-                navigate("/", { replace: true });
+                if (!userInfoFromRes.TRANG_THAI) {
+                    setIsLoading(false);
+                    setErrorMessage('*Tài khoản của bạn đã bị vô hiệu hóa');
+                    return;
+                } else {
+                    localStorage.setItem('user', JSON.stringify(userInfoFromRes));
+                    console.log("---", localStorage.getItem('user'));
+                    axios.get(`http://localhost:22081/api/KhachHang/favorite?customerId=${userInfoFromRes.MA_KH}`).then(respListFavorite => {
+                        const listFavorite = respListFavorite.data;
+                        localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
+                    });
+                    navigate("/", { replace: true });
+                }
+
             } else if (userInfoFromRes && props.type === 'employee') {
                 setErrorMessage('');
+                // if(!userInfoFromRes.TRANG_THAI){
+                //    setIsLoading(false);
+                //     setErrorMessage('*Tài khoản của bạn đã bị vô hiệu hóa, hãy liên hệ chúng tôi nếu bạn nghĩ có sai sót');
+                //     return;
+                // }
                 localStorage.setItem('employee', JSON.stringify(userInfoFromRes));
                 console.log("---", localStorage.getItem('employee'));
                 if (JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {

@@ -14,6 +14,7 @@ import { Query } from '@syncfusion/ej2-data';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation';
+import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
 function ProductReturnEdit(props) {
     let navigate = useNavigate();
     setupInterceptors(navigate, 'employee');
@@ -61,7 +62,11 @@ function ProductReturnEdit(props) {
         setIsLoading(true);
         let tmpErrorMsg = { errorSO_LUONG_ALL: "", errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "" };
         setErrorMessage(tmpErrorMsg);
-        axios.get(`${process.env.REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${customerDropDownList.current.value}`).then(res => {
+        axios.get(`${REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${customerDropDownList.current.value}`, {
+            headers: {
+                Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+            }
+        }).then(res => {
             res.data.forEach(item => {
                 if (item.NGAY_TAO) {
                     let date = new Date(item.NGAY_TAO);
@@ -105,7 +110,7 @@ function ProductReturnEdit(props) {
 
         try {
 
-            let url = `${process.env.REACT_APP_API_URL}/api/KhachHang/all-has-purchased`;
+            let url = `${REACT_APP_API_URL}/api/KhachHang/all-has-purchased`;
 
             console.log(url)
             axios.get(url).then(res => {
@@ -139,7 +144,7 @@ function ProductReturnEdit(props) {
                     datePicker.current.value = new Date();
                 } else {
                     setIsLoading(true);
-                    let url = `${process.env.REACT_APP_API_URL}/api/TraHang/?returnId=${props.returnId}`;
+                    let url = `${REACT_APP_API_URL}/api/TraHang/?returnId=${props.returnId}`;
                     axios.get(url).then(res => {
                         console.log(res.data)
                         const productReturnEntityFromApi = res.data
@@ -150,7 +155,11 @@ function ProductReturnEdit(props) {
 
                         let tmpErrorMsg = { errorSO_LUONG_ALL: "", errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "" };
                         setErrorMessage(tmpErrorMsg);
-                        axios.get(`${process.env.REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${productReturnEntityFromApi.MA_KH}`).then(res => {
+                        axios.get(`${REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${productReturnEntityFromApi.MA_KH}`, {
+                            headers: {
+                                Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                            }
+                        }).then(res => {
                             res.data.forEach(item => {
                                 if (item.NGAY_TAO) {
                                     let date = new Date(item.NGAY_TAO);
@@ -189,7 +198,7 @@ function ProductReturnEdit(props) {
                             setCustomerCarts(res.data);
 
                             try {
-                                axios.get(`${process.env.REACT_APP_API_URL}/api/GioHang/for-return?cartId=${productReturnEntityFromApi.ID_GH}`).then(res => {
+                                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${productReturnEntityFromApi.ID_GH}`).then(res => {
                                     const response = res.data;
                                     console.log('res: ' + response);
                                     response.chiTietGioHang2.forEach(item => {
@@ -312,9 +321,9 @@ function ProductReturnEdit(props) {
         }
         setProductReturnEntity(_productReturnEntity)
 
-        console.log('pass', _productReturnEntity, `${process.env.REACT_APP_API_URL}/api/TraHang/add-product-return`)
+        console.log('pass', _productReturnEntity, `${REACT_APP_API_URL}/api/TraHang/add-product-return`)
         try {
-            axios.post(`${process.env.REACT_APP_API_URL}/api/TraHang/add-product-return`, _productReturnEntity,
+            axios.post(`${REACT_APP_API_URL}/api/TraHang/add-product-return`, _productReturnEntity,
                 {
                     headers: {
                         Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
@@ -429,7 +438,7 @@ function ProductReturnEdit(props) {
                 return;
             }
             try {
-                axios.get(`${process.env.REACT_APP_API_URL}/api/GioHang/for-return?cartId=${selectedrecords[0].ID_GH}`).then(res => {
+                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${selectedrecords[0].ID_GH}`).then(res => {
                     const response = res.data;
                     console.log('res: ' + response);
                     response.chiTietGioHang2.forEach(item => {
