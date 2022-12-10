@@ -13,6 +13,7 @@ import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import CartDetailToPrint from '../CartDetail/CartDetailToPrint';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
+import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
 
 function UserPurchasedCart(props) {
     removeSyncfusionLicenseMessage();
@@ -27,7 +28,11 @@ function UserPurchasedCart(props) {
         try {
             setIsLoading(true);
             console.log(`http://localhost:22081/api/KhachHang/carts?filterState=${filterState}&customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`)
-            axios.get(`http://localhost:22081/api/KhachHang/carts?filterState=${filterState}&customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`).then(res => {
+            axios.get(`${REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`, {
+                headers: {
+                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+                }
+            }).then(res => {
                 const cartsFromApi = res.data;
                 // console.log(cartsFromApi);
                 cartsFromApi.forEach((cart) => {

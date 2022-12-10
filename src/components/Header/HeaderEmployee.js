@@ -108,6 +108,11 @@ function HeaderEmployee(props) {
                         <div className={clsx(style.nowhere)}>Quản lý<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                         </div>
                         <ul className={clsx(style.submenu)} >
+                            {JSON.parse(localStorage.getItem('employee')) && JSON.parse(localStorage.getItem('employee')).MA_NV
+                                && JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q02' ? <Link to="/admin/customer-management" className={clsx(style.navLink, style.lastNavLink)}>Khách hàng</Link> : <></>}
+                            {JSON.parse(localStorage.getItem('employee')) && JSON.parse(localStorage.getItem('employee')).MA_NV
+                                && JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q02' ? <Link to="/admin/employee-management" className={clsx(style.navLink, style.lastNavLink)}>Nhân viên</Link> : <></>}
+
                             <Link to="/admin/product-management" className={clsx(style.navLink, style.lastNavLink)}>Sản phẩm</Link>
                             <Link to="/admin/product-price-management" className={clsx(style.navLink, style.lastNavLink)}>Thay đổi giá</Link>
                             <Link to="/admin/product-import-management" className={clsx(style.navLink, style.lastNavLink)}>Nhập hàng</Link>

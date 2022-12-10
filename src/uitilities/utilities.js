@@ -240,7 +240,7 @@ const setupInterceptors = (navigateTo, typeLogin) => {
 
         if (error.response.status === 401) {
             localStorage.removeItem(typeLogin);
-            // toast.error("Phiên đăng nhập đã hết hạn")
+            //toast.error("Phiên đăng nhập đã hết hạn")
             navigateTo('/' + typeLogin + '/login', { replace: true });
         }
 

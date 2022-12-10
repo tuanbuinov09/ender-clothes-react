@@ -213,66 +213,66 @@ function ProductSaleOffEdit(props) {
                         setIsLoading(false);
                         return;
                         //
-                        axios.get(`${process.env.REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${saleOffEntityFromApi.MA_KH}`).then(res => {
-                            res.data.forEach(item => {
-                                if (item.NGAY_TAO) {
-                                    let date = new Date(item.NGAY_TAO);
-                                    item.NGAY_TAO = date.toLocaleDateString('vi-VN');
-                                }
-                                if (item.NGAY_GIAO) {
+                        // axios.get(`${process.env.REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${saleOffEntityFromApi.MA_KH}`).then(res => {
+                        //     res.data.forEach(item => {
+                        //         if (item.NGAY_TAO) {
+                        //             let date = new Date(item.NGAY_TAO);
+                        //             item.NGAY_TAO = date.toLocaleDateString('vi-VN');
+                        //         }
+                        //         if (item.NGAY_GIAO) {
 
-                                    item.NGAY_GIAO_TYPE_DATE = new Date(item.NGAY_GIAO);
-                                    // console.log(item.ID_GH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
+                        //             item.NGAY_GIAO_TYPE_DATE = new Date(item.NGAY_GIAO);
+                        //             // console.log(item.ID_GH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
 
-                                    let date = new Date(item.NGAY_GIAO);
-                                    item.NGAY_GIAO = date.toLocaleDateString('vi-VN');
-                                }
+                        //             let date = new Date(item.NGAY_GIAO);
+                        //             item.NGAY_GIAO = date.toLocaleDateString('vi-VN');
+                        //         }
 
-                                if (item.TRANG_THAI === 0) {
-                                    item.TRANG_THAI_STR = 'Chờ duyệt';
-                                }
-                                if (item.TRANG_THAI === 1) {
-                                    item.TRANG_THAI_STR = 'Đang giao hàng';
-                                }
-                                if (item.TRANG_THAI === 2) {
-                                    item.TRANG_THAI_STR = 'Đã hoàn tất';
-                                }
-                                if (item.TRANG_THAI === -1) {
-                                    item.TRANG_THAI_STR = 'Đã hủy';
-                                }
-                            })
-                            res.data = res.data.filter(item => {
-                                return item.ID_GH === saleOffEntityFromApi.ID_GH
-                            })
-                            // console.log(a);
-                            setProducts(res.data);
+                        //         if (item.TRANG_THAI === 0) {
+                        //             item.TRANG_THAI_STR = 'Chờ duyệt';
+                        //         }
+                        //         if (item.TRANG_THAI === 1) {
+                        //             item.TRANG_THAI_STR = 'Đang giao hàng';
+                        //         }
+                        //         if (item.TRANG_THAI === 2) {
+                        //             item.TRANG_THAI_STR = 'Đã hoàn tất';
+                        //         }
+                        //         if (item.TRANG_THAI === -1) {
+                        //             item.TRANG_THAI_STR = 'Đã hủy';
+                        //         }
+                        //     })
+                        //     res.data = res.data.filter(item => {
+                        //         return item.ID_GH === saleOffEntityFromApi.ID_GH
+                        //     })
+                        //     // console.log(a);
+                        //     setProducts(res.data);
 
-                            try {
-                                axios.get(`${process.env.REACT_APP_API_URL}/api/GioHang/for-return?cartId=${saleOffEntityFromApi.ID_GH}`).then(res => {
-                                    const response = res.data;
-                                    console.log('res: ' + response);
-                                    response.chiTietGioHang2.forEach(item => {
-                                        if (!item.SL_DA_TRA) {
-                                            item.SL_DA_TRA = 0;
-                                        }
-                                        let oneReturnDetail = saleOffEntityFromApi.chiTietPhieuTra.find(itemFromAPI => {
-                                            return itemFromAPI.MA_CT_SP === item.MA_CT_SP
-                                        })
-                                        if (oneReturnDetail) {
-                                            item.PHAN_TRAM_GIAM = oneReturnDetail.PHAN_TRAM_GIAM
-                                        }
-                                    })
+                        //     try {
+                        //         axios.get(`${process.env.REACT_APP_API_URL}/api/GioHang/for-return?cartId=${saleOffEntityFromApi.ID_GH}`).then(res => {
+                        //             const response = res.data;
+                        //             console.log('res: ' + response);
+                        //             response.chiTietGioHang2.forEach(item => {
+                        //                 if (!item.SL_DA_TRA) {
+                        //                     item.SL_DA_TRA = 0;
+                        //                 }
+                        //                 let oneReturnDetail = saleOffEntityFromApi.chiTietPhieuTra.find(itemFromAPI => {
+                        //                     return itemFromAPI.MA_CT_SP === item.MA_CT_SP
+                        //                 })
+                        //                 if (oneReturnDetail) {
+                        //                     item.PHAN_TRAM_GIAM = oneReturnDetail.PHAN_TRAM_GIAM
+                        //                 }
+                        //             })
 
-                                    setProductsAndPercentages(response.chiTietGioHang2)
+                        //             setProductsAndPercentages(response.chiTietGioHang2)
 
-                                });
-                            } catch (error) {
-                                console.error(error);
-                            }
+                        //         });
+                        //     } catch (error) {
+                        //         console.error(error);
+                        //     }
 
-                            // setSaleOffEntity({ ...saleOffEntity, chiTietPhieuNhap: a })
-                            setIsLoading(false);
-                        })
+                        //     // setSaleOffEntity({ ...saleOffEntity, chiTietPhieuNhap: a })
+                        //     setIsLoading(false);
+                        // })
                     })
 
                 }
