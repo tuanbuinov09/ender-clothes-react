@@ -69,31 +69,31 @@ function ShipInfo(props) {
                             let hasError = false;
                             setErrorMessage(tmpErrorMsg);
                             if (!shipInfo1.HO_TEN) {
-                                tmpErrorMsg = { ...tmpErrorMsg, errorName: "Vui lòng nhập tên người nhận" }
+                                tmpErrorMsg = { ...tmpErrorMsg, errorName: "*Vui lòng nhập tên người nhận" }
                                 //setErrorMessage({...errorMessage, errorName: "Vui lòng nhập tên người nhận"});
                                 hasError = true;
                             }
                             if (!shipInfo1.SDT) {
-                                tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "Vui lòng nhập số điện thoại" }
+                                tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "*Vui lòng nhập số điện thoại" }
                                 //setErrorMessage({...errorMessage, errorPhone: "Vui lòng nhập số điện thoại"});
                                 hasError = true;
                             } else if (!isValidPhone(shipInfo1.SDT)) {
-                                tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "Vui lòng nhập số điện thoại hợp lệ" }
+                                tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "*Vui lòng nhập số điện thoại hợp lệ" }
                                 console.log("fail phone")
                                 //setErrorMessage({...errorMessage, errorPhone: "Vui lòng nhập số điện thoại hợp lệ"});
                                 hasError = true;
                             }
                             if (!shipInfo1.EMAIL) {
-                                tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "Vui lòng nhập email người nhận" }
+                                tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "*Vui lòng nhập email người nhận" }
                                 //setErrorMessage({...errorMessage, errorEmail: "Vui lòng nhập email người nhận"});
                                 hasError = true;
                             } else if (!shipInfo1.EMAIL.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i)) {
-                                tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "Vui lòng nhập email hợp lệ" }
+                                tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "*Vui lòng nhập email hợp lệ" }
                                 //setErrorMessage({...errorMessage, errorEmail: "Vui lòng nhập email hợp lệ"});
                                 hasError = true;
                             }
                             if (!shipInfo1.DIA_CHI) {
-                                tmpErrorMsg = { ...tmpErrorMsg, errorAddress: "Vui lòng nhập địa chỉ người nhận" }
+                                tmpErrorMsg = { ...tmpErrorMsg, errorAddress: "*Vui lòng nhập địa chỉ người nhận" }
                                 // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
                                 hasError = true;
                             }

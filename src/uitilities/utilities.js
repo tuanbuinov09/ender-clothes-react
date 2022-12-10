@@ -184,6 +184,11 @@ const loadLocaleSyncfusion = () => {
                 placeholder: "Nhập ngày",
                 today: "Hôm nay"
             },
+            colorpicker: {
+                'Apply': 'Áp dụng',
+                'Cancel': 'Hủy',
+                'ModeSwitcher': 'Đổi chế độ'
+            },
             'multi-select': {
                 'actionFailureTemplate': "Lỗi thực thi",
                 'noRecordsTemplate': "Không có dữ liệu"
@@ -243,5 +248,21 @@ const setupInterceptors = (navigateTo, typeLogin) => {
     });
 }
 
-export { isValidPhone, newIdByDate, DateDiff, setupInterceptors }
+const toVNDDateFormat = (dateInput) => {
+    let date = new Date(dateInput);
+    dateInput = date.toLocaleDateString('vi-VN');
+    console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date));
+    dateInput = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date);
+    return dateInput;
+}
+
+const toVNDDateTimeFormat = (dateInput) => {
+    let date = new Date(dateInput);
+    dateInput = date.toLocaleString('vi-VN', 'dd/MM/yyyy - hh:mm a');
+    console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date))
+    dateInput = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', hour12: true }).format(date)
+    return dateInput;
+}
+
+export { isValidPhone, newIdByDate, DateDiff, setupInterceptors, toVNDDateFormat, toVNDDateTimeFormat }
 export { intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion }

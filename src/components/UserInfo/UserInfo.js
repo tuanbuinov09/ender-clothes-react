@@ -255,18 +255,18 @@ function UserInfo(props) {
                                     //console.log(shipInfo1.MAT_KHAU.length)
                                     if (!shipInfo1.MAT_KHAU) {
                                         console.log("no pass");
-                                        tmpErrorMsg = { ...tmpErrorMsg, errorPassword: "Vui lòng nhập mật khẩu cũ" }
+                                        tmpErrorMsg = { ...tmpErrorMsg, errorPassword: "*Vui lòng nhập mật khẩu cũ" }
                                         hasError = true;
                                     } else if (validateResult.MAT_KHAU === '1') {
-                                        tmpErrorMsg = { ...tmpErrorMsg, errorPassword: "Mật khẩu cũ không chính xác" }
+                                        tmpErrorMsg = { ...tmpErrorMsg, errorPassword: "*Mật khẩu cũ không chính xác" }
                                         hasError = true;
                                     }
                                     if (shipInfo1.MAT_KHAU_MOI === shipInfo1.MAT_KHAU) {
-                                        tmpErrorMsg = { ...tmpErrorMsg, errorNewPassword: "Mật khẩu mới không được trùng với mật khẩu cũ" }
+                                        tmpErrorMsg = { ...tmpErrorMsg, errorNewPassword: "*Mật khẩu mới không được trùng với mật khẩu cũ" }
                                         hasError = true;
                                     } else if (!(shipInfo1.MAT_KHAU_MOI.length >= 6)) {
                                         console.log("pass < 6")
-                                        tmpErrorMsg = { ...tmpErrorMsg, errorNewPassword: "Vui lòng nhập mật khẩu ít nhất 6 ký tự" }
+                                        tmpErrorMsg = { ...tmpErrorMsg, errorNewPassword: "*Vui lòng nhập mật khẩu ít nhất 6 ký tự" }
                                         hasError = true;
                                     }
                                     if (hasError) {
@@ -333,39 +333,39 @@ function UserInfo(props) {
                                         let hasError = false;
                                         setErrorMessage(tmpErrorMsg);
                                         if (!shipInfo1.HO_TEN) {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorName: "Vui lòng nhập tên" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorName: "*Vui lòng nhập tên" }
                                             //setErrorMessage({...errorMessage, errorName: "Vui lòng nhập tên người nhận"});
                                             hasError = true;
                                         }
                                         if (!shipInfo1.SDT) {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "Vui lòng nhập số điện thoại" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "*Vui lòng nhập số điện thoại" }
                                             //setErrorMessage({...errorMessage, errorPhone: "Vui lòng nhập số điện thoại"});
                                             hasError = true;
                                         } else if (!isValidPhone(shipInfo1.SDT)) {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "Vui lòng nhập số điện thoại hợp lệ" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "*Vui lòng nhập số điện thoại hợp lệ" }
                                             console.log("fail phone")
                                             //setErrorMessage({...errorMessage, errorPhone: "Vui lòng nhập số điện thoại hợp lệ"});
                                             hasError = true;
                                         } else if (validateResult.SDT === '1') {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "Số điện thoại đã được sử dụng" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorPhone: "*Số điện thoại đã được sử dụng" }
                                             //setErrorMessage({...errorMessage, errorEmail: "Vui lòng nhập email hợp lệ"});
                                             hasError = true;
                                         }
                                         if (!shipInfo1.EMAIL) {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "Vui lòng nhập email" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "*Vui lòng nhập email" }
                                             //setErrorMessage({...errorMessage, errorEmail: "Vui lòng nhập email người nhận"});
                                             hasError = true;
                                         } else if (!shipInfo1.EMAIL.match(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i)) {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "Vui lòng nhập email hợp lệ" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "*Vui lòng nhập email hợp lệ" }
                                             //setErrorMessage({...errorMessage, errorEmail: "Vui lòng nhập email hợp lệ"});
                                             hasError = true;
                                         } else if (validateResult.EMAIL === '1') {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "Email đã được sử dụng" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorEmail: "*Email đã được sử dụng" }
                                             //setErrorMessage({...errorMessage, errorEmail: "Vui lòng nhập email hợp lệ"});
                                             hasError = true;
                                         }
                                         if (!shipInfo1.DIA_CHI) {
-                                            tmpErrorMsg = { ...tmpErrorMsg, errorAddress: "Vui lòng nhập địa chỉ" }
+                                            tmpErrorMsg = { ...tmpErrorMsg, errorAddress: "*Vui lòng nhập địa chỉ" }
                                             // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
                                             hasError = true;
                                         }

@@ -145,7 +145,7 @@ function Report(props) {
             }
         }
     });
-    setCulture('vi')
+    setCulture('vi');
     const [data, setData] = useState(null);
     const print2 = () => {
         try {
