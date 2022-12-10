@@ -410,7 +410,7 @@ function UserInfo(props) {
                                             <label className={clsx(style.inputLabel)}>Số điện thoại:</label>
                                             <input onChange={(e) => {
                                                 // setEmail(e.target.value.trim());
-                                                handleChange("phone", e.target.value);
+                                                handleChange("phone", e.target.value.trim());
                                             }} type="text" placeholder="" /*value={email}*/ value={shipInfo ? shipInfo.phone : ""} name='phone' className={clsx(style.input)} />
                                             {errorMessage.errorPhone ? <p className={clsx(style.errorMessage)}>{errorMessage.errorPhone}</p> : ""}
                                         </div>
@@ -418,7 +418,7 @@ function UserInfo(props) {
                                             <label className={clsx(style.inputLabel)}>Email:</label>
                                             <input disabled onChange={(e) => {
                                                 // setEmail(e.target.value.trim());
-                                                handleChange("email", e.target.value);
+                                                handleChange("email", e.target.value.trim());
                                             }} type="text" placeholder="" /*value={email}*/ value={shipInfo ? shipInfo.email : ""} name='email' className={clsx(style.input)} />
                                             {errorMessage.errorEmail ? <p className={clsx(style.errorMessage)}>{errorMessage.errorEmail}</p> : ""}
                                         </div>

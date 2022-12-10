@@ -254,7 +254,7 @@ function ColorEdit(props) {
                                 maxLength={50}
                                 onChange={(e) => {
                                     //console.log(e.target.value, "fired")
-                                    setInputModel({ ...inputModel, TEN_MAU: e.target.value.trim() })
+                                    setInputModel({ ...inputModel, TEN_MAU: e.target.value })
                                 }} type="text" name='TEN_MAU'
                                 value={inputModel.TEN_MAU}
                                 placeholder="" className={clsx(style.input)}

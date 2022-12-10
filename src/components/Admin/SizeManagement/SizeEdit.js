@@ -193,7 +193,7 @@ function SizeEdit(props) {
                             maxLength={50}
                             onChange={(e) => {
                                 //console.log(e.target.value, "fired")
-                                setInputModel({ ...inputModel, TEN_SIZE: e.target.value.trim() })
+                                setInputModel({ ...inputModel, TEN_SIZE: e.target.value })
                             }} type="text" name='TEN_SIZE'
                             value={inputModel.TEN_SIZE}
                             placeholder="" className={clsx(style.input)}

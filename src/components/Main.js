@@ -32,6 +32,7 @@ import ItemListWithTitle2 from "./HomePage/NewListByCategory/ItemListWithTitle2"
 import SizeManagement from "./Admin/SizeManagement/SizeManagement";
 import ColorManagement from "./Admin/ColorManagement/ColorManagement";
 import CustomerManagement from "./Admin/CustomerManagement/CustomerManagement";
+import EmployeeManagement from "./Admin/EmployeeManagement/EmployeeManagement";
 
 function Main() {
     const [pushMain, setPushMain] = useState(false);
@@ -97,6 +98,7 @@ function Main() {
                         <Route path="/admin/size-management" element={<SizeManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/color-management" element={<ColorManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/customer-management" element={<CustomerManagement changeHeader={changeHeader} />} />
+                        <Route path="/admin/employee-management" element={<EmployeeManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/report" element={<Report changeHeader={changeHeader} />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />
