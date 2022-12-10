@@ -1,23 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { L10n } from '@syncfusion/ej2-base';
 import { ColumnChooser, ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter, Group, Edit, Toolbar, dataReady } from '@syncfusion/ej2-react-grids';
-import { CheckIcon, ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../icons';
+import { ViewDetailIcon, PlusIcon, XIcon, EditIcon } from '../../../icons';
 import axios from 'axios';
 import '../ej2-grid.css'
-import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion, setupInterceptors } from '../../../uitilities/utilities';
-import style from './ProductManagement.module.css';
-import { useNavigate, Link } from "react-router-dom";
+import { removeSyncfusionLicenseMessage, loadLocaleSyncfusion, setupInterceptors, toVNDDateFormat } from '../../../uitilities/utilities';
+import style from './ColorManagement.module.css';
+import { useNavigate } from "react-router-dom";
 import clsx from 'clsx';
 import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
-import ProductEdit from './ProductEdit';
+import ColorEdit from './ColorEdit';
 import { toast } from 'react-toastify';
 import { ModalConfirmDialog } from '../../ModalConfirmDialog/ModalConfirmDialog';
+import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
 
-
-function ProductManagement(props) {
+function ColorManagement(props) {
 
     const [viewMode, setViewMode] = useState('add');
 
@@ -25,62 +23,9 @@ function ProductManagement(props) {
     props.changeHeader('employee')
     let navigate = useNavigate();
     setupInterceptors(navigate, 'employee');
-    useEffect(() => {
-        if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
-            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
-            navigate("/employee/login", true);
-        }
-        //khi unmount trả lại header
-        return () => {
-            props.changeHeader('user')
-        }
-    }, [])
 
-    // const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
-    const [carts, setCarts] = useState([]);
-    const [openDialog, setOpenDialog] = useState(false);
-    const [selectedCart, setSelectedCart] = useState({});
+    // begin syncfusion react declaration 
     const grid = useRef();
-    const [rerender, setRerender] = useState();
-    const [filterState, setFilterState] = useState(-2);
-
-    const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        removeSyncfusionLicenseMessage();
-
-        try {
-            setIsLoading(true);
-            let url = `${process.env.REACT_APP_API_URL}/api/SanPham/all?top=`;
-
-            console.log(url)
-            axios.get(url).then(res => {
-                const productsFromAPI = res.data;
-                // console.log(productsFromAPI);
-                productsFromAPI.forEach((product) => {
-                    if (product.NGAY_TAO) {
-                        let date = new Date(product.NGAY_TAO);
-                        product.NGAY_TAO = date.toLocaleDateString('vi-VN');
-                        console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
-                        product.NGAY_TAO = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
-                    }
-                    if (product.SIZE_STR) {
-                        product.SIZE_STR = product.SIZE_STR.substr(1)
-                    }
-
-                })
-                // console.log(productsFromAPI);
-                setCarts(productsFromAPI);
-                console.log(productsFromAPI);
-                grid.current.dataSource = productsFromAPI;
-                setIsLoading(false);
-            });
-
-        } catch (error) {
-            console.error(error);
-        }
-    }, [filterState, rerender]);
-
     let editOptions, toolbarOptions;
 
     editOptions = { /*allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' */ };
@@ -106,20 +51,90 @@ function ProductManagement(props) {
             const selectedrowindex = grid.current.getSelectedRowIndexes();
             /** Get the selected records. */
             const selectedrecords = grid.current.getSelectedRecords();
-
             // console.log(selectedrowindex[0] + " : " +  JSON.stringify(selectedrecords[0]));
-
-            setSelectedCart(JSON.parse(JSON.stringify(selectedrecords[0])));
-            // console.log("selectedRowData:", selectedCart);
+            setSelectedRecord(JSON.parse(JSON.stringify(selectedrecords[0])));
+            // console.log("selectedRowData:", selectedRecord);
         }
     }
+    const dropdownList = useRef();
+    let dropdpwnData = [
+        { TRANG_THAI: -2, TRANG_THAI_STR: 'Tất cả' },
+        { TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' },
+        { TRANG_THAI: 0, TRANG_THAI_STR: 'Chờ duyệt' },
+        { TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao' },
+        { TRANG_THAI: 2, TRANG_THAI_STR: 'Đã hoàn tất' }
+    ];
+    let fields = { text: 'TRANG_THAI_STR', value: 'TRANG_THAI' };
+    const onFiltering = (e) => {
+        let query = new Query();
+        //frame the query based on search string with filter type.
+        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'contains', e.text, true) : query;
+        //pass the filter data source, filter query to updateData method.
+        e.updateData(dropdpwnData, query);
+    };
+    const onChange = () => {
+        setFilterState(dropdownList.current.value);
+        console.log(filterState);
+    }
+    // end syncfusion react declaration 
+
+    useEffect(() => {
+        if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
+            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            navigate("/employee/login", true);
+        }
+        //khi unmount trả lại header
+        return () => {
+            props.changeHeader('user')
+        }
+    }, [])
+
+    // const notify = (message) => toast.info(message, { autoClose: true, closeDuration: 3000 });//error/info/add
+    const [data, setData] = useState([]);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedRecord, setSelectedRecord] = useState({});
+    const [rerender, setRerender] = useState();
+    const [filterState, setFilterState] = useState(-2);
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const getAllSize = async () => {
+        setIsLoading(true);
+
+        let url = `${REACT_APP_API_URL}/api/BangMau/all`;
+
+        console.log(url);
+        axios.get(url).then(resp => {
+            resp.data.forEach(item => {
+                if (item.NGAY_TAO) {
+                    item.NGAY_TAO = toVNDDateFormat(item.NGAY_TAO);
+                }
+            })
+            setData(resp.data);
+            grid.current.dataSource = resp.data;
+            console.log(resp.data);
+        });
+    }
+
+
+    useEffect(() => {
+        removeSyncfusionLicenseMessage();
+
+        try {
+            getAllSize();
+
+            setIsLoading(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }, [rerender]);
 
     const closeDialog = () => {
         setOpenDialog(false);
     }
     const openDialogFnc = (paramViewMode) => {
         console.log('fired', paramViewMode)
-        if (!selectedCart.MA_SP && paramViewMode !== 'add') {
+        if (!selectedRecord.MA_MAU && paramViewMode !== 'add') {
             return;
         }
         setViewMode(paramViewMode)
@@ -130,35 +145,13 @@ function ProductManagement(props) {
         setRerender(!rerender);
     }
 
-    const dropdownList = useRef();
-    let dropdpwnData = [
-        { TRANG_THAI: -2, TRANG_THAI_STR: 'Tất cả' },
-        { TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' },
-        { TRANG_THAI: 0, TRANG_THAI_STR: 'Chờ duyệt' },
-        { TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao' },
-        { TRANG_THAI: 2, TRANG_THAI_STR: 'Đã hoàn tất' }
-    ];
-    let fields = { text: 'TRANG_THAI_STR', value: 'TRANG_THAI' };
-
-    const onFiltering = (e) => {
-        let query = new Query();
-        //frame the query based on search string with filter type.
-        query = (e.text !== '') ? query.where('TRANG_THAI_STR', 'contains', e.text, true) : query;
-        //pass the filter data source, filter query to updateData method.
-        e.updateData(dropdpwnData, query);
-    };
-
-    const onChange = () => {
-        setFilterState(dropdownList.current.value);
-        console.log(filterState);
-    }
-    const deleteProduct = () => {
-        if (!selectedCart.MA_SP) {
+    const deleteSize = () => {
+        if (!selectedRecord.MA_MAU) {
             return;
         }
-        console.log(`${process.env.REACT_APP_API_URL}/api/SanPham/delete`)
+        console.log(`${process.env.REACT_APP_API_URL}/api/BangMau/delete`)
         try {
-            axios.delete(`${process.env.REACT_APP_API_URL}/api/SanPham/delete?productId=${selectedCart.MA_SP}`
+            axios.delete(`${process.env.REACT_APP_API_URL}/api/BangMau/delete?colorId=${selectedRecord.MA_MAU}`
                 ,
                 {
                     headers: {
@@ -167,7 +160,6 @@ function ProductManagement(props) {
                 }).then(res => {
                     const response = res.data;
                     console.log('res delete: ' + response);
-
                     if (response.errorDesc) {
                         toast.error(response.errorDesc);
                     } else {
@@ -186,7 +178,7 @@ function ProductManagement(props) {
     const [confirmDialogTitle, setConfirmDialogTitle] = useState('');
 
     const onConfirmDelete = () => {
-        deleteProduct();
+        deleteSize();
         setShowConfirmDialog(false);
     }
     const onDeny = () => {
@@ -200,11 +192,11 @@ function ProductManagement(props) {
                 {/* <ToastContainer /> */}
             </div>
             <SectionTitle title={
-                'Quản lý sản phẩm'} />
+                'Quản lý bảng màu'} />
             <div className={clsx(style.toolBar)}>
                 {/* <button onClick={() => {
                     approve();
-                }} className={clsx(style.checkButton, { [style.inActive]: selectedCart.TRANG_THAI !== 0 })}>
+                }} className={clsx(style.checkButton, { [style.inActive]: selectedRecord.TRANG_THAI !== 0 })}>
                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
                 </button> */}
                 {/* {((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
@@ -224,20 +216,20 @@ function ProductManagement(props) {
                 <button onClick={() => {
                     openDialogFnc('add');
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
-                {/* <button onClick={() => {
+                <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button> */}
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedRecord })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
                 <button onClick={() => {
                     // deleteProduct();
-                    if (!selectedCart.TEN_SP) {
+                    if (!selectedRecord.TEN_MAU) {
                         return;
                     }
                     setShowConfirmDialog(true);
-                    setConfirmDialogTitle('Xác nhận xóa sản phẩm ' + selectedCart.TEN_SP);
-                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
+                    setConfirmDialogTitle('Xác nhận xóa màu ' + selectedRecord.TEN_MAU);
+                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedRecord })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
                 <button onClick={() => {
                     openDialogFnc('view');
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedRecord })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>
@@ -255,24 +247,24 @@ function ProductManagement(props) {
                 locale='vi-VN'
                 editSettings={editOptions}
                 pageSettings={pageSettings}
-                dataSource={carts} allowPaging={true} /*allowGrouping={true}*/
+                dataSource={data} allowPaging={true} /*allowGrouping={true}*/
                 allowSorting={true} allowFiltering={true}
                 filterSettings={filterOptions} height={315}
                 rowSelected={rowSelected}
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_SP' headerTextAlign='Center' headerText='Mã SP' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" />
-                    <ColumnDirective field='TEN_TL' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" />
-                    <ColumnDirective field='SIZE_STR' headerTextAlign='Center' headerText='Size/ Màu' clipMode='EllipsisWithTooltip' width='200' textAlign="Left" />
+                    <ColumnDirective field='MA_MAU' headerTextAlign='Center' headerText='Mã Màu' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='TEN_MAU' headerTextAlign='Center' headerText='Tên Màu' width='160' textAlign="Left" />
+                    <ColumnDirective field='TEN_TIENG_ANH' headerTextAlign='Center' headerText='Màu hiển thị' width='160' textAlign="Left" />
+                    {/* <ColumnDirective field='TEN_TL' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" /> */}
 
                     <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='LUOT_XEM' headerTextAlign='Center' headerText='Lượt xem' width='150' textAlign="Left" />
+                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Tên NV tạo' width='150' textAlign="Left" />
                     {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
                     {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                    <ColumnDirective field='HINH_ANH' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" />
-                    <ColumnDirective field='MO_TA' headerTextAlign='Center' headerText='Mô tả' width='150' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                    {/* <ColumnDirective field='HINH_ANH' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" /> */}
 
                     {/* <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
                         <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" /> */}
@@ -284,9 +276,9 @@ function ProductManagement(props) {
             }
 
 
-            {openDialog && <ProductEdit productId={selectedCart.MA_SP} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
+            {openDialog && <ColorEdit colorId={selectedRecord.MA_MAU} viewMode={viewMode} rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
     );
 }
 
-export default ProductManagement;
+export default ColorManagement;

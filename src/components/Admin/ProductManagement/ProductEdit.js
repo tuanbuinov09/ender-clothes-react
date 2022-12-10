@@ -14,6 +14,7 @@ import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 
 import { MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
 import FileUploadComponent from '../../FileUploadComponent/FileUploadComponent';
+import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
 
 function ProductEdit(props) {
     let navigate = useNavigate();
@@ -80,12 +81,12 @@ function ProductEdit(props) {
                 datePicker.current.value = new Date();
             })
 
-            axios.get('http://localhost:22081/api/BangMau').then(res => {
+            axios.get(`${REACT_APP_API_URL}/api/BangMau/all`).then(res => {
                 //console.log("Bang Mau: ", res.data)
                 setColors(res.data);
             })
 
-            axios.get('http://localhost:22081/api/BangSize').then(res => {
+            axios.get(`${REACT_APP_API_URL}/api/BangSize/all`).then(res => {
                 //console.log("Bang Size: ", res.data)
                 setSizes(res.data);
             })

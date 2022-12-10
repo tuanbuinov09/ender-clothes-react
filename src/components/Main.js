@@ -29,6 +29,8 @@ import ProductReturnManagement from "./Admin/ProductReturnManagement/ProductRetu
 import ProductPriceChangeManagement from "./Admin/ProductPriceChangeManagement/ProductPriceChangeManagement";
 import ProductSaleOffManagement from "./Admin/ProductSaleOffManagement/ProductSaleOffManagement";
 import ItemListWithTitle2 from "./HomePage/NewListByCategory/ItemListWithTitle2";
+import SizeManagement from "./Admin/SizeManagement/SizeManagement";
+import ColorManagement from "./Admin/ColorManagement/ColorManagement";
 
 function Main() {
     const [pushMain, setPushMain] = useState(false);
@@ -63,11 +65,11 @@ function Main() {
 
     const changeHeader = (type) => {
         if (type === "user") {
-            setHeaderMode('user')
+            setHeaderMode('user');
 
         }
         if (type === "employee") {
-            setHeaderMode('employee')
+            setHeaderMode('employee');
         }
     }
     return (
@@ -91,6 +93,8 @@ function Main() {
                         <Route path="/admin/product-return-management" element={<ProductReturnManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/product-price-management" element={<ProductPriceChangeManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/sale-off-management" element={<ProductSaleOffManagement changeHeader={changeHeader} />} />
+                        <Route path="/admin/size-management" element={<SizeManagement changeHeader={changeHeader} />} />
+                        <Route path="/admin/color-management" element={<ColorManagement changeHeader={changeHeader} />} />
                         <Route path="/admin/report" element={<Report changeHeader={changeHeader} />} />
                         {/* <Route path="/home" element={<Content />} /> */}
                         <Route path="/about" element={<About />} />

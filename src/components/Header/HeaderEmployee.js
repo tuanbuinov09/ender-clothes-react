@@ -113,8 +113,18 @@ function HeaderEmployee(props) {
                             <Link to="/admin/product-import-management" className={clsx(style.navLink, style.lastNavLink)}>Nhập hàng</Link>
                             <Link to="/admin/product-return-management" className={clsx(style.navLink, style.lastNavLink)}>Trả hàng</Link>
                             <Link to="/admin/sale-off-management" className={clsx(style.navLink, style.lastNavLink)}>Khuyến mãi</Link>
+                            <Link to="/admin/size-management" className={clsx(style.navLink, style.lastNavLink)}>Bảng size</Link>
+                            <Link to="/admin/color-management" className={clsx(style.navLink, style.lastNavLink)}>Bảng màu</Link>
                         </ul>
                     </li>
+                    {/* <li className={clsx(style.navItem, style.submenuContainer, style.submenuContainer2)}>
+                        <div className={clsx(style.nowhere)}>Danh mục<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
+                        </div>
+                        <ul className={clsx(style.submenu)} >
+                            <Link to="/admin/size-management" className={clsx(style.navLink, style.lastNavLink)}>Bảng size</Link>
+                            <Link to="/admin/color-management" className={clsx(style.navLink, style.lastNavLink)}>Bảng màu</Link>
+                        </ul>
+                    </li> */}
                     {/* <li className={clsx(style.navItem)}><Link to="/new-arrivals" className={clsx(style.navLink)} onClick={activeLinkStyle}>New Arrivals</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/sale-up" className={clsx(style.navLink)} onClick={activeLinkStyle}>Sale Up</Link></li>
                     <li className={clsx(style.navItem)}><Link to="/helps" className={clsx(style.navLink)} onClick={activeLinkStyle}>Helps</Link></li>

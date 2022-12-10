@@ -31,7 +31,7 @@ function Home() {
 
             <button style={{ position: 'fixed', bottom: '12vh', right: '16px', width: 60, height: 60, zIndex: 10, backgroundColor: 'white', appearance: "none", border: '2px solid', borderRadius: '50%', borderColor: '#ff7faa', cursor: 'pointer' }} id="myBtn2" onClick={() => {
                 window.open('https://m.me/tuanenderman555', '_blank');
-            }}><img src={mesIMG} title='Chat với END_CLOTHES' width='64px' style={{ marginBottom: -4 }} /></button>
+            }}><img src={mesIMG} title='Chat với END_CLOTHES' width='64px' style={{ marginBottom: -4 }} alt='messenger' /></button>
 
             <Banner />
             <SectionTitle title="Hàng mới về" />

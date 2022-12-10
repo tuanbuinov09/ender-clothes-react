@@ -300,7 +300,7 @@ function ProductDetail(props) {
                             {mapped.map((ctsp, index) => {
 
                                 return (
-                                    <div key={index} className={clsx(style.color, { [style.active]: ctsp.MA_MAU === selectedProductDetail.MA_MAU },
+                                    <div key={index} title={ctsp.TEN_MAU} className={clsx(style.color, { [style.active]: ctsp.MA_MAU === selectedProductDetail.MA_MAU },
                                     )}//trong csdl s07 la free size
                                         onClick={() => {
 
