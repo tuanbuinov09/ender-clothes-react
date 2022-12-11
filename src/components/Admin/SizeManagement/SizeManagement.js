@@ -256,19 +256,19 @@ function SizeManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_SIZE' headerTextAlign='Center' headerText='Mã Size' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Tên Size' width='200' textAlign="Left" />
-                    {/* <ColumnDirective field='TEN_TL' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" /> */}
+                    <ColumnDirective field='MA_SIZE' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã Size' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='TEN_SIZE' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên Size' width='200' textAlign="Left" />
+                    {/* <ColumnDirective field='TEN_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" /> */}
 
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Tên NV tạo' width='150' textAlign="Left" />
-                    {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
+                    <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='MA_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='HO_TEN_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên NV tạo' width='150' textAlign="Left" />
+                    {/* <ColumnDirective field='MA_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='MA_TL' width='100' textAlign="Right"/> */}
                     {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                    {/* <ColumnDirective field='HINH_ANH' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" /> */}
+                    {/* <ColumnDirective field='HINH_ANH'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='Hình ảnh' width='200' textAlign="Left" /> */}
 
-                    {/* <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
-                        <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" /> */}
+                    {/* <ColumnDirective field='TEN_NV_DUYET'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='NV duyệt' width='160' textAlign="Left" />
+                        <ColumnDirective field='TEN_NV_GIAO'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='NV giao' width='160' textAlign="Left" /> */}
 
 
                 </ColumnsDirective>

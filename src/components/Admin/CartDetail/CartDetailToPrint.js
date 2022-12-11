@@ -335,18 +335,18 @@ function CartDetailToPrint(props) {
                             gridLines='Both'
                         >
                             <ColumnsDirective>
-                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='TEN_MAU' headerTextAlign='Center' headerText='Màu' width='100' textAlign="Left" />
-                                <ColumnDirective field='TEN_SIZE' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
-                                <ColumnDirective field='GIA_STR' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
-                                <ColumnDirective field='SO_LUONG' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
-                                <ColumnDirective field='TRI_GIA_STR' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
-                                {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
+                                <ColumnDirective field='STT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TEN_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TEN_MAU' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Màu' width='100' textAlign="Left" />
+                                <ColumnDirective field='TEN_SIZE' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
+                                <ColumnDirective field='GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
+                                <ColumnDirective field='SO_LUONG' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
+                                <ColumnDirective field='TRI_GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
+                                {/* <ColumnDirective field='MA_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='MA_TL' width='100' textAlign="Right"/> */}
                                 {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                                {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" /> */}
+                                {/* <ColumnDirective field='EMAIL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='Email' width='200' textAlign="Left" /> */}
                                 {/*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */}
-                                {/* <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='200' textAlign="Left"  /> 
+                                {/* <ColumnDirective field='NGAY_TAO'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='Ngày tạo' width='200' textAlign="Left"  /> 
                     */}
                             </ColumnsDirective>
                             <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />

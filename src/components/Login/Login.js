@@ -61,11 +61,11 @@ function Login(props) {
 
             } else if (userInfoFromRes && props.type === 'employee') {
                 setErrorMessage('');
-                // if(!userInfoFromRes.TRANG_THAI){
-                //    setIsLoading(false);
-                //     setErrorMessage('*Tài khoản của bạn đã bị vô hiệu hóa, hãy liên hệ chúng tôi nếu bạn nghĩ có sai sót');
-                //     return;
-                // }
+                if (!userInfoFromRes.TRANG_THAI) {
+                    setIsLoading(false);
+                    setErrorMessage('*Tài khoản của bạn đã bị vô hiệu hóa, hãy liên hệ quản lý để biết chi tiết');
+                    return;
+                }
                 localStorage.setItem('employee', JSON.stringify(userInfoFromRes));
                 console.log("---", localStorage.getItem('employee'));
                 if (JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {

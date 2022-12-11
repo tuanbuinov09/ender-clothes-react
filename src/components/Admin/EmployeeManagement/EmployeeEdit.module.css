@@ -92,6 +92,10 @@ font-weight: bolder;
     width: 120px;
     background-color:#000c75 !important;
 }
+.resetPasswordButton{
+    width: 150px;
+    background-color:#9c9c00 !important;
+}
 .saveButton{
     background-color:#008829;
 }

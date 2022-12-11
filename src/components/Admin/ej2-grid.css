@@ -81,7 +81,7 @@
     background: #088699;
 }
 
-.e-headertext {
+.e- clipMode='EllipsisWithTooltip' headerText {
     font-size: 14px;
     font-weight: bolder;
 }

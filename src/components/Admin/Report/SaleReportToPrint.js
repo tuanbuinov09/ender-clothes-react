@@ -198,13 +198,13 @@ function SaleReportToPrint(props) {
                             gridLines='Both'
                         >
                             <ColumnsDirective>
-                                <ColumnDirective field='STT' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='THOI_GIAN' headerTextAlign='Center' headerText='Thời gian' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='TONG_TRI_GIA_STR' headerTextAlign='Center' headerText='Doanh Thu' width='180' textAlign="Right" />
+                                <ColumnDirective field='STT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='THOI_GIAN' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Thời gian' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                <ColumnDirective field='TONG_TRI_GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Doanh Thu' width='180' textAlign="Right" />
 
-                                {props.data.TONG_GIA_NHAP ? <ColumnDirective field='TONG_GIA_NHAP_STR' headerTextAlign='Center' headerText='Giá nhập' width='180' textAlign="Right" /> : <></>}
-                                {props.data.TONG_GIA_TRA ? <ColumnDirective field='TONG_GIA_TRA_STR' headerTextAlign='Center' headerText='Giá trả' width='180' textAlign="Right" /> : <></>}
-                                {props.data.TONG_LOI_NHUAN ? <ColumnDirective field='TONG_LOI_NHUAN_STR' headerTextAlign='Center' headerText='Lợi nhuận' width='180' textAlign="Right" /> : <></>}
+                                {props.data.TONG_GIA_NHAP ? <ColumnDirective field='TONG_GIA_NHAP_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá nhập' width='180' textAlign="Right" /> : <></>}
+                                {props.data.TONG_GIA_TRA ? <ColumnDirective field='TONG_GIA_TRA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá trả' width='180' textAlign="Right" /> : <></>}
+                                {props.data.TONG_LOI_NHUAN ? <ColumnDirective field='TONG_LOI_NHUAN_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Lợi nhuận' width='180' textAlign="Right" /> : <></>}
 
 
                             </ColumnsDirective>

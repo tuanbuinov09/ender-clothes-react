@@ -15,19 +15,24 @@ import { toast } from 'react-toastify';
 function UserInfo(props) {
     const [errorMessage, setErrorMessage] = useState({ errorName: "", errorAddress: "", errorEmail: "", errorPhone: "", overAllError: "" });
     const [userInfo, setUserInfo] = useState();
-    const [shipInfo, setShipInfo] = useState({
-        MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH,
-        name1: JSON.parse(localStorage.getItem('user')).HO_TEN,
-        phone: JSON.parse(localStorage.getItem('user')).SDT,
-        email: JSON.parse(localStorage.getItem('user')).EMAIL,
-        address: JSON.parse(localStorage.getItem('user')).DIA_CHI
-    });
+    const [shipInfo, setShipInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
 
     let navigate = useNavigate();
     useEffect(() => {
         // setUserInfo(JSON.parse(localStorage.getItem('user')));
+        if (!JSON.parse(localStorage.getItem('user'))) {
+            navigate("/user/login", { replace: true });
+        } else {
+            setShipInfo({
+                MA_KH: JSON.parse(localStorage.getItem('user')).MA_KH,
+                name1: JSON.parse(localStorage.getItem('user')).HO_TEN,
+                phone: JSON.parse(localStorage.getItem('user')).SDT,
+                email: JSON.parse(localStorage.getItem('user')).EMAIL,
+                address: JSON.parse(localStorage.getItem('user')).DIA_CHI
+            });
+        }
         try {
             // setShipInfo()
         } catch (e) {
