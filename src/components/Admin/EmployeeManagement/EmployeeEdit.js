@@ -11,7 +11,7 @@ import { toast } from 'react-toastify';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 import { Query } from '@syncfusion/ej2-data';
-
+import { ModalConfirmDialog } from '../../ModalConfirmDialog/ModalConfirmDialog';
 import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
 
 function EmployeeEdit(props) {
@@ -48,7 +48,6 @@ function EmployeeEdit(props) {
     };
     const handleSelectRole = (e) => {
         setInputModel({ ...inputModel, MA_QUYEN: dropdownList.current.value });
-
     }
     // end syncfusion react declaration
     useEffect(() => {
@@ -66,7 +65,7 @@ function EmployeeEdit(props) {
                 console.log("role:", response);
                 response.forEach((role) => {
                     const tenQuyen = role.TEN_QUYEN === 'NHAN_VIEN' ? 'Nhân viên' : role.TEN_QUYEN === 'QUAN_LY' ? 'Quản lý' : role.TEN_QUYEN === 'NHAN_VIEN_GH' ? 'Nhân viên vận chuyển' : '';
-                    role.QUYEN_STR = role.MA_QUYEN + ' - ' + tenQuyen;
+                    role.QUYEN_STR = /*role.MA_QUYEN + ' - '*/ '' + tenQuyen;
                 })
                 const index = response.findIndex(item => {
                     return item.MA_QUYEN === 'Q03'; //bỏ quyền khách hàng ra
@@ -78,6 +77,21 @@ function EmployeeEdit(props) {
                     dropdownList.current.value = 'Q01';
                 }
 
+                //đưa vào đây để tránh trường hợp quyền set null do chưa có data trong dropdown
+                if (props.viewMode === 'view' || props.viewMode === 'edit') {
+                    try {
+                        getEmployee();
+
+                    } catch (error) {
+                        console.error(error);
+                    }
+                } else {
+                    //maật khẩu mặc định 123456, set cả dưới asp.net core
+                    setInputModel({ ...inputModel, TRANG_THAI_STR: 'Đang hoạt động', TRANG_THAI: true, MAT_KHAU: '123456' });
+
+                    setFlag(true);
+                    // datePicker.current.value = new Date();
+                }
             });
         } catch (error) {
             console.error(error);
@@ -100,6 +114,8 @@ function EmployeeEdit(props) {
             } else if (resp.data.TRANG_THAI) {
                 resp.data.TRANG_THAI_STR = 'Đang hoạt động';
             }
+            //này chỉ là mật khẩu để hiện thị, mật khẩu chỉ được thay đổi bằng nút resetPassword
+            resp.data.MAT_KHAU = '123456';
             dropdownList.current.value = resp.data.MA_QUYEN;
             setInputModel(resp.data);
             setFlag(true);
@@ -107,28 +123,18 @@ function EmployeeEdit(props) {
         })
     }
     useEffect(() => {
-        if (props.viewMode === 'view' || props.viewMode === 'edit') {
-            try {
-                getEmployee();
 
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-            setInputModel({ ...inputModel, TRANG_THAI_STR: 'Đang hoạt động', TRANG_THAI: true });
-
-            setFlag(true);
-            // datePicker.current.value = new Date();
-        }
 
     }, []);
 
 
     const checkExisting = async (email, phone, cmnd) => {
-        let res1 = await axios.post(`${REACT_APP_API_URL}/api/NhanVien/validate-add`, {
+        const action = props.viewMode === 'add' ? 'add' : props.viewMode === 'edit' ? 'edit' : '';
+        let res1 = await axios.post(`${REACT_APP_API_URL}/api/NhanVien/validate-${action}`, {
             SDT: phone,
             EMAIL: email,
-            CMND: cmnd
+            CMND: cmnd,
+            MA_NV: inputModel.MA_NV
         },
             {
                 headers: {
@@ -244,6 +250,32 @@ function EmployeeEdit(props) {
         }
 
     }
+    const resetPassword = () => {
+
+        console.log(JSON.parse(localStorage.getItem('employee')).accessToken);
+        console.log(`${process.env.REACT_APP_API_URL}/api/NhanVien/reset-password`)
+        try {
+            axios.put(`${process.env.REACT_APP_API_URL}/api/NhanVien/reset-password?employeeId=${props.employeeId}`
+                , {},
+                {
+                    headers: {
+                        Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                    }
+                }).then(res => {
+                    const response = res.data;
+                    console.log('res reset password: ' + response);
+                    if (response.errorDesc) {
+                        toast.error(response.errorDesc);
+                    } else {
+                        toast.success(response.responseMessage);
+                        props.rerender();
+                    }
+                });
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
     const save = async () => {
         const validateResult = await validate();
         console.log(validateResult)
@@ -314,14 +346,25 @@ function EmployeeEdit(props) {
     const getTitle = () => {
         return props.viewMode === 'view' ? `Chi tiết nhân viên ${props.employeeId}` : props.viewMode === 'edit' ? `Chỉnh sửa nhân viên ${props.employeeId}` : `Thêm mới nhân viên`
     }
+    // 
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+    const [confirmDialogTitle, setConfirmDialogTitle] = useState('');
 
+    const onConfirmResetPassword = () => {
+        resetPassword();
+        setShowConfirmDialog(false);
+    }
+    const onDeny = () => {
+        setShowConfirmDialog(false);
+    }
+    //
     console.log('rerender, inputModel: ', inputModel)
 
     return (
         // preparePrint ? <CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId} /> 
         // :
         flag ? <div className={clsx(style.modalWrapper)}>
-
+            {showConfirmDialog && <ModalConfirmDialog onConfirm={onConfirmResetPassword} onDeny={onDeny} title={confirmDialogTitle} />}
             <div className={clsx(style.top)}>
                 {/* <ToastContainer /> */}
             </div>
@@ -337,6 +380,15 @@ function EmployeeEdit(props) {
                         activate();
                     }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: inputModel.TRANG_THAI }, style.activateButton)}>
                         <span className={clsx(style.iconSvg)}><CheckIcon /></span>Kích hoạt
+                    </button>
+                    <button onClick={() => {
+                        if (!inputModel.MA_NV) {
+                            return;
+                        }
+                        setShowConfirmDialog(true);
+                        setConfirmDialogTitle('Xác nhận reset mật khẩu tài khoản nhân viên ' + inputModel.HO_TEN);
+                    }} className={clsx(style.checkButton, style.saveButton, style.resetPasswordButton)} title='Phục hồi mật khẩu thành 123456'>
+                        <span className={clsx(style.iconSvg)}><CheckIcon /></span>Reset mật khẩu
                     </button>
                     {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
                         <>
@@ -419,14 +471,15 @@ function EmployeeEdit(props) {
                     </div>
                     <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Quyền:</label>
-                        <div className={clsx(style.datePickerContainer)}>
+                        <div className={clsx(style.datePickerContainer, { [style.readOnly]: props.viewMode === 'view' })}>
                             <DropDownListComponent id="roleList" ref={dropdownList} dataSource={roles} filtering={onFiltering} filterBarPlaceholder='Tìm quyền' allowFiltering={true} fields={fields} placeholder="Chọn quyền" popupHeight="220px" onChange={handleSelectRole} />
                         </div>
                         {<p className={clsx(style.errorMessage)}>{errorMessage.errorQUYEN}</p>}
                     </div>
                     <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Mật khẩu:</label>
-                        <input disabled={props.viewMode === 'view'}
+                        <input disabled
+                            title='Mật khẩu mặc định khi tạo mới nhân viên là 123456'
                             onChange={(e) => {
                                 //console.log(e.target.value, "fired")
                                 setInputModel({ ...inputModel, MAT_KHAU: e.target.value.trim() })

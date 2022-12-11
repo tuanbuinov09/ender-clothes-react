@@ -310,17 +310,17 @@ function ProductSaleOffManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_KM' headerTextAlign='Center' headerText='Mã KM' width='180' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='NGAY_AP_DUNG' headerTextAlign='Center' headerText='Ngày giờ áp dụng' width='220' textAlign="Left" />
-                    {/* <ColumnDirective field='GIO_AP_DUNG' headerTextAlign='Center' headerText='Giờ áp dụng' width='200' textAlign="Left" /> */}
-                    <ColumnDirective field='THOI_GIAN' headerTextAlign='Center' headerText='Thời gian áp dụng (ngày)' width='250' textAlign="Left" />
-                    <ColumnDirective field='SO_LUONG_SP' headerTextAlign='Center' headerText='Tổng SL SP' width='200' editType='dropdownedit' textAlign="Left" />
-                    <ColumnDirective field='MA_CAC_SP' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Các SP' width='300' editType='dropdownedit' textAlign="Left" />
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='GHI_CHU' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
-                    <ColumnDirective field='DANG_KHUYEN_MAI' headerTextAlign='Center' headerText='Trạng thái' width='200' textAlign="Left" />
-                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='200' textAlign="Left" />
-                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Họ tên NV tạo' width='200' textAlign="Left" />
+                    <ColumnDirective field='MA_KM' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã KM' width='180' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='NGAY_AP_DUNG' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày giờ áp dụng' width='220' textAlign="Left" />
+                    {/* <ColumnDirective field='GIO_AP_DUNG'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='Giờ áp dụng' width='200' textAlign="Left" /> */}
+                    <ColumnDirective field='THOI_GIAN' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Thời gian áp dụng (ngày)' width='250' textAlign="Left" />
+                    <ColumnDirective field='SO_LUONG_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tổng SL SP' width='200' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='MA_CAC_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Các SP' width='300' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='GHI_CHU' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
+                    <ColumnDirective field='DANG_KHUYEN_MAI' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Trạng thái' width='200' textAlign="Left" />
+                    <ColumnDirective field='MA_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã NV tạo' width='200' textAlign="Left" />
+                    <ColumnDirective field='HO_TEN_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Họ tên NV tạo' width='200' textAlign="Left" />
 
                 </ColumnsDirective>
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />

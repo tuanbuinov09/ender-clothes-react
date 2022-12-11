@@ -559,23 +559,23 @@ function ProductReturnEdit(props) {
                                     gridLines='Both'
                                 >
                                     <ColumnsDirective>
-                                        <ColumnDirective field='MA_KH' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                        <ColumnDirective field='HO_TEN_KH' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
-                                        <ColumnDirective field='SDT_KH' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
-                                        <ColumnDirective field='EMAIL_KH' headerTextAlign='Center' headerText='Email KH' width='200' textAlign="Left" />
+                                        <ColumnDirective field='MA_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                        <ColumnDirective field='HO_TEN_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
+                                        <ColumnDirective field='SDT_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
+                                        <ColumnDirective field='EMAIL_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Email KH' width='200' textAlign="Left" />
 
-                                        {/* <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" /> */}
-                                        {/* <ColumnDirective field='SDT' headerTextAlign='Center' headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" /> */}
+                                        {/* <ColumnDirective field='HO_TEN'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='Người nhận' width='200' textAlign="Left" /> */}
+                                        {/* <ColumnDirective field='SDT'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" /> */}
 
-                                        {/* <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email người nhận' width='200' textAlign="Left" /> */}
-                                        <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
-                                        <ColumnDirective field='NGAY_GIAO' headerTextAlign='Center' headerText='Ngày giao' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
-                                        <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
-                                        <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
+                                        {/* <ColumnDirective field='EMAIL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='Email người nhận' width='200' textAlign="Left" /> */}
+                                        <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                                        <ColumnDirective field='NGAY_GIAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày giao' width='160' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                                        <ColumnDirective field='DIA_CHI' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Địa chỉ nhận' width='200' textAlign="Left" />
+                                        <ColumnDirective field='TRANG_THAI_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Trạng thái' width='160' textAlign="Left" />
 
 
-                                        <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
-                                        <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" />
+                                        <ColumnDirective field='TEN_NV_DUYET' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
+                                        <ColumnDirective field='TEN_NV_GIAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" />
 
 
                                     </ColumnsDirective>

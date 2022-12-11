@@ -262,20 +262,20 @@ function ProductManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_SP' headerTextAlign='Center' headerText='Mã SP' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='TEN_SP' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" />
-                    <ColumnDirective field='TEN_TL' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" />
-                    <ColumnDirective field='SIZE_STR' headerTextAlign='Center' headerText='Size/ Màu' clipMode='EllipsisWithTooltip' width='200' textAlign="Left" />
+                    <ColumnDirective field='MA_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã SP' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='TEN_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" />
+                    <ColumnDirective field='TEN_TL' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='SIZE_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Size/ Màu' width='200' textAlign="Left" />
 
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='LUOT_XEM' headerTextAlign='Center' headerText='Lượt xem' width='150' textAlign="Left" />
-                    {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
+                    <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='LUOT_XEM' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Lượt xem' width='150' textAlign="Left" />
+                    {/* <ColumnDirective field='MA_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='MA_TL' width='100' textAlign="Right"/> */}
                     {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                    <ColumnDirective field='HINH_ANH' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" />
-                    <ColumnDirective field='MO_TA' headerTextAlign='Center' headerText='Mô tả' width='150' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                    <ColumnDirective field='HINH_ANH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" />
+                    <ColumnDirective field='MO_TA' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mô tả' width='150' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
 
-                    {/* <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
-                        <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" /> */}
+                    {/* <ColumnDirective field='TEN_NV_DUYET'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='NV duyệt' width='160' textAlign="Left" />
+                        <ColumnDirective field='TEN_NV_GIAO'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='NV giao' width='160' textAlign="Left" /> */}
 
 
                 </ColumnsDirective>

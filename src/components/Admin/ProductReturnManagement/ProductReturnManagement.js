@@ -222,15 +222,15 @@ function ProductReturnManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_PT' headerTextAlign='Center' headerText='Mã PT' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='HO_TEN_KH' headerTextAlign='Center' headerText='Họ tên KH' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='SDT_KH' headerTextAlign='Center' headerText='SĐT KH' width='200' textAlign="Left" />
-                    <ColumnDirective field='TONG_SO_LUONG' headerTextAlign='Center' headerText='Tổng SL trả' width='150' editType='dropdownedit' textAlign="Left" />
+                    <ColumnDirective field='MA_PT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã PT' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='HO_TEN_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Họ tên KH' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='SDT_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='SĐT KH' width='200' textAlign="Left" />
+                    <ColumnDirective field='TONG_SO_LUONG' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tổng SL trả' width='150' editType='dropdownedit' textAlign="Left" />
 
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='GHI_CHU' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
-                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Họ tên NV tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='GHI_CHU' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
+                    <ColumnDirective field='MA_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='HO_TEN_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Họ tên NV tạo' width='150' textAlign="Left" />
 
                 </ColumnsDirective>
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />

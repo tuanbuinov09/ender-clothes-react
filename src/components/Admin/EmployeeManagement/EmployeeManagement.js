@@ -80,7 +80,7 @@ function EmployeeManagement(props) {
     // end syncfusion react declaration 
 
     useEffect(() => {
-        if (!JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q02') {
+        if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q02') {
             navigate("/employee/login", true);
             toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             return;
@@ -271,23 +271,24 @@ function EmployeeManagement(props) {
                 gridLines='Both'
             >
                 <ColumnsDirective>
-                    <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã nhân viên' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
-                    <ColumnDirective field='HO_TEN' headerTextAlign='Center' headerText='Tên nhân viên' width='200' textAlign="Left" />
-                    <ColumnDirective field='EMAIL' headerTextAlign='Center' headerText='Email' width='200' textAlign="Left" />
-                    <ColumnDirective field='SDT' headerTextAlign='Center' headerText='Số điện thoại' width='200' textAlign="Left" />
-                    <ColumnDirective field='DIA_CHI' headerTextAlign='Center' headerText='Địa chỉ' width='200' textAlign="Left" />
-                    {/* <ColumnDirective field='TEN_TL' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" /> */}
-                    <ColumnDirective field='QUYEN_STR' headerTextAlign='Center' headerText='Quyền' width='200' textAlign="Left" />
-                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' headerText='Trạng thái' width='150' textAlign="Left" />
-                    {/* <ColumnDirective field='MA_NV' headerTextAlign='Center' headerText='Mã NV tạo' width='150' textAlign="Left" />
-                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' headerText='Tên NV tạo' width='150' textAlign="Left" /> */}
-                    {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' headerText='MA_TL' width='100' textAlign="Right"/> */}
+                    <ColumnDirective field='MA_NV' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Mã nhân viên' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                    <ColumnDirective field='HO_TEN' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Tên nhân viên' width='220' textAlign="Left" />
+                    <ColumnDirective field='EMAIL' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Email' width='200' textAlign="Left" />
+                    <ColumnDirective field='SDT' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Số điện thoại' width='200' textAlign="Left" />
+                    <ColumnDirective field='CMND' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='CMND' width='200' textAlign="Left" />
+                    <ColumnDirective field='DIA_CHI' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Địa chỉ' width='200' textAlign="Left" />
+                    {/* <ColumnDirective field='TEN_TL' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" /> */}
+                    <ColumnDirective field='QUYEN_STR' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Quyền' width='200' textAlign="Left" />
+                    <ColumnDirective field='NGAY_TAO' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Ngày tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='TRANG_THAI_STR' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Trạng thái' width='150' textAlign="Left" />
+                    {/* <ColumnDirective field='MA_NV' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Mã NV tạo' width='150' textAlign="Left" />
+                    <ColumnDirective field='HO_TEN_NV' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Tên NV tạo' width='150' textAlign="Left" /> */}
+                    {/* <ColumnDirective field='MA_TL' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='MA_TL' width='100' textAlign="Right"/> */}
                     {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                    {/* <ColumnDirective field='HINH_ANH' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" /> */}
+                    {/* <ColumnDirective field='HINH_ANH' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='Hình ảnh' width='200' textAlign="Left" /> */}
 
-                    {/* <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' headerText='NV duyệt' width='160' textAlign="Left" />
-                        <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' headerText='NV giao' width='160' textAlign="Left" /> */}
+                    {/* <ColumnDirective field='TEN_NV_DUYET' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='NV duyệt' width='160' textAlign="Left" />
+                        <ColumnDirective field='TEN_NV_GIAO' headerTextAlign='Center' clipMode='EllipsisWithTooltip' headerText='NV giao' width='160' textAlign="Left" /> */}
 
 
                 </ColumnsDirective>
