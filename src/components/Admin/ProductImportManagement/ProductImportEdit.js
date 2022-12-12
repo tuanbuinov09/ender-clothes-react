@@ -343,64 +343,67 @@ function ProductImportEdit(props) {
     return (
         // preparePrint ? <CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId} /> 
         // :
-        flag ? <div className={clsx(style.modalWrapper)}>
+        <>
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
             </div> : <></>}
-            <div className={clsx(style.top)}>
-                {/* <ToastContainer /> */}
-            </div>
-            <div className={clsx(style.modal)}>
-                <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
-                    props.closeDialog();
-                }}><XIcon /></span></h1>
 
-                <h1 className={clsx(style.title)}>{getTitle()}</h1>
-                <div className={clsx(style.btnCheckContainer)}>
-                    {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
-                        <>
-                            <button onClick={() => {
-                                save();
-                            }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: props.viewMode === 'view' })}>
-                                <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
-                            </button>
+            flag ? <div className={clsx(style.modalWrapper)}>
 
-                        </>
-                        : <></>
-
-                    }
-
+                <div className={clsx(style.top)}>
+                    {/* <ToastContainer /> */}
                 </div>
+                <div className={clsx(style.modal)}>
+                    <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
+                        props.closeDialog();
+                    }}><XIcon /></span></h1>
 
-                <div className={clsx(style.cartInfo, style.form)}>
+                    <h1 className={clsx(style.title)}>{getTitle()}</h1>
+                    <div className={clsx(style.btnCheckContainer)}>
+                        {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
+                            <>
+                                <button onClick={() => {
+                                    save();
+                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: props.viewMode === 'view' })}>
+                                    <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
+                                </button>
+
+                            </>
+                            : <></>
+
+                        }
+
+                    </div>
+
+                    <div className={clsx(style.cartInfo, style.form)}>
 
 
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Sản phẩm:</label>
-                        <div className={clsx(style.dropdownList, style.datePickerContainer)}>
-                            <div className='control-section'>
-                                <div id='filtering'>
-                                    <DropDownListComponent id="products" ref={productDropdownList} dataSource={products}
-                                        filtering={onProductFiltering} filterBarPlaceholder='Tìm sản phẩm' allowFiltering={true}
-                                        fields={productDropdownFields} placeholder="Chọn sản phẩm cần nhập" popupHeight="220px"
-                                        onChange={onChangeProduct} />
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Sản phẩm:</label>
+                            <div className={clsx(style.dropdownList, style.datePickerContainer, { [style.readOnly]: props.viewMode === 'view' })}>
+                                <div className='control-section'>
+                                    <div id='filtering'>
+                                        <DropDownListComponent id="products" ref={productDropdownList} dataSource={products}
+                                            filtering={onProductFiltering} filterBarPlaceholder='Tìm sản phẩm' allowFiltering={true}
+                                            fields={productDropdownFields} placeholder="Chọn sản phẩm cần nhập" popupHeight="220px"
+                                            onChange={onChangeProduct} />
+                                    </div>
                                 </div>
+
                             </div>
-
+                            {<p className={clsx(style.errorMessage)}>{errorMessage.errorTEN_SP}</p>}
                         </div>
-                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorTEN_SP}</p>}
-                    </div>
 
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
-                        <div className={clsx(style.datePickerContainer, style.readOnly)}>
-                            <DatePickerComponent onChange={() => {
-                            }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi' />
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
+                            <div className={clsx(style.datePickerContainer, style.readOnly)}>
+                                <DatePickerComponent onChange={() => {
+                                }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi' />
+                            </div>
+                            {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
                         </div>
-                        {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
-                    </div>
 
-                    {/* <div className={clsx(style.inputGroup)}>
+                        {/* <div className={clsx(style.inputGroup)}>
                         <label className={clsx(style.inputLabel)}>Bảng màu:</label>
                         <div className={clsx(style.dropdownList, style.datePickerContainer)}>
                             <div className='control-section'>
@@ -426,133 +429,133 @@ function ProductImportEdit(props) {
                         {<p className={clsx(style.errorMessage)}>{errorMessage.errorBANG_SIZE}</p>}
                     </div>
 */}
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Ghi chú:</label>
-                        <textarea maxLength={1000} onChange={(e) => {
-                            console.log(e.target.value)
-                            setImportProductEntity({ ...importProductEntity, GHI_CHU: e.target.value })
-                        }} type="text" placeholder=""
-                            value={importProductEntity.GHI_CHU} name='GHI_CHU' className={clsx(style.input)} />
-                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorGHI_CHU}</p>}
-                    </div>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Ghi chú:</label>
+                            <textarea maxLength={1000} onChange={(e) => {
+                                console.log(e.target.value)
+                                setImportProductEntity({ ...importProductEntity, GHI_CHU: e.target.value })
+                            }} type="text" placeholder=""
+                                value={importProductEntity.GHI_CHU} name='GHI_CHU' className={clsx(style.input)} />
+                            {<p className={clsx(style.errorMessage)}>{errorMessage.errorGHI_CHU}</p>}
+                        </div>
 
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Nhân viên tạo:</label>
-                        <input type="text" placeholder="" disabled
-                            value={
-                                props.viewMode === 'add' ? JSON.parse(localStorage.getItem('employee')).HO_TEN : importProductEntity.HO_TEN_NV
-                            } name='HO_TEN_NV' className={clsx(style.input)} />
-                    </div>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Nhân viên tạo:</label>
+                            <input type="text" placeholder="" disabled
+                                value={
+                                    props.viewMode === 'add' ? JSON.parse(localStorage.getItem('employee')).HO_TEN : importProductEntity.HO_TEN_NV
+                                } name='HO_TEN_NV' className={clsx(style.input)} />
+                        </div>
 
 
-                    {productDetailsForImport.length > 0 ?
-                        // <div className={clsx(style.detailFileUploadsContainer)}>
-                        <>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                <label className={clsx(style.inputLabel)}>Màu /size</label>
+                        {productDetailsForImport.length > 0 ?
+                            // <div className={clsx(style.detailFileUploadsContainer)}>
+                            <>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    <label className={clsx(style.inputLabel)}>Màu /size</label>
 
-                            </div>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                <label className={clsx(style.inputLabel)}>Số lượng</label>
-                                {<p className={clsx(style.errorMessage)}>{errorMessage.errorSO_LUONG_ALL}</p>}
-                            </div>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                <label className={clsx(style.inputLabel)}>Đơn giá</label>
-
-                            </div>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                <label className={clsx(style.inputLabel)}>Thành tiền</label>
-
-                            </div>
-                        </>
-                        // </div>
-                        : <></>}
-
-                    {/* <div className={clsx(style.detailFileUploadsContainer)}> */}
-                    {
-                        productDetailsForImport.map((item, index) => {
-                            return (
-                                <div key={index} className={clsx(style.quantityInputContainer)}>
-                                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                        {/* <label className={clsx(style.inputLabel)}>Màu /size:</label> */}
-                                        <input disabled onChange={(e) => {
-
-                                        }} type="text" name='MAU_SIZE'
-                                            value={`${item.TEN_MAU}/ ${item.TEN_SIZE}`}
-                                            placeholder="" className={clsx(style.input)}
-                                        />
-
-                                    </div>
-                                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                        {/* <label className={clsx(style.inputLabel)}>Số lượng:</label> */}
-                                        <input onChange={(e) => {
-                                            console.log(e.target.value)
-                                            onChangeQuantity(item.MA_CT_SP, e.target.value);
-                                        }} type="number"
-                                            value={productDetailsForImport[index].SO_LUONG}
-                                            placeholder="" className={clsx(style.input)}
-                                            min={0}
-                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                                        />
-                                        {<p className={clsx(style.errorMessage)}>{item.errorSO_LUONG}</p>}
-                                    </div>
-                                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                        {/* <label className={clsx(style.inputLabel)}>Giá nhập:</label> */}
-                                        <input onChange={(e) => {
-                                            console.log(e.target.value)
-                                            onChangePrice(item.MA_CT_SP, e.target.value);
-                                        }} type="number"
-                                            value={productDetailsForImport[index].GIA}
-                                            placeholder="" className={clsx(style.input)}
-                                            min={0}
-                                            //disable scroll increase
-                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                                        />
-                                        {<p className={clsx(style.errorMessage)}>{item.errorGIA_NHAP}</p>}
-                                    </div>
-
-                                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                        {/* <label className={clsx(style.inputLabel)}>Thành tiền</label> */}
-                                        <input disabled onChange={(e) => {
-
-                                        }} type="text" name='THANH_TIEN'
-                                            value={`${intToVNDCurrencyFormat(item.GIA * item.SO_LUONG, true)}`}
-                                            placeholder="" className={clsx(style.input)}
-                                        />
-
-                                    </div>
                                 </div>
-                            )
-                        })
-                    }
-                    {/* </div> */}
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    <label className={clsx(style.inputLabel)}>Số lượng</label>
+                                    {<p className={clsx(style.errorMessage)}>{errorMessage.errorSO_LUONG_ALL}</p>}
+                                </div>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    <label className={clsx(style.inputLabel)}>Đơn giá</label>
 
-                    {productDetailsForImport.length > 0 ?
-                        // <div className={clsx(style.detailFileUploadsContainer)}>
-                        <>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                {/* <label className={clsx(style.inputLabel)}>Màu /size</label> */}
+                                </div>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    <label className={clsx(style.inputLabel)}>Thành tiền</label>
 
-                            </div>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                <label className={clsx(style.totalLabel)}>Tổng số lượng: {getTotalQuantity()}</label>
-                            </div>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                {/* <label className={clsx(style.inputLabel)}>Màu /size</label> */}
+                                </div>
+                            </>
+                            // </div>
+                            : <></>}
 
-                            </div>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                <label className={clsx(style.totalLabel)}>Tổng giá nhập: {intToVNDCurrencyFormat(getTotalPrice(), true)}</label>
+                        {/* <div className={clsx(style.detailFileUploadsContainer)}> */}
+                        {
+                            productDetailsForImport.map((item, index) => {
+                                return (
+                                    <div key={index} className={clsx(style.quantityInputContainer)}>
+                                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                            {/* <label className={clsx(style.inputLabel)}>Màu /size:</label> */}
+                                            <input disabled onChange={(e) => {
 
-                            </div></>
-                        // </div>
-                        : <></>}
-                    {/* {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHITIET}</p>} */}
+                                            }} type="text" name='MAU_SIZE'
+                                                value={`${item.TEN_MAU}/ ${item.TEN_SIZE}`}
+                                                placeholder="" className={clsx(style.input)}
+                                            />
 
-                    {/* detail */}
-                </div>
+                                        </div>
+                                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                            {/* <label className={clsx(style.inputLabel)}>Số lượng:</label> */}
+                                            <input disabled={props.viewMode === 'view'} onChange={(e) => {
+                                                console.log(e.target.value)
+                                                onChangeQuantity(item.MA_CT_SP, e.target.value);
+                                            }} type="number"
+                                                value={productDetailsForImport[index].SO_LUONG}
+                                                placeholder="" className={clsx(style.input)}
+                                                min={0}
+                                                onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                                            />
+                                            {<p className={clsx(style.errorMessage)}>{item.errorSO_LUONG}</p>}
+                                        </div>
+                                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                            {/* <label className={clsx(style.inputLabel)}>Giá nhập:</label> */}
+                                            <input disabled={props.viewMode === 'view'} onChange={(e) => {
+                                                console.log(e.target.value)
+                                                onChangePrice(item.MA_CT_SP, e.target.value);
+                                            }} type="number"
+                                                value={productDetailsForImport[index].GIA}
+                                                placeholder="" className={clsx(style.input)}
+                                                min={0}
+                                                //disable scroll increase
+                                                onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                                            />
+                                            {<p className={clsx(style.errorMessage)}>{item.errorGIA_NHAP}</p>}
+                                        </div>
 
-                {/* <div className={clsx(style.inputGroup)}>
+                                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                            {/* <label className={clsx(style.inputLabel)}>Thành tiền</label> */}
+                                            <input disabled onChange={(e) => {
+
+                                            }} type="text" name='THANH_TIEN'
+                                                value={`${intToVNDCurrencyFormat(item.GIA * item.SO_LUONG, true)}`}
+                                                placeholder="" className={clsx(style.input)}
+                                            />
+
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        }
+                        {/* </div> */}
+
+                        {productDetailsForImport.length > 0 ?
+                            // <div className={clsx(style.detailFileUploadsContainer)}>
+                            <>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    {/* <label className={clsx(style.inputLabel)}>Màu /size</label> */}
+
+                                </div>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    <label className={clsx(style.totalLabel)}>Tổng số lượng: {getTotalQuantity()}</label>
+                                </div>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    {/* <label className={clsx(style.inputLabel)}>Màu /size</label> */}
+
+                                </div>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                    <label className={clsx(style.totalLabel)}>Tổng giá nhập: {intToVNDCurrencyFormat(getTotalPrice(), true)}</label>
+
+                                </div></>
+                            // </div>
+                            : <></>}
+                        {/* {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHITIET}</p>} */}
+
+                        {/* detail */}
+                    </div>
+
+                    {/* <div className={clsx(style.inputGroup)}>
                     <FileUploadComponent
                         ref={generalFileInputRef}
                         field={'HINH_ANH_CHUNG'}
@@ -562,12 +565,12 @@ function ProductImportEdit(props) {
                     />
                     {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHUNG}</p>}
                 </div> */}
-                {/* <div className={clsx(style.inputLabel, style.longLabel)}>Nhập số lượng và giá nhập: </div> */}
+                    {/* <div className={clsx(style.inputLabel, style.longLabel)}>Nhập số lượng và giá nhập: </div> */}
 
 
 
-            </div>
-        </div> : <></>);
+                </div>
+            </div> : <></> </>);
 }
 //chỉ update lúc cần
 export default React.memo(ProductImportEdit);

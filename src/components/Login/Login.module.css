@@ -114,3 +114,34 @@
 .signUpLink:hover {
     opacity: 0.7;
 }
+
+.forgotPasswordLink{
+    margin-bottom: 12px;
+    color: #555;
+}
+
+.otpSendGroup{
+    display: flex;
+    align-items: center;
+}
+
+.otpSendGroup > span{
+    margin-left: 12px;
+    cursor: pointer;
+    width: 160px;
+    height: 100%;
+    padding: 12px 8px;
+    text-align: center;
+    vertical-align: middle;
+background-color: #009eb6;
+color: white;
+/* text-transform: uppercase; */
+font-size: 13px;
+
+}
+
+.changePasswordButtonGroup{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}

@@ -42,7 +42,9 @@ function ProductSaleOffEdit(props) {
     let editOptions, toolbarOptions;
 
     editOptions = { /*allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Dialog' */ };
-    let pageSettings = { pageSize: 8 };
+
+    //vì không thể set sẵn các sản phẩm đã chọn trên trang khác của grid, nên khi chỉnh sửa, xem chi tiết k phân trang
+    let pageSettings = { pageSize: props.viewMode === 'add' ? 8 : 10000 };
     let filterOptions = {
         // type: 'Menu' // default là input
         type: 'Excel'
@@ -212,67 +214,7 @@ function ProductSaleOffEdit(props) {
                         //
                         setIsLoading(false);
                         return;
-                        //
-                        // axios.get(`${process.env.REACT_APP_API_URL}/api/KhachHang/carts?filterState=${filterState}&customerId=${saleOffEntityFromApi.MA_KH}`).then(res => {
-                        //     res.data.forEach(item => {
-                        //         if (item.NGAY_TAO) {
-                        //             let date = new Date(item.NGAY_TAO);
-                        //             item.NGAY_TAO = date.toLocaleDateString('vi-VN');
-                        //         }
-                        //         if (item.NGAY_GIAO) {
 
-                        //             item.NGAY_GIAO_TYPE_DATE = new Date(item.NGAY_GIAO);
-                        //             // console.log(item.ID_GH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
-
-                        //             let date = new Date(item.NGAY_GIAO);
-                        //             item.NGAY_GIAO = date.toLocaleDateString('vi-VN');
-                        //         }
-
-                        //         if (item.TRANG_THAI === 0) {
-                        //             item.TRANG_THAI_STR = 'Chờ duyệt';
-                        //         }
-                        //         if (item.TRANG_THAI === 1) {
-                        //             item.TRANG_THAI_STR = 'Đang giao hàng';
-                        //         }
-                        //         if (item.TRANG_THAI === 2) {
-                        //             item.TRANG_THAI_STR = 'Đã hoàn tất';
-                        //         }
-                        //         if (item.TRANG_THAI === -1) {
-                        //             item.TRANG_THAI_STR = 'Đã hủy';
-                        //         }
-                        //     })
-                        //     res.data = res.data.filter(item => {
-                        //         return item.ID_GH === saleOffEntityFromApi.ID_GH
-                        //     })
-                        //     // console.log(a);
-                        //     setProducts(res.data);
-
-                        //     try {
-                        //         axios.get(`${process.env.REACT_APP_API_URL}/api/GioHang/for-return?cartId=${saleOffEntityFromApi.ID_GH}`).then(res => {
-                        //             const response = res.data;
-                        //             console.log('res: ' + response);
-                        //             response.chiTietGioHang2.forEach(item => {
-                        //                 if (!item.SL_DA_TRA) {
-                        //                     item.SL_DA_TRA = 0;
-                        //                 }
-                        //                 let oneReturnDetail = saleOffEntityFromApi.chiTietPhieuTra.find(itemFromAPI => {
-                        //                     return itemFromAPI.MA_CT_SP === item.MA_CT_SP
-                        //                 })
-                        //                 if (oneReturnDetail) {
-                        //                     item.PHAN_TRAM_GIAM = oneReturnDetail.PHAN_TRAM_GIAM
-                        //                 }
-                        //             })
-
-                        //             setProductsAndPercentages(response.chiTietGioHang2)
-
-                        //         });
-                        //     } catch (error) {
-                        //         console.error(error);
-                        //     }
-
-                        //     // setSaleOffEntity({ ...saleOffEntity, chiTietPhieuNhap: a })
-                        //     setIsLoading(false);
-                        // })
                     })
 
                 }
@@ -558,37 +500,39 @@ function ProductSaleOffEdit(props) {
     return (
         // preparePrint ? <CartDetailToPrint type={'userViewing'} closePreparePrintDialog={closePreparePrintDialog} cartId={props.cartId} /> 
         // :
-        flag ? <div className={clsx(style.modalWrapper)}>
+        <>
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
             </div> : <></>}
-            {/* <ToastContainer /> */}
-            <div className={clsx(style.modal)}>
-                <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
-                    props.closeDialog();
-                }}><XIcon /></span></h1>
+            flag ? <div className={clsx(style.modalWrapper)}>
 
-                <h1 className={clsx(style.title)}>{getTitle()}</h1>
-                <div className={clsx(style.btnCheckContainer)}>
-                    {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
-                        <>
-                            <button onClick={() => {
-                                save();
-                            }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: props.viewMode === 'view' })}>
-                                <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
-                            </button>
+                {/* <ToastContainer /> */}
+                <div className={clsx(style.modal)}>
+                    <h1 className={clsx(style.header)}><span className={clsx(style.closeButton)} onClick={() => {
+                        props.closeDialog();
+                    }}><XIcon /></span></h1>
 
-                        </>
-                        : <></>
+                    <h1 className={clsx(style.title)}>{getTitle()}</h1>
+                    <div className={clsx(style.btnCheckContainer)}>
+                        {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
+                            <>
+                                <button onClick={() => {
+                                    save();
+                                }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: props.viewMode === 'view' })}>
+                                    <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
+                                </button>
 
-                    }
+                            </>
+                            : <></>
 
-                </div>
+                        }
 
-                <div className={clsx(style.cartInfo, style.form)}>
+                    </div>
+
+                    <div className={clsx(style.cartInfo, style.form)}>
 
 
-                    {/* <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                        {/* <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
                         <label className={clsx(style.inputLabel)}>Khách hàng:</label>
                         <div className={clsx(style.dropdownList, style.datePickerContainer)}>
                             <div className='control-section'>
@@ -603,159 +547,159 @@ function ProductSaleOffEdit(props) {
                         </div>
                         {<p className={clsx(style.errorMessage)}>{errorMessage.errorTEN_SP}</p>}
                     </div> */}
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Ngày - giờ áp dụng:</label>
-                        <div className={clsx(style.datePickerContainer)}>
-                            <DateTimePickerComponent onChange={() => {
-                            }} ref={dateTimePicker} format={'dd/MM/yyyy - hh:mm a'} timeFormat={'hh:mm a'} locale='vi' />
-                        </div>
-                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorNGAY_AP_DUNG}</p>}
-                    </div>
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Thời gian KM (ngày):</label>
-                        <input maxLength={1000} onChange={(e) => {
-                            console.log(e.target.value)
-                            setSaleOffEntity({ ...saleOffEntity, THOI_GIAN: e.target.value })
-                        }} type="number" placeholder=""
-                            value={saleOffEntity.THOI_GIAN} name='THOI_GIAN' className={clsx(style.input)}
-                            //disable scroll increase
-                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                        />
-                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorTHOI_GIAN}</p>}
-                    </div>
-
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Ghi chú:</label>
-                        <textarea maxLength={1000} onChange={(e) => {
-                            console.log(e.target.value)
-                            setSaleOffEntity({ ...saleOffEntity, GHI_CHU: e.target.value })
-                        }} type="text" placeholder=""
-                            value={saleOffEntity.GHI_CHU} name='GHI_CHU' className={clsx(style.input)} />
-                        {<p className={clsx(style.errorMessage)}>{errorMessage.errorGHI_CHU}</p>}
-                    </div>
-
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
-                        <div className={clsx(style.datePickerContainer, style.readOnly)}>
-                            <DatePickerComponent onChange={() => {
-                            }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi' />
-                        </div>
-                        {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
-                    </div>
-
-                    <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                        <label className={clsx(style.inputLabel)}>Nhân viên tạo:</label>
-                        <input type="text" placeholder="" disabled
-                            value={
-                                props.viewMode === 'add' ? JSON.parse(localStorage.getItem('employee')).HO_TEN : saleOffEntity.HO_TEN_NV
-                            } name='HO_TEN_NV' className={clsx(style.input)} />
-                    </div>
-
-                    {products.length > 0 ?
-                        <>
-                            <div className={clsx(style.toolBar)}>
-                                <button onClick={() => {
-                                    selectProducts();
-                                }} className={clsx(style.checkButton, style.saveButton, style.selectButton, { [style.inActive]: props.viewMode === 'view' })}><span className={clsx(style.iconSvg)}><CheckIcon /></span>Chọn</button>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Ngày - giờ áp dụng:</label>
+                            <div className={clsx(style.datePickerContainer)}>
+                                <DateTimePickerComponent onChange={() => {
+                                }} ref={dateTimePicker} format={'dd/MM/yyyy - hh:mm a'} timeFormat={'hh:mm a'} locale='vi' />
                             </div>
-                            <div className={clsx(style.customerCarts)}>
-                                {<p className={clsx(style.errorMessage)}>{errorMessage.errorSAN_PHAM_ALL}</p>}
-                                {<GridComponent ref={grid}
-                                    toolbar={toolbarOptions}
-                                    showColumnChooser={true}
-                                    //  actionComplete={actionComplete} 
-                                    //  actionBegin={actionBegin}
-                                    locale='vi-VN'
-                                    editSettings={editOptions}
-                                    pageSettings={pageSettings}
-                                    dataSource={products} allowPaging={true} /*allowGrouping={true}*/
-                                    allowSorting={true} allowFiltering={true}
-                                    filterSettings={filterOptions} height={315}
-                                    rowSelected={rowSelected}
-                                    gridLines='Both'
-                                    selectionSettings={selectionSettings}
-                                >
-                                    <ColumnsDirective>
-                                        <ColumnDirective type='checkbox' width='50' />
-                                        <ColumnDirective field='MA_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã SP' width='200' textAlign="Left" isPrimaryKey={true} />
-                                        <ColumnDirective field='TEN_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" />
-                                        <ColumnDirective field='TEN_TL' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" />
-                                        <ColumnDirective field='SIZE_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Size/ Màu' width='200' textAlign="Left" />
-                                        <ColumnDirective field='GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá' width='200' textAlign="Left" />
-                                        <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
-                                        <ColumnDirective field='LUOT_XEM' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Lượt xem' width='150' textAlign="Left" />
-                                        {/* <ColumnDirective field='MA_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='MA_TL' width='100' textAlign="Right"/> */}
-                                        {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
-                                        <ColumnDirective field='HINH_ANH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" />
-                                        <ColumnDirective field='MO_TA' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mô tả' width='150' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+                            {<p className={clsx(style.errorMessage)}>{errorMessage.errorNGAY_AP_DUNG}</p>}
+                        </div>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Thời gian KM (ngày):</label>
+                            <input maxLength={1000} onChange={(e) => {
+                                console.log(e.target.value)
+                                setSaleOffEntity({ ...saleOffEntity, THOI_GIAN: e.target.value })
+                            }} type="number" placeholder=""
+                                value={saleOffEntity.THOI_GIAN} name='THOI_GIAN' className={clsx(style.input)}
+                                //disable scroll increase
+                                onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                            />
+                            {<p className={clsx(style.errorMessage)}>{errorMessage.errorTHOI_GIAN}</p>}
+                        </div>
 
-                                        {/* <ColumnDirective field='TEN_NV_DUYET'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='NV duyệt' width='160' textAlign="Left" />
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Ghi chú:</label>
+                            <textarea maxLength={1000} onChange={(e) => {
+                                console.log(e.target.value)
+                                setSaleOffEntity({ ...saleOffEntity, GHI_CHU: e.target.value })
+                            }} type="text" placeholder=""
+                                value={saleOffEntity.GHI_CHU} name='GHI_CHU' className={clsx(style.input)} />
+                            {<p className={clsx(style.errorMessage)}>{errorMessage.errorGHI_CHU}</p>}
+                        </div>
+
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
+                            <div className={clsx(style.datePickerContainer, style.readOnly)}>
+                                <DatePickerComponent onChange={() => {
+                                }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi' />
+                            </div>
+                            {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
+                        </div>
+
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Nhân viên tạo:</label>
+                            <input type="text" placeholder="" disabled
+                                value={
+                                    props.viewMode === 'add' ? JSON.parse(localStorage.getItem('employee')).HO_TEN : saleOffEntity.HO_TEN_NV
+                                } name='HO_TEN_NV' className={clsx(style.input)} />
+                        </div>
+
+                        {products.length > 0 ?
+                            <>
+                                <div className={clsx(style.toolBar)}>
+                                    <button onClick={() => {
+                                        selectProducts();
+                                    }} className={clsx(style.checkButton, style.saveButton, style.selectButton, { [style.inActive]: props.viewMode === 'view' })}><span className={clsx(style.iconSvg)}><CheckIcon /></span>Chọn</button>
+                                </div>
+                                <div className={clsx(style.customerCarts)}>
+                                    {<p className={clsx(style.errorMessage)}>{errorMessage.errorSAN_PHAM_ALL}</p>}
+                                    {<GridComponent ref={grid}
+                                        toolbar={toolbarOptions}
+                                        showColumnChooser={true}
+                                        //  actionComplete={actionComplete} 
+                                        //  actionBegin={actionBegin}
+                                        locale='vi-VN'
+                                        editSettings={editOptions}
+                                        pageSettings={pageSettings}
+                                        dataSource={products} allowPaging={true} /*allowGrouping={true}*/
+                                        allowSorting={true} allowFiltering={true}
+                                        filterSettings={filterOptions} height={315}
+                                        rowSelected={rowSelected}
+                                        gridLines='Both'
+                                        selectionSettings={selectionSettings}
+                                    >
+                                        <ColumnsDirective>
+                                            <ColumnDirective type='checkbox' width='50' />
+                                            <ColumnDirective field='MA_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã SP' width='200' textAlign="Left" isPrimaryKey={true} />
+                                            <ColumnDirective field='TEN_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" />
+                                            <ColumnDirective field='TEN_TL' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Thể loại' width='150' editType='dropdownedit' textAlign="Left" />
+                                            <ColumnDirective field='SIZE_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Size/ Màu' width='200' textAlign="Left" />
+                                            <ColumnDirective field='GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá' width='200' textAlign="Left" />
+                                            <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
+                                            <ColumnDirective field='LUOT_XEM' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Lượt xem' width='150' textAlign="Left" />
+                                            {/* <ColumnDirective field='MA_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='MA_TL' width='100' textAlign="Right"/> */}
+                                            {/* <ColumnDirective field='Freight' width='100' format="C2" textAlign="Right"/> */}
+                                            <ColumnDirective field='HINH_ANH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Hình ảnh' width='200' textAlign="Left" />
+                                            <ColumnDirective field='MO_TA' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mô tả' width='150' textAlign="Left" /*type='date' format={'dd/MM/yyyy'} editType='datepickeredit' */ />
+
+                                            {/* <ColumnDirective field='TEN_NV_DUYET'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='NV duyệt' width='160' textAlign="Left" />
                         <ColumnDirective field='TEN_NV_GIAO'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='NV giao' width='160' textAlign="Left" /> */}
 
 
-                                    </ColumnsDirective>
-                                    <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
-                                </GridComponent>
-                                }</div></>
-                        : <></>
+                                        </ColumnsDirective>
+                                        <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
+                                    </GridComponent>
+                                    }</div></>
+                            : <></>
 
-                    }
-                    {productsAndPercentages.length > 0 ?
-                        <>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
-                                <label className={clsx(style.inputLabel)}>Mã SP</label>
+                        }
+                        {productsAndPercentages.length > 0 ?
+                            <>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
+                                    <label className={clsx(style.inputLabel)}>Mã SP</label>
 
-                            </div>
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
-                                <label className={clsx(style.inputLabel)}>Tên sản phẩm</label>
-                                {<p className={clsx(style.errorMessage)}>{errorMessage.errorTEN_SP_ALL}</p>}
-                            </div>
-                            {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
+                                </div>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
+                                    <label className={clsx(style.inputLabel)}>Tên sản phẩm</label>
+                                    {<p className={clsx(style.errorMessage)}>{errorMessage.errorTEN_SP_ALL}</p>}
+                                </div>
+                                {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
                                 <label className={clsx(style.inputLabel)}>Giá hiện tại</label>
 
                             </div> */}
-                            <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
-                                <label className={clsx(style.inputLabel)}>
-                                    {props.viewMode === 'view' ? 'Phần trăm giảm' : 'Phần trăm giảm'}
-                                </label>
-                                {<p className={clsx(style.errorMessage)}>{errorMessage.errorPHAN_TRAM_GIAM_ALL}</p>}
-                            </div>
+                                <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
+                                    <label className={clsx(style.inputLabel)}>
+                                        {props.viewMode === 'view' ? 'Phần trăm giảm' : 'Phần trăm giảm'}
+                                    </label>
+                                    {<p className={clsx(style.errorMessage)}>{errorMessage.errorPHAN_TRAM_GIAM_ALL}</p>}
+                                </div>
 
-                            {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
+                                {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
                                 <label className={clsx(style.inputLabel)} title={`Giá trị này có thể không chính xác khi đợt khuyến mãi bắt đầu`}>
                                     {props.viewMode === 'view' ? 'Giá sau giảm (?)' : 'Giá sau giảm (?)'}
                                 </label>
                                 {<p className={clsx(style.errorMessage)}>{errorMessage.errorGIA_SAU_GIAM_ALL}</p>}
                             </div> */}
-                        </>
-                        : <></>}
+                            </>
+                            : <></>}
 
-                    {
-                        productsAndPercentages.map((item, index) => {
-                            return (
-                                <div key={index} className={clsx(style.quantityInputContainer)}>
-                                    <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
-                                        <input disabled onChange={(e) => {
+                        {
+                            productsAndPercentages.map((item, index) => {
+                                return (
+                                    <div key={index} className={clsx(style.quantityInputContainer)}>
+                                        <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
+                                            <input disabled onChange={(e) => {
 
-                                        }} type="text" name='MA_SP'
-                                            value={`${item.MA_SP}`}
-                                            placeholder="" className={clsx(style.input)}
-                                        // title={`${item.TEN_SP} - ${item.TEN_MAU}/ ${item.TEN_SIZE}`}
-                                        />
+                                            }} type="text" name='MA_SP'
+                                                value={`${item.MA_SP}`}
+                                                placeholder="" className={clsx(style.input)}
+                                            // title={`${item.TEN_SP} - ${item.TEN_MAU}/ ${item.TEN_SIZE}`}
+                                            />
 
-                                    </div>
-                                    <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
-                                        <input disabled onChange={(e) => {
-                                            // console.log(e.target.value)
-                                            // onChangePercentage(item.MA_CT_SP, e.target.value);
-                                        }} type="text"
-                                            value={productsAndPercentages[index].TEN_SP}
-                                            placeholder="" className={clsx(style.input)}
-                                            min={0}
-                                        />
-                                        {<p className={clsx(style.errorMessage)}>{item.errorTEN_SP}</p>}
-                                    </div>
-                                    {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
+                                        </div>
+                                        <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
+                                            <input disabled onChange={(e) => {
+                                                // console.log(e.target.value)
+                                                // onChangePercentage(item.MA_CT_SP, e.target.value);
+                                            }} type="text"
+                                                value={productsAndPercentages[index].TEN_SP}
+                                                placeholder="" className={clsx(style.input)}
+                                                min={0}
+                                            />
+                                            {<p className={clsx(style.errorMessage)}>{item.errorTEN_SP}</p>}
+                                        </div>
+                                        {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
                                         <input disabled onChange={(e) => {
                                             // console.log(e.target.value)
                                             // onChangePrice(item.MA_CT_SP, e.target.value);
@@ -769,22 +713,22 @@ function ProductSaleOffEdit(props) {
                                         {<p className={clsx(style.errorMessage)}>{item.errorGIA_STR}</p>}
                                     </div> */}
 
-                                    <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
-                                        <input onChange={(e) => {
-                                            console.log(e.target.value)
-                                            onChangePercentage(item.MA_SP, e.target.value);
-                                        }} type="number" name='PHAN_TRAM_GIAM'
-                                            value={productsAndPercentages[index].PHAN_TRAM_GIAM}
-                                            placeholder="" className={clsx(style.input)}
-                                            min={0} max={100}
-                                            disabled={props.viewMode === 'view' ? true : false}
-                                            //disable scroll increase
-                                            onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
-                                        />
-                                        {<p className={clsx(style.errorMessage)}>{item.errorPHAN_TRAM_GIAM}</p>}
-                                    </div>
+                                        <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width33)}>
+                                            <input onChange={(e) => {
+                                                console.log(e.target.value)
+                                                onChangePercentage(item.MA_SP, e.target.value);
+                                            }} type="number" name='PHAN_TRAM_GIAM'
+                                                value={productsAndPercentages[index].PHAN_TRAM_GIAM}
+                                                placeholder="" className={clsx(style.input)}
+                                                min={0} max={100}
+                                                disabled={props.viewMode === 'view' ? true : false}
+                                                //disable scroll increase
+                                                onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                                            />
+                                            {<p className={clsx(style.errorMessage)}>{item.errorPHAN_TRAM_GIAM}</p>}
+                                        </div>
 
-                                    {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
+                                        {/* <div className={clsx(style.inputGroup, style.quantityInputGroup, style.width20)}>
                                         <input disabled onChange={(e) => {
                                             // console.log(e.target.value)
                                             // onChangePrice(item.MA_CT_SP, e.target.value);
@@ -797,18 +741,18 @@ function ProductSaleOffEdit(props) {
                                         />
                                         {<p className={clsx(style.errorMessage)}>{item.errorGIA_SAU_GIAM_STR}</p>}
                                     </div> */}
-                                </div>
-                            )
-                        })
-                    }
+                                    </div>
+                                )
+                            })
+                        }
 
-                    {/* {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHITIET}</p>} */}
+                        {/* {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHITIET}</p>} */}
 
-                    {/* detail */}
+                        {/* detail */}
+                    </div>
+
                 </div>
-
-            </div>
-        </div> : <></>);
+            </div> : <></></>);
 }
 //chỉ update lúc cần
 export default React.memo(ProductSaleOffEdit);

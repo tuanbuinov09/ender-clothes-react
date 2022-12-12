@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emailjs/browser": "^3.10.0",
     "@progress/kendo-drawing": "^1.16.3",
     "@progress/kendo-licensing": "^1.2.2",
     "@progress/kendo-react-charts": "^5.5.0",

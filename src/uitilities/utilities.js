@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { L10n } from '@syncfusion/ej2-base';
 import axios from 'axios';
-
+import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
 const intToVNDCurrencyFormat = (number, withSymbol) => {
     let result;
@@ -264,5 +264,29 @@ const toVNDDateTimeFormat = (dateInput) => {
     return dateInput;
 }
 
-export { isValidPhone, newIdByDate, DateDiff, setupInterceptors, toVNDDateFormat, toVNDDateTimeFormat }
+const sendMailForgotPassword = (to_name, forgot_password_code, to_email) => {
+    emailjs.send("service_nt5jdp9", "template_tzyllmq", {
+        to_name: to_name,
+        message: forgot_password_code,
+        to_email: to_email,
+    }).then((result) => {
+        console.log(result.text);
+    }, (error) => {
+        console.log(error.text);
+    });;
+}
+
+const generateOTP = () => {
+
+    // Declare a digits variable 
+    // which stores all digits
+    var digits = '0123456789';
+    let OTP = '';
+    for (let i = 0; i < 4; i++) {
+        OTP += digits[Math.floor(Math.random() * 10)];
+    }
+    return OTP;
+}
+
+export { isValidPhone, newIdByDate, DateDiff, setupInterceptors, toVNDDateFormat, toVNDDateTimeFormat, sendMailForgotPassword, generateOTP }
 export { intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion }

@@ -361,10 +361,10 @@ function CartDetail(props) {
 
                             <>
                                 {/* <button onClick={() => {
-                        approve();
-                    }} className={clsx(style.checkButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
-                        <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
-                    </button> */}
+                                    approve();
+                                }} className={clsx(style.checkButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
+                                    <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
+                                </button> */}
                                 <button onClick={() => {
                                     // save();
                                     setShowConfirmDialogSave(true);
@@ -377,6 +377,13 @@ function CartDetail(props) {
                                     print();
                                 }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
                                     <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
+                                </button>
+                                <button onClick={() => {
+                                    // finish();
+                                    setShowConfirmDialogFinish(true);
+                                    setConfirmDialogTitle('Xác nhận hoàn tất đơn hàng');
+                                }} className={clsx(style.checkButton, style.saveButton, style.finishButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
+                                    <span className={clsx(style.iconSvg)}><CheckIcon /></span>Hoàn tất
                                 </button>
                                 <button onClick={() => {
                                     // cancel();
