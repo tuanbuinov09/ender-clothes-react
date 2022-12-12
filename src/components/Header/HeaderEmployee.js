@@ -104,7 +104,8 @@ function HeaderEmployee(props) {
                     <NavLink to="/admin/dashboard" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Thống kê</NavLink>
 
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
-                    <li className={clsx(style.navItem, style.submenuContainer)}>
+                    {JSON.parse(localStorage.getItem('employee')) && JSON.parse(localStorage.getItem('employee')).MA_NV
+                        && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ? <li className={clsx(style.navItem, style.submenuContainer)}>
                         <div className={clsx(style.nowhere)}>Quản lý<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                         </div>
                         <ul className={clsx(style.submenu)} >
@@ -121,7 +122,9 @@ function HeaderEmployee(props) {
                             <Link to="/admin/size-management" className={clsx(style.navLink, style.lastNavLink)}>Bảng size</Link>
                             <Link to="/admin/color-management" className={clsx(style.navLink, style.lastNavLink)}>Bảng màu</Link>
                         </ul>
-                    </li>
+                    </li> : <></>
+                    }
+
                     {/* <li className={clsx(style.navItem, style.submenuContainer, style.submenuContainer2)}>
                         <div className={clsx(style.nowhere)}>Danh mục<Icon icon="chevron-down" className={clsx(style.chevronDown)} />
                         </div>
@@ -136,7 +139,9 @@ function HeaderEmployee(props) {
                     <li className={clsx(style.navItem)}><Link to="/about" className={clsx(style.navLink)} onClick={activeLinkStyle}>About Us</Link></li> */}
 
                     <NavLink to="/admin/cart-management" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Đơn hàng</NavLink>
-                    <NavLink to="/admin/report" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Báo cáo</NavLink>
+
+                    {JSON.parse(localStorage.getItem('employee')) && JSON.parse(localStorage.getItem('employee')).MA_NV
+                        && JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q02' ? <NavLink to="/admin/report" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Báo cáo</NavLink> : <></>}
                     <NavLink to="/helps" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Trợ giúp</NavLink>
                     <NavLink to="/about" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>About Me</NavLink>
                 </ul >
