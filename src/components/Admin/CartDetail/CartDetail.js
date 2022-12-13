@@ -372,26 +372,29 @@ function CartDetail(props) {
                                 }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
                                     <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
                                 </button>
-
                                 <button onClick={() => {
                                     print();
                                 }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
                                     <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
                                 </button>
-                                <button onClick={() => {
-                                    // finish();
-                                    setShowConfirmDialogFinish(true);
-                                    setConfirmDialogTitle('Xác nhận hoàn tất đơn hàng');
-                                }} className={clsx(style.checkButton, style.saveButton, style.finishButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
-                                    <span className={clsx(style.iconSvg)}><CheckIcon /></span>Hoàn tất
-                                </button>
-                                <button onClick={() => {
-                                    // cancel();
-                                    setShowConfirmDialogCancel(true);
-                                    setConfirmDialogTitle('Xác nhận hủy đơn hàng');
-                                }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 || cart.TRANG_THAI === 2 })}>
-                                    <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
-                                </button>
+                                {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q02' ?
+
+                                    <>
+                                        <button onClick={() => {
+                                            // finish();
+                                            setShowConfirmDialogFinish(true);
+                                            setConfirmDialogTitle('Xác nhận hoàn tất đơn hàng');
+                                        }} className={clsx(style.checkButton, style.saveButton, style.finishButton, { [style.inActive]: cart.TRANG_THAI === 2 })}>
+                                            <span className={clsx(style.iconSvg)}><CheckIcon /></span>Hoàn tất
+                                        </button>
+                                        <button onClick={() => {
+                                            // cancel();
+                                            setShowConfirmDialogCancel(true);
+                                            setConfirmDialogTitle('Xác nhận hủy đơn hàng');
+                                        }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: cart.TRANG_THAI === -1 || cart.TRANG_THAI === 2 })}>
+                                            <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
+                                        </button>
+                                    </> : <></>}
 
                                 {/* <><button onClick={() => {
                                     cancel();

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from '../../../uitilities/utilities';
 import { useDispatch } from 'react-redux/es/exports';
-import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon } from '../../../icons';
+import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon, EditIcon } from '../../../icons';
 import { toast } from 'react-toastify';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
@@ -14,7 +14,7 @@ import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
 
 import { MultiSelectComponent } from '@syncfusion/ej2-react-dropdowns';
 import FileUploadComponent from '../../FileUploadComponent/FileUploadComponent';
-import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
+import { REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL, REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
 
 function ProductEdit(props) {
     let navigate = useNavigate();
@@ -39,8 +39,16 @@ function ProductEdit(props) {
     const categoryDropdownList = useRef();
     const grid = useRef();
     const datePicker = useRef();
-    const multiSelectColorsFields = { text: 'TEN_MAU', value: 'MA_MAU' }
-    const multiSelectSizesFields = { text: 'TEN_SIZE', value: 'MA_SIZE' }
+    const multiSelectColorsFields = { text: 'TEN_MAU', value: 'MA_MAU' };
+    const multiSelectSizesFields = { text: 'TEN_SIZE', value: 'MA_SIZE' };
+
+    const [isShowEditImages, setIsShowEditImages] = useState(props.viewMode === 'add' ? true : false);
+
+    let oldSizes = useRef();
+    let oldColors = useRef();
+
+    console.log(oldSizes, oldColors);
+
     const onColorFiltering = (e) => {
         let query = new Query();
         //frame the query based on search string with filter type.
@@ -57,72 +65,152 @@ function ProductEdit(props) {
     };
 
     const onChangeColors = (e) => {
+
+        if (props.viewMode === 'edit') {
+            let oldColorsDeleted = false;
+            oldColors.current.forEach((item) => {
+                //nếu có màu bị loại bỏ khi update
+                if (!multiSelectColors.current.value.includes(item)) {
+
+                    oldColorsDeleted = true;
+                    return;
+                }
+            })
+            if (oldColorsDeleted) {
+                multiSelectColors.current.value = oldColors.current;
+                toast.error("Chỉ có thể thêm màu, không thể xóa màu đã chọn khi tạo sản phẩm");
+            }
+        }
+
+
         const initHinhAnhSanPham = multiSelectColors.current.value.map(item => {
             return { MA_MAU: item, HINH_ANH: null };
         })
         setProduct({ ...product, hinhAnhSanPham: initHinhAnhSanPham })
     }
+    const onChangeSizes = (e) => {
 
+        if (props.viewMode === 'edit') {
+            let oldSizesDeleted = false;
+            oldSizes.current.forEach((item) => {
+                //nếu có màu bị loại bỏ khi update
+                if (!multiSelectSizes.current.value.includes(item)) {
+
+                    oldSizesDeleted = true;
+                    return;
+                }
+            })
+            if (oldSizesDeleted) {
+                multiSelectSizes.current.value = oldSizes.current;
+                toast.error("Chỉ có thể thêm size, không thể xóa size đã chọn khi tạo sản phẩm");
+            }
+        }
+
+    }
     useEffect(() => {
         if (!JSON.parse(localStorage.getItem('employee')).MA_NV) {
             navigate("/employee/login", true);
             toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             return;
         }
+
+    }, [])
+    useEffect(() => {
         try {
-            axios.get('http://localhost:22081/api/TheLoai').then(res => {
+            axios.get(`${REACT_APP_API_URL}/api/TheLoai`).then(res => {
                 const categoriesFromAPI = res.data.filter((item) => {
-                    return !!item.MA_TL_CHA
+                    return !!item.MA_TL_CHA;
                 });
                 //console.log(categoriesFromAPI)
                 setCategories(categoriesFromAPI);
                 setFlag(true);
 
-                datePicker.current.value = new Date();
+                axios.get(`${REACT_APP_API_URL}/api/BangMau/all`).then(res => {
+                    //console.log("Bang Mau: ", res.data)
+                    setColors(res.data);
+
+                    axios.get(`${REACT_APP_API_URL}/api/BangSize/all`).then(res => {
+                        //console.log("Bang Size: ", res.data)
+                        setSizes(res.data);
+
+
+                        if (props.viewMode === 'view' || props.viewMode === 'edit') {
+                            try {
+
+                                axios.get(`${REACT_APP_API_URL}/api/SanPham?productId=${props.productId}`).then(res => {
+                                    const response = res.data[0];
+
+                                    // lấy hình ảnh để show, muốn sửa có luồng riêng
+                                    if (response.HINH_ANH && !response.HINH_ANH.startsWith('http')) {
+                                        response.HINH_ANH_FOR_SHOW = `${REACT_APP_API_URL}/${REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${response.HINH_ANH}`
+                                    } else {
+                                        response.HINH_ANH_FOR_SHOW = response.HINH_ANH;
+                                    }
+                                    const hinhAnhSanPham_FOR_SHOW = [];
+                                    response.chiTietSanPham.forEach(item => {
+                                        //nếu data cũ hình sẽ có http, data mới thì k
+                                        if (item.HINH_ANH && !item.HINH_ANH.startsWith('http')) {
+                                            item.HINH_ANH_FOR_SHOW = `${REACT_APP_API_URL}/${REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL}/${item.HINH_ANH}`
+                                        } else {
+                                            item.HINH_ANH_FOR_SHOW = item.HINH_ANH;
+                                        }
+                                        const isExists = hinhAnhSanPham_FOR_SHOW.find(im => {
+                                            return im.MA_MAU === item.MA_MAU;
+                                        })
+                                        if (!isExists) {
+                                            hinhAnhSanPham_FOR_SHOW.push(item);
+                                        }
+                                    })
+
+                                    response.hinhAnhSanPham_FOR_SHOW = hinhAnhSanPham_FOR_SHOW;
+                                    //
+
+                                    setProduct(response);
+
+                                    //set nhân viên đã được assign   
+                                    setFlag(true);
+
+                                    categoryDropdownList.current.value = response.MA_TL;
+
+                                    const listSelectedSizes = [];
+                                    response.chiTietSanPham.forEach((item) => {
+                                        if (!listSelectedSizes.includes(item.MA_SIZE)) {
+                                            listSelectedSizes.push(item.MA_SIZE);
+                                        }
+                                    });
+
+                                    oldSizes.current = listSelectedSizes;
+
+                                    multiSelectSizes.current.value = listSelectedSizes;
+
+                                    const listSelectedColors = [];
+                                    response.chiTietSanPham.forEach((item) => {
+                                        if (!listSelectedColors.includes(item.MA_MAU)) {
+                                            listSelectedColors.push(item.MA_MAU);
+                                        }
+                                    });
+
+                                    oldColors.current = listSelectedColors;
+
+                                    multiSelectColors.current.value = listSelectedColors;
+                                });
+
+                            } catch (error) {
+                                console.error(error);
+                            }
+                        } else {
+
+
+                        }
+                    })
+                })
             })
 
-            axios.get(`${REACT_APP_API_URL}/api/BangMau/all`).then(res => {
-                //console.log("Bang Mau: ", res.data)
-                setColors(res.data);
-            })
 
-            axios.get(`${REACT_APP_API_URL}/api/BangSize/all`).then(res => {
-                //console.log("Bang Size: ", res.data)
-                setSizes(res.data);
-            })
         } catch (e) {
             console.log(e);
         }
-    }, [])
-    useEffect(() => {
-        if (props.viewMode === 'view' || props.viewMode === 'edit') {
-            try {
-                // axios.get(`http://localhost:22081/api/SanPham/${props.productId}`).then(res => {
-                //     const response = res.data;
-                //     response.chiTietGioHang2.forEach((resp, index) => {
-                //         try {
-                //             resp.STT = index + 1;
-                //             resp.GIA_STR = intToVNDCurrencyFormat(resp.GIA) + " ₫";
-                //             resp.TRI_GIA_STR = intToVNDCurrencyFormat(resp.GIA * resp.SO_LUONG, true);//thêm true + đ
-                //         } catch (e) {
-                //             console.log(e)
-                //         }
-                //     })
-                //     setCart(response);
-                //     //set nhân viên đã được assign   
-                //     setFlag(true);
 
-
-                //     categoryDropdownList.current.value = response.MA_NV_GIAO;
-                //     console.log("nvgiao old:", response.MA_NV_GIAO)
-
-                // });
-            } catch (error) {
-                console.error(error);
-            }
-        } else {
-
-        }
 
 
 
@@ -155,20 +243,35 @@ function ProductEdit(props) {
             // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
             hasError = true;
         }
-        if (!product.HINH_ANH) {
-            tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHUNG: "*Vui lòng chọn hình ảnh chung cho sản phẩm" }
-            // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
-            hasError = true;
+        if (props.viewMode === 'add') {
+
+            if (!product.HINH_ANH) {
+                tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHUNG: "*Vui lòng chọn hình ảnh chung cho sản phẩm" }
+                // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
+                hasError = true;
+            }
+            if (
+                product.hinhAnhSanPham.some(item => !item.HINH_ANH)//nếu có màu chưa có hình ảnh
+            ) {
+                tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHITIET: "*Vui lòng chọn hình ảnh chi tiết cho tất cả các màu" }
+                // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
+                hasError = true;
+            }
+        } else {
+            let listColorNoImages = [];
+            product.hinhAnhSanPham.forEach(item => {
+                if (!item.HINH_ANH && !oldColors.current.includes(item.MA_MAU) && multiSelectColors.current.value.includes(item.MA_MAU)) {
+                    listColorNoImages.push(colors.find(item1 => item.MA_MAU === item1.MA_MAU).TEN_MAU);
+                    tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHITIET: `*Vui lòng chọn hình ảnh cho (các) màu mới được thêm: ${listColorNoImages.join(', ')}` }
+                    // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
+                    hasError = true;
+                }
+            });
+            console.log(listColorNoImages)
         }
-        if (
-            product.hinhAnhSanPham.some(item => !item.HINH_ANH)//nếu có màu chưa có hình ảnh
-        ) {
-            tmpErrorMsg = { ...tmpErrorMsg, errorHINH_ANH_CHITIET: "*Vui lòng chọn hình ảnh chi tiết cho tất cả các màu" }
-            // setErrorMessage({...errorMessage, errorAddress: "Vui lòng nhập địa chỉ người nhận"});
-            hasError = true;
-        }
-        setErrorMessage(tmpErrorMsg)
-        return hasError
+
+        setErrorMessage(tmpErrorMsg);
+        return hasError;
     }
 
     const uploadDetailFileUploadComponents = () => {
@@ -211,10 +314,57 @@ function ProductEdit(props) {
             });
         });
 
-        uploadGeneralFileUpload();
-        uploadDetailFileUploadComponents();
+        console.log(product, chiTietSP);
+
+        //nếu đang sửa hình mới up hình
+
+        if (isShowEditImages) {
+            uploadGeneralFileUpload();
+            uploadDetailFileUploadComponents();
+        }
+
+
+        if (props.viewMode === 'edit') {
+            console.log('pass', chiTietSP, `${process.env.REACT_APP_API_URL}/api/SanPham/edit`)
+
+            try {
+                axios.put(`${process.env.REACT_APP_API_URL}/api/SanPham/edit`, {
+                    ...product,
+                    chiTietSanPham: chiTietSP,
+                    //mã nhân viên tạo sản phẩm
+                    MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
+                },
+                    {
+                        headers: {
+                            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+                        }
+                    }
+                ).then(res => {
+                    const response = res.data;
+                    console.log('res: ' + response);
+                    // setProduct({
+                    //     ...product, TRANG_THAI: 1, TRANG_THAI_STR: 'Đang giao hàng',
+                    //     MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV, TEN_NV_DUYET: JSON.parse(localStorage.getItem('employee')).HO_TEN
+                    //     , MA_NV_GIAO: assignedEmpID, TEN_NV_GIAO: selectedItem.HO_TEN
+                    // })
+                    if (response.errorDesc) {
+                        toast.error(response.errorDesc);
+                    } else {
+                        toast.success("Sửa sản phẩm thành công");
+                        setProduct({ ...product, NGAY_TAO: new Date() })
+                        props.rerender();
+                    }
+
+                });
+            } catch (error) {
+                console.error(error);
+            }
+
+            return;
+        }
 
         console.log('pass', chiTietSP, `${process.env.REACT_APP_API_URL}/api/SanPham/add`)
+
         try {
             axios.post(`${process.env.REACT_APP_API_URL}/api/SanPham/add`, {
                 ...product,
@@ -356,7 +506,8 @@ function ProductEdit(props) {
                         <label className={clsx(style.inputLabel)}>Ngày tạo:</label>
                         <div className={clsx(style.datePickerContainer, style.readOnly)}>
                             <DatePickerComponent onChange={() => {
-                            }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi' />
+                            }} ref={datePicker} format={'dd/MM/yyyy'} locale='vi'
+                                value={props.viewMode === 'add' ? new Date() : product.NGAY_TAO} />
                         </div>
                         {/* {errorMessage.errorName?<p className={clsx(style.errorMessage)}>{errorMessage.errorName}</p>:""} */}
                     </div>
@@ -379,7 +530,7 @@ function ProductEdit(props) {
                         <div className={clsx(style.dropdownList, style.datePickerContainer)}>
                             <div className='control-section'>
                                 <div id='filtering'>
-                                    <MultiSelectComponent ref={multiSelectSizes} id="multiSelectSizes" dataSource={sizes} fields={multiSelectSizesFields} filtering={onSizeFiltering} filterBarPlaceholder='Tìm size' allowFiltering={true} placeholder="Chọn các size của sản phẩm" />
+                                    <MultiSelectComponent onChange={onChangeSizes} ref={multiSelectSizes} id="multiSelectSizes" dataSource={sizes} fields={multiSelectSizesFields} filtering={onSizeFiltering} filterBarPlaceholder='Tìm size' allowFiltering={true} placeholder="Chọn các size của sản phẩm" />
                                 </div>
 
                             </div>
@@ -398,7 +549,30 @@ function ProductEdit(props) {
 
                 </div>
 
-                <div className={clsx(style.inputGroup)}>
+                {props.viewMode === 'edit' ?
+                    <>
+                        {!isShowEditImages ?
+
+                            <button onClick={() => {
+                                setIsShowEditImages(true);
+
+                            }} className={clsx(style.checkButton, style.editButton, { [style.inActive]: props.viewMode === 'view' })}>
+                                <span className={clsx(style.iconSvg)}><EditIcon /></span>Chỉnh sửa hình ảnh
+                            </button>
+
+                            : <>
+                                <div>
+                                    <button onClick={() => {
+                                        setIsShowEditImages(false);
+
+                                    }} className={clsx(style.checkButton, style.cancelButton, { [style.inActive]: props.viewMode === 'view' })}>
+                                        <span className={clsx(style.iconSvg)}><EditIcon /></span>Hủy
+                                    </button><p className={clsx(style.imageLink, style.tooltip)}>{'Lưu ý: Nếu không chọn mới, hình ảnh tương ứng sẽ được giữ nguyên'}</p>
+                                </div>
+                            </>}
+                    </> : <></>}
+
+                {isShowEditImages ? <div className={clsx(style.inputGroup)}>
                     <FileUploadComponent
                         ref={generalFileInputRef}
                         field={'HINH_ANH_CHUNG'}
@@ -407,25 +581,57 @@ function ProductEdit(props) {
                         showUploadButton={false}
                     />
                     {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHUNG}</p>}
-                </div>
-                <div className={clsx(style.inputLabel, style.longLabel)}>Chọn hình ảnh chi tiết cho các màu: </div>
-                <div className={clsx(style.detailFileUploadsContainer)}>
-                    {
-                        product.hinhAnhSanPham.map((item, index) => {
-                            return (
-                                <div className={clsx(style.inputGroup)} key={index} >
-                                    <FileUploadComponent
-                                        ref={el => detailFileInputRefs.current[index] = el}
-                                        field={item.MA_MAU}
-                                        title={colors.find(color => color.MA_MAU === item.MA_MAU).TEN_MAU}
-                                        onSelectedOptionsChange={detailFileChange}
-                                        showUploadButton={false}
-                                    />
-                                </div>
-                            )
-                        })
-                    }
-                </div>
+                </div> : <><div className={clsx(style.inputLabel, style.longLabel)}>Hình ảnh chung: </div>
+                    <div className={clsx(style.inputGroup)} >
+                        <img src={product.HINH_ANH_FOR_SHOW} alt={product.TEN_SP} />
+                    </div>
+                </>}
+
+
+
+
+                {isShowEditImages ? <div className={clsx(style.inputLabel, style.longLabel)}>Chọn hình ảnh chi tiết cho các màu: </div> :
+                    <div className={clsx(style.inputLabel, style.longLabel)}>Hình ảnh chi tiết của các màu: </div>}
+
+                {isShowEditImages ?
+                    <div className={clsx(style.detailFileUploadsContainer)}>
+                        {
+                            product.hinhAnhSanPham && product.hinhAnhSanPham.map((item, index) => {
+                                return (
+                                    <div className={clsx(style.inputGroup)} key={index} >
+                                        <FileUploadComponent
+                                            ref={el => detailFileInputRefs.current[index] = el}
+                                            field={item.MA_MAU}
+                                            title={colors.find(color => color.MA_MAU === item.MA_MAU).TEN_MAU}
+                                            onSelectedOptionsChange={detailFileChange}
+                                            showUploadButton={false}
+                                        />
+                                    </div>
+                                )
+                            })
+                        }
+                    </div> :
+                    <div className={clsx(style.detailFileUploadsContainer)}>
+                        {
+                            product.hinhAnhSanPham_FOR_SHOW && product.hinhAnhSanPham_FOR_SHOW.map((item, index) => {
+                                return (
+                                    <div className={clsx(style.inputGroup)} key={index} >
+                                        <p className={clsx(style.imageLink)}
+                                        //  onClick={(e) => {
+                                        //     console.log(item.HINH_ANH);
+                                        //     window.open(item.HINH_ANH, '_blank', '');
+                                        // }}
+                                        >{`${item.TEN_MAU}:`}</p>
+
+                                        <img src={item.HINH_ANH_FOR_SHOW} alt={item.TEN_MAU} />
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                }
+
+
                 {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHITIET}</p>}
 
                 {/* detail */}
