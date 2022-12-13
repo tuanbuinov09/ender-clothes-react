@@ -224,9 +224,9 @@ function ProductManagement(props) {
                 <button onClick={() => {
                     openDialogFnc('add');
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
-                {/* <button onClick={() => {
+                <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button> */}
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
                 <button onClick={() => {
                     // deleteProduct();
                     if (!selectedCart.TEN_SP) {
