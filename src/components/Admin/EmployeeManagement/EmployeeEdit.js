@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors, isValidPhone } from '../../../uitilities/utilities';
 import { useDispatch } from 'react-redux/es/exports';
-import { XIcon, SaveIcon, CheckIcon, } from '../../../icons';
+import { XIcon, SaveIcon, CheckIcon, ResetPasswordIcon } from '../../../icons';
 import { toast } from 'react-toastify';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { DatePickerComponent } from '@syncfusion/ej2-react-calendars';
@@ -376,20 +376,22 @@ function EmployeeEdit(props) {
                 <h1 className={clsx(style.title)}>{getTitle()}</h1>
                 <div className={clsx(style.btnCheckContainer)}>
                     {/* không duyệt nữa, assign cho nhân viên là duyệt luôn */}
-                    <button onClick={() => {
-                        activate();
-                    }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: inputModel.TRANG_THAI }, style.activateButton)}>
-                        <span className={clsx(style.iconSvg)}><CheckIcon /></span>Kích hoạt
-                    </button>
-                    <button onClick={() => {
-                        if (!inputModel.MA_NV) {
-                            return;
-                        }
-                        setShowConfirmDialog(true);
-                        setConfirmDialogTitle('Xác nhận reset mật khẩu tài khoản nhân viên ' + inputModel.HO_TEN);
-                    }} className={clsx(style.checkButton, style.saveButton, style.resetPasswordButton)} title='Phục hồi mật khẩu thành 123456'>
-                        <span className={clsx(style.iconSvg)}><CheckIcon /></span>Reset mật khẩu
-                    </button>
+
+                    {props.viewMode !== 'add' ? <>
+                        <button onClick={() => {
+                            activate();
+                        }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: inputModel.TRANG_THAI }, style.activateButton)}>
+                            <span className={clsx(style.iconSvg)}><CheckIcon /></span>Kích hoạt
+                        </button>
+                        <button onClick={() => {
+                            if (!inputModel.MA_NV) {
+                                return;
+                            }
+                            setShowConfirmDialog(true);
+                            setConfirmDialogTitle('Xác nhận reset mật khẩu tài khoản nhân viên ' + inputModel.HO_TEN);
+                        }} className={clsx(style.checkButton, style.saveButton, style.resetPasswordButton)} title='Phục hồi mật khẩu thành 123456'>
+                            <span className={clsx(style.iconSvg)}><ResetPasswordIcon /></span>Reset mật khẩu
+                        </button></> : <></>}
                     {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
                         <>
                             <button onClick={() => {
