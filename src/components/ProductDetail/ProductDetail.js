@@ -358,10 +358,10 @@ function ProductDetail(props) {
 
                             if ((quantityInCart) === selectedProductDetail.SL_TON || selectedProductDetail.SL_TON === 0) {
                                 console.log("Đạt giới hạn tồn kho của sản phẩm")
-                                toast.error("Đạt giới hạn tồn kho của sản phẩm");
+                                toast.error("Đạt giới hạn tồn kho của sản phẩm", { autoClose: 1500 });
                                 return;
                             }
-
+                            toast.success("Đã thêm sản phẩm vào giỏ", { autoClose: 1500 });
                             dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedProductDetail, SO_LUONG: 1, SO_LUONG_TON: selectedProductDetail.SL_TON }] }));
                             dispatch(caculateTotalAmountAndPrice());
                         }}>
