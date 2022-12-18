@@ -14,6 +14,7 @@ import { Query } from '@syncfusion/ej2-data';
 import { DatePickerComponent, DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
 
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation';
+import { isFulfilled } from '@reduxjs/toolkit';
 function ProductSaleOffEdit(props) {
     let navigate = useNavigate();
     setupInterceptors(navigate, 'employee');
@@ -249,14 +250,24 @@ function ProductSaleOffEdit(props) {
         //     hasError = true;
         // }
         // console.log(selectedrecords[0], Math.abs(DateDiff.inDays(new Date(), selectedrecords[0].NGAY_GIAO_TYPE_DATE)) - 1)
-
-        const daysDiffer = DateDiff.inSeconds(new Date(), dateTimePicker.current.value);
-        console.log(daysDiffer, dateTimePicker.current)
-
-        if (daysDiffer < 0) {
-            tmpErrorMsg = { ...tmpErrorMsg, errorNGAY_AP_DUNG: "*Ngày - giờ áp dụng không hợp lệ" }
+        if (!dateTimePicker.current) {
+            tmpErrorMsg = { ...tmpErrorMsg, errorNGAY_AP_DUNG: "*Ngày - giờ không đúng định dạng" }
             hasError = true;
+        } else {
+            try {
+                const daysDiffer = DateDiff.inSeconds(new Date(), dateTimePicker.current.value);
+                console.log(daysDiffer, dateTimePicker.current)
+                if (daysDiffer < 0) {
+                    tmpErrorMsg = { ...tmpErrorMsg, errorNGAY_AP_DUNG: "*Ngày - giờ áp dụng không hợp lệ" }
+                    hasError = true;
+                }
+            } catch (e) {
+                tmpErrorMsg = { ...tmpErrorMsg, errorNGAY_AP_DUNG: "*Ngày - giờ không đúng định dạng" }
+                hasError = true;
+            }
+
         }
+
         if (saleOffEntity.THOI_GIAN <= 0) {
             tmpErrorMsg = { ...tmpErrorMsg, errorTHOI_GIAN: "*Thời gian áp dụng phải lớn hơn 0" }
             hasError = true;
@@ -305,7 +316,9 @@ function ProductSaleOffEdit(props) {
 
         return hasError
     }
-
+    const addHoursToDate = (date, hours) => {
+        return new Date(new Date(date).setHours(date.getHours() + hours));
+    }
 
     const save = () => {
         if (validate()) {
@@ -316,6 +329,7 @@ function ProductSaleOffEdit(props) {
             return item.PHAN_TRAM_GIAM > 0;
         })
 
+        console.log(dateTimePicker.current.value);
         // console.log("data to send: ", data)
         if (props.viewMode === 'add') {
             let _saleOffEntity = {
@@ -323,7 +337,8 @@ function ProductSaleOffEdit(props) {
                 MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV,
                 GHI_CHU: saleOffEntity.GHI_CHU,
                 THOI_GIAN: saleOffEntity.THOI_GIAN,
-                NGAY_AP_DUNG: dateTimePicker.current.value,
+                //k rõ lý do ngày bị trừ 7 tiếng khi truyền xuống back-end., trên front end log ra vẫn đúng, nên cộng thêm 7h
+                NGAY_AP_DUNG: addHoursToDate(dateTimePicker.current.value, 7),
                 //NGAY_TAO: datePicker.current.value,
                 chiTietKhuyenMai: data
             }
@@ -359,7 +374,8 @@ function ProductSaleOffEdit(props) {
                 MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV,
                 GHI_CHU: saleOffEntity.GHI_CHU,
                 THOI_GIAN: saleOffEntity.THOI_GIAN,
-                NGAY_AP_DUNG: dateTimePicker.current.value,
+                //k rõ lý do ngày bị trừ 7 tiếng khi truyền xuống back-end., trên front end log ra vẫn đúng, nên cộng thêm 7h
+                NGAY_AP_DUNG: addHoursToDate(dateTimePicker.current.value, 7),
                 //NGAY_TAO: datePicker.current.value,
                 chiTietKhuyenMai: data
             }

@@ -220,7 +220,7 @@ function SizeManagement(props) {
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
                 <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedRecord })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedRecord.MA_SIZE })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
                 <button onClick={() => {
                     // deleteProduct();
                     if (!selectedRecord.TEN_SIZE) {
@@ -228,10 +228,10 @@ function SizeManagement(props) {
                     }
                     setShowConfirmDialog(true);
                     setConfirmDialogTitle('Xác nhận xóa size ' + selectedRecord.TEN_SIZE);
-                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedRecord })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
+                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedRecord.MA_SIZE })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
                 <button onClick={() => {
                     openDialogFnc('view');
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedRecord })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedRecord.MA_SIZE })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>

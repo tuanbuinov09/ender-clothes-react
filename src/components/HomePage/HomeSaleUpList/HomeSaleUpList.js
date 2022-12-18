@@ -26,16 +26,10 @@ function HomeSaleUpList({ products }) {
     }, []);
     return (
         <div className="section">
-{isLoading ? <div className={clsx(style.flex_1, style.list)}>
-                <LoadingAnimation/>
-            </div> :<div className={clsx(style.itemList)}>
-                {/* {products.map((product, index) => {
-                    if (index === 0 || index === 2) {
-                        return (<Item key={index} product={product} type={2} />)
-                    } else {
-                        return (<Item key={index} product={product} type={3} />)
-                    }
-                })} */}
+            {isLoading ? <div className={clsx(style.flex_1, style.list)}>
+                <LoadingAnimation />
+            </div> : <div className={clsx(style.itemList)}>
+                {!saleOff || saleOff.length === 0 ? <h2 className={clsx(style.subTitle)}>Không có sản phẩm nào đang khuyến mãi</h2> : <></>}
                 {saleOff.map((product, index) => {
                     if (index === 0 || index === 2) {
                         return (<Item key={index} product={product} type={1} />)
@@ -70,10 +64,10 @@ function HomeSaleUpList({ products }) {
                         <Link to="nowhere" className="btn bg-dark">SEE DETAILS</Link>
                     </div> */}</>
             </div>}
-            
+
             <div className={clsx(style.btnContainer)}><Link to={`/sale-off`} className={clsx(style.btn)}>XEM CHI TIẾT</Link></div>
 
-        </div>
+        </div >
     );
 }
 

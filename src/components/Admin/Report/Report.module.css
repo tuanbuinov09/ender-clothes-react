@@ -41,3 +41,29 @@
     display: inline-block;
     float: right;
 }
+.checkButton{
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    padding: 4px 12px;
+    border:  none;
+    background-color:#088699;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+
+}
+
+.printButton{
+    appearance: none !important;
+    border-radius: 0 !important;
+    color: #fff !important;
+    border-color: #fff !important;
+    margin-right: 32px;
+    width: 120px;
+}
+.iconSvg {
+    margin-right: 8px;
+    margin-bottom: -8px;
+}

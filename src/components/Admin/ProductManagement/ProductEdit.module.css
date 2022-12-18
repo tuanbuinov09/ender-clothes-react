@@ -338,3 +338,23 @@ svg{
 
     margin-left: 0;
 }
+
+
+.quantityInputContainer{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.quantityInputGroup{
+    width: 33.3333%;
+}
+.quantityInputGroup .input{
+    width: 100%;
+    appearance: none;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #aaa;
+    padding: 4px 12px 4px 0px;
+    font-size: 14px;
+    height: 31px;
+}
