@@ -74,18 +74,26 @@ function ProductSaleOffManagement(props) {
                     //     console.log(date.toLocaleTimeString('vi-VN'))
                     //     phieuNhap.GIO_AP_DUNG = date.toLocaleTimeString('vi-VN');
                     // }
-                    if (phieuNhap.TRANG_THAI === 0) {
-                        phieuNhap.TRANG_THAI_STR = 'Chờ duyệt';
+
+                    if (phieuNhap.TRANG_THAI) {
+                        phieuNhap.TRANG_THAI_XOA = 'Còn hoạt động';
                     }
-                    if (phieuNhap.TRANG_THAI === 1) {
-                        phieuNhap.TRANG_THAI_STR = 'Đang giao hàng';
+
+                    if (!phieuNhap.TRANG_THAI) {
+                        phieuNhap.TRANG_THAI_XOA = 'Đã xóa';
                     }
-                    if (phieuNhap.TRANG_THAI === 2) {
-                        phieuNhap.TRANG_THAI_STR = 'Đã hoàn tất';
-                    }
-                    if (phieuNhap.TRANG_THAI === -1) {
-                        phieuNhap.TRANG_THAI_STR = 'Đã hủy';
-                    }
+                    // if (phieuNhap.TRANG_THAI === 0) {
+                    //     phieuNhap.TRANG_THAI_STR = 'Chờ duyệt';
+                    // }
+                    // if (phieuNhap.TRANG_THAI === 1) {
+                    //     phieuNhap.TRANG_THAI_STR = 'Đang giao hàng';
+                    // }
+                    // if (phieuNhap.TRANG_THAI === 2) {
+                    //     phieuNhap.TRANG_THAI_STR = 'Đã hoàn tất';
+                    // }
+                    // if (phieuNhap.TRANG_THAI === -1) {
+                    //     phieuNhap.TRANG_THAI_STR = 'Đã hủy';
+                    // }
 
                     if (phieuNhap.DANG_KHUYEN_MAI === 1) {
                         phieuNhap.DANG_KHUYEN_MAI = 'Đang khuyến mãi';
@@ -145,7 +153,7 @@ function ProductSaleOffManagement(props) {
     const openDialogFnc = async (paramViewMode) => {
         console.log('fired', paramViewMode)
 
-        if (!selectedSaleOff.MA_KM) {
+        if (!selectedSaleOff.MA_KM && paramViewMode !== 'add') {
             return;
         }
 
@@ -274,7 +282,7 @@ function ProductSaleOffManagement(props) {
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
                 <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedSaleOff })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedSaleOff.MA_KM || !selectedSaleOff.TRANG_THAI })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
                 <button onClick={() => {
                     if (!selectedSaleOff.MA_KM) {
                         return;
@@ -282,10 +290,10 @@ function ProductSaleOffManagement(props) {
                     // deleteProduct();
                     setShowConfirmDialog(true);
                     setConfirmDialogTitle('Xác nhận xóa đợt khuyến mãi ' + selectedSaleOff.MA_KM);
-                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedSaleOff })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
+                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedSaleOff.MA_KM || !selectedSaleOff.TRANG_THAI })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
                 <button onClick={() => {
                     openDialogFnc('view');
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedSaleOff })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedSaleOff.MA_KM })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>
@@ -318,7 +326,8 @@ function ProductSaleOffManagement(props) {
                     <ColumnDirective field='MA_CAC_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Các SP' width='300' editType='dropdownedit' textAlign="Left" />
                     <ColumnDirective field='NGAY_TAO' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ngày tạo' width='150' textAlign="Left" />
                     <ColumnDirective field='GHI_CHU' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Ghi chú' width='150' textAlign="Left" />
-                    <ColumnDirective field='DANG_KHUYEN_MAI' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Trạng thái' width='200' textAlign="Left" />
+                    <ColumnDirective field='DANG_KHUYEN_MAI' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Trạng thái khuyến mãi' width='200' textAlign="Left" />
+                    <ColumnDirective field='TRANG_THAI_XOA' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Trạng thái xóa' width='200' textAlign="Left" />
                     <ColumnDirective field='MA_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã NV tạo' width='200' textAlign="Left" />
                     <ColumnDirective field='HO_TEN_NV' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Họ tên NV tạo' width='200' textAlign="Left" />
 

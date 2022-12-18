@@ -17,7 +17,7 @@ import { useReactToPrint } from 'react-to-print';
 import '../ej2-grid.css'
 import SaleReportToPrint from "./SaleReportToPrint";
 import { useNavigate } from 'react-router-dom';
-
+import { PrintIcon } from "../../../icons";
 loadCldr(numberingSystems, gregorian, numbers, timeZoneNames, weekData);
 
 function Report(props) {
@@ -294,9 +294,9 @@ function Report(props) {
                             linkExport();
                         }} ref={toDate} format={'dd/MM/yyyy'} locale='vi' />
                     </div>
-                    <button className={clsx(style.btnExport)} onClick={() => {
+                    <button className={clsx(style.btnExport, style.checkButton, style.printButton)} onClick={() => {
                         print2();
-                    }}>In báo cáo</button>
+                    }}><span className={clsx(style.iconSvg)}><PrintIcon /></span>In báo cáo</button>
                     {/* {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>} */}
 
                 </div>
@@ -344,9 +344,9 @@ function Report(props) {
                         }} ref={toDateProfit} format={'dd/MM/yyyy'} locale='vi' />
                     </div>
 
-                    <button className={clsx(style.btnExport)} onClick={() => {
+                    <button className={clsx(style.btnExport, style.checkButton, style.printButton)} onClick={() => {
                         print3();
-                    }}>In báo cáo</button>
+                    }}><span className={clsx(style.iconSvg)}><PrintIcon /></span>In báo cáo</button>
                     {/* {selectedDates?<a href={"http://localhost:22081/api/NhanVien/report-sale" +`?from=${selectedDates.from}&to=${selectedDates.to}`} download>Xuất File</a>:<></>} */}
 
                 </div>

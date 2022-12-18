@@ -226,7 +226,7 @@ function ProductManagement(props) {
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
                 <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedCart.MA_SP })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
                 <button onClick={() => {
                     // deleteProduct();
                     if (!selectedCart.TEN_SP) {
@@ -234,10 +234,10 @@ function ProductManagement(props) {
                     }
                     setShowConfirmDialog(true);
                     setConfirmDialogTitle('Xác nhận xóa sản phẩm ' + selectedCart.TEN_SP);
-                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
+                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedCart.MA_SP })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button>
                 <button onClick={() => {
                     openDialogFnc('view');
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart.MA_SP })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>

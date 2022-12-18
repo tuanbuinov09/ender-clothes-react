@@ -113,6 +113,7 @@ function ItemListWithTitle({ products, type, top }) {
                 {isLoading ? <div className={clsx(style.flex_1, style.list)}>
                     <LoadingAnimation />
                 </div> : <div className={style.itemList}>
+                    {!products2 || products2.length === 0 ? <h2 className={clsx(style.subTitle)}>Không có sản phẩm nào thỏa điều kiện xem</h2> : <></>}
                     {products2.map((product, index) => {
                         return (<Item key={index} product={product} type={1} />);
                     })}

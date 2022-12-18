@@ -197,7 +197,7 @@ function ProductReturnManagement(props) {
                 }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedReturn })}><span className={clsx(style.iconSvg)}><XIcon /></span>Xóa</button> */}
                 <button onClick={() => {
                     openDialogFnc('view');
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedReturn })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedReturn.MA_PT })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>

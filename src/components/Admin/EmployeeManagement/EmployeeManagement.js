@@ -235,7 +235,7 @@ function EmployeeManagement(props) {
                 }} className={clsx(style.viewButton, style.addButton)}><span className={clsx(style.iconSvg)}><PlusIcon /></span>Thêm</button>
                 <button onClick={() => {
                     openDialogFnc('edit');
-                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedRecord })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
+                }} className={clsx(style.viewButton, style.editButton, { [style.inActive]: !selectedRecord || !selectedRecord.TRANG_THAI })}><span className={clsx(style.iconSvg)}><EditIcon /></span>Sửa</button>
                 <button onClick={() => {
                     // deleteProduct();
                     if (!selectedRecord.HO_TEN) {
@@ -243,7 +243,7 @@ function EmployeeManagement(props) {
                     }
                     setShowConfirmDialog(true);
                     setConfirmDialogTitle('Xác nhận vô hiệu hóa tài khoản của nhân viên ' + selectedRecord.HO_TEN);
-                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedRecord.TRANG_THAI })}><span className={clsx(style.iconSvg)}><XIcon /></span>Vô hiệu hóa</button>
+                }} className={clsx(style.viewButton, style.deleteButton, { [style.inActive]: !selectedRecord || !selectedRecord.TRANG_THAI })}><span className={clsx(style.iconSvg)}><XIcon /></span>Vô hiệu hóa</button>
                 <button onClick={() => {
                     openDialogFnc('view');
                 }} className={clsx(style.viewButton)}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>

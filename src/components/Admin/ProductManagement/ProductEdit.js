@@ -4,7 +4,7 @@ import style from './ProductEdit.module.css';
 import clsx from 'clsx';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors } from '../../../uitilities/utilities';
+import { loadLocaleSyncfusion, removeSyncfusionLicenseMessage, setupInterceptors, intToVNDCurrencyFormat } from '../../../uitilities/utilities';
 import { useDispatch } from 'react-redux/es/exports';
 import { XIcon, CheckIcon, SaveIcon, CancelIcon, PrintIcon, EditIcon } from '../../../icons';
 import { toast } from 'react-toastify';
@@ -31,7 +31,7 @@ function ProductEdit(props) {
     const [sizes, setSizes] = useState([]);
     const [colors, setColors] = useState([]);
     const [errorMessage, setErrorMessage] = useState({ errorTEN_SP: "", errorTHE_LOAI: "", errorMO_TA: "", errorBANG_MAU: "", errorBANG_SIZE: "", errorHINH_ANH_CHITIET: "", errorHINH_ANH_CHUNG: "" });
-
+    const [productDetailsForImport, setProductDetailsForImport] = useState([]);
 
     removeSyncfusionLicenseMessage();
     const multiSelectSizes = useRef();
@@ -193,6 +193,8 @@ function ProductEdit(props) {
                                     oldColors.current = listSelectedColors;
 
                                     multiSelectColors.current.value = listSelectedColors;
+
+                                    setProductDetailsForImport(response.chiTietSanPham);
                                 });
 
                             } catch (error) {
@@ -202,6 +204,23 @@ function ProductEdit(props) {
 
 
                         }
+                        // if (props.viewMode === 'view') {
+                        //     axios.get(`${process.env.REACT_APP_API_URL}/api/SanPham/detail-for-import?productId=${props.productId}`).then(res => {
+                        //         // console.log('dt for import: ', res.data)
+                        //         res.data.forEach(item => {
+                        //             // item.GIA = 0;
+                        //             // item.SO_LUONG = 0;
+                        //             // item.errorGIA_NHAP = "";
+                        //             // item.errorSO_LUONG = "";
+                        //         })
+
+                        //         let a = res.data.map(item => {
+                        //             return { MA_CT_SP: item.MA_CT_SP, SO_LUONG: item.SO_LUONG, GIA: item.GIA }
+                        //         });
+                        //         console.log(a);
+                        //         setProductDetailsForImport(res.data);
+                        //     })
+                        // }
                     })
                 })
             })
@@ -630,7 +649,67 @@ function ProductEdit(props) {
                         }
                     </div>
                 }
+                {productDetailsForImport.length > 0 ?
+                    // <div className={clsx(style.detailFileUploadsContainer)}>
+                    <><div className={clsx(style.quantityInputContainer)}>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Màu /size</label>
 
+                        </div>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Số lượng tồn</label>
+                            {<p className={clsx(style.errorMessage)}>{errorMessage.errorSO_LUONG_ALL}</p>}
+                        </div>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                            <label className={clsx(style.inputLabel)}>Đơn giá</label>
+
+                        </div>
+                    </div>
+                    </>
+                    // </div>
+                    : <></>}
+                {productDetailsForImport.map((item, index) => {
+                    return (
+                        <div key={index} className={clsx(style.quantityInputContainer)}>
+                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                {/* <label className={clsx(style.inputLabel)}>Màu /size:</label> */}
+                                <input disabled onChange={(e) => {
+
+                                }} type="text" name='MAU_SIZE'
+                                    value={`${item.TEN_MAU}/ ${item.TEN_SIZE}`}
+                                    placeholder="" className={clsx(style.input)}
+                                />
+
+                            </div>
+                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                {/* <label className={clsx(style.inputLabel)}>Số lượng:</label> */}
+                                <input disabled={props.viewMode === 'view'} onChange={(e) => {
+                                    console.log(e.target.value)
+                                }} type="number"
+                                    value={productDetailsForImport[index].SL_TON}
+                                    placeholder="" className={clsx(style.input)}
+                                    min={0}
+                                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                                />
+                                {<p className={clsx(style.errorMessage)}>{item.errorSO_LUONG}</p>}
+                            </div>
+                            <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                                {/* <label className={clsx(style.inputLabel)}>Giá nhập:</label> */}
+                                <input disabled={props.viewMode === 'view'} onChange={(e) => {
+                                    console.log(e.target.value)
+                                }} type="text"
+                                    value={intToVNDCurrencyFormat(productDetailsForImport[index].GIA, true)}
+                                    placeholder="" className={clsx(style.input)}
+                                    min={0}
+                                    //disable scroll increase
+                                    onFocus={(e) => e.target.addEventListener("wheel", function (e) { e.preventDefault() }, { passive: false })}
+                                />
+                                {<p className={clsx(style.errorMessage)}>{item.errorGIA_NHAP}</p>}
+                            </div>
+
+                        </div>
+                    )
+                })}
 
                 {<p className={clsx(style.errorMessage)}>{errorMessage.errorHINH_ANH_CHITIET}</p>}
 
