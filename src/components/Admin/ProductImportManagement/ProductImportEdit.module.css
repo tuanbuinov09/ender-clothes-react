@@ -340,3 +340,10 @@ svg{
 .totalLabel{
     font-size: 12px;
 }
+
+.productDropdown{
+    width: 50%;
+}
+.marginBottom16{
+    margin-bottom: 16px;
+}

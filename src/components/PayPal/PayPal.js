@@ -61,68 +61,72 @@ export default function PayPal(props) {
     })
     console.log(cartDetail);
     useEffect(() => {
-
-        window.paypal
-            .Buttons({
-                createOrder: (data, actions, err) => {
-                    return actions.order.create({
-                        intent: "CAPTURE",
-                        purchase_units:
-                            //cartDetail
-                            [
-                                {
-                                    description: "Cool looking table",
-                                    amount: {
-                                        currency_code: "USD",
-                                        value: (total / tiGia).toFixed(2),
+        try {
+            window.paypal
+                .Buttons({
+                    createOrder: (data, actions, err) => {
+                        return actions.order.create({
+                            intent: "CAPTURE",
+                            purchase_units:
+                                //cartDetail
+                                [
+                                    {
+                                        description: "Cool looking table",
+                                        amount: {
+                                            currency_code: "USD",
+                                            value: (total / tiGia).toFixed(2),
+                                        },
                                     },
-                                },
-                            ],
-                    });
-                },
-                onApprove: async (data, actions) => {
-                    const order = await actions.order.capture();
-                    console.log(order);
+                                ],
+                        });
+                    },
+                    onApprove: async (data, actions) => {
+                        const order = await actions.order.capture();
+                        console.log(order);
 
-                    //chạy code thêm ở đây
+                        //chạy code thêm ở đây
 
-                    dispatch(clearBag());
-                    dispatch(caculateTotalAmountAndPrice());
+                        dispatch(clearBag());
+                        dispatch(caculateTotalAmountAndPrice());
 
 
-                    const GIO_HANG_ENTITY = {};
-                    const shipInfo = JSON.parse(localStorage.getItem('shipInfo'));
+                        const GIO_HANG_ENTITY = {};
+                        const shipInfo = JSON.parse(localStorage.getItem('shipInfo'));
 
-                    GIO_HANG_ENTITY.MA_KH = shipInfo.MA_KH;
-                    GIO_HANG_ENTITY.HO_TEN = shipInfo.HO_TEN;
-                    GIO_HANG_ENTITY.SDT = shipInfo.SDT;
-                    GIO_HANG_ENTITY.EMAIL = shipInfo.EMAIL;
-                    GIO_HANG_ENTITY.DIA_CHI = shipInfo.DIA_CHI;
-                    GIO_HANG_ENTITY.GHI_CHU = shipInfo.GHI_CHU;
+                        GIO_HANG_ENTITY.MA_KH = shipInfo.MA_KH;
+                        GIO_HANG_ENTITY.HO_TEN = shipInfo.HO_TEN;
+                        GIO_HANG_ENTITY.SDT = shipInfo.SDT;
+                        GIO_HANG_ENTITY.EMAIL = shipInfo.EMAIL;
+                        GIO_HANG_ENTITY.DIA_CHI = shipInfo.DIA_CHI;
+                        GIO_HANG_ENTITY.GHI_CHU = shipInfo.GHI_CHU;
 
-                    GIO_HANG_ENTITY.chiTietGioHang = bagProducts.map((product) => {
-                        return product.chiTietSanPham[0];
-                    })
-                    console.log(GIO_HANG_ENTITY);
+                        GIO_HANG_ENTITY.chiTietGioHang = bagProducts.map((product) => {
+                            return product.chiTietSanPham[0];
+                        })
+                        console.log(GIO_HANG_ENTITY);
 
-                    axios.post(`http://localhost:22081/api/KhachHang/add-cart`, {
-                        ...GIO_HANG_ENTITY
-                    }).then(res => {
-                        const result = res.data;
-                        // console.log(productsFromApi);
-                        console.log(result);
-                        // alert(result);
-                        toast.success(result);
-                    });
+                        axios.post(`http://localhost:22081/api/KhachHang/add-cart`, {
+                            ...GIO_HANG_ENTITY
+                        }).then(res => {
+                            const result = res.data;
+                            // console.log(productsFromApi);
+                            console.log(result);
+                            // alert(result);
+                            toast.success(result);
+                        });
 
-                    navigate("/", { replace: true });
+                        navigate("/", { replace: true });
 
-                },
-                onError: (err) => {
-                    console.log(err);
-                },
-            })
-            .render(paypal.current);
+                    },
+                    onError: (err) => {
+                        console.log(err);
+                    },
+                })
+                .render(paypal.current);
+        } catch (e) {
+            toast.error('Có lỗi với hệ thống thanh toán, vui lòng tải lại trang và đặt mua lại, nếu vẫn còn xảy ra lỗi, hãy báo lỗi với chúng tôi')
+        }
+
     }, []);
 
     return (
