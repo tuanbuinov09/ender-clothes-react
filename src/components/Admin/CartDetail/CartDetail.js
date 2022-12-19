@@ -197,7 +197,7 @@ function CartDetail(props) {
     const finish = () => {
         try {
             axios.put(`http://localhost:22081/api/NhanVien/finish-cart`, {
-                ID_GH: cart.ID_GH
+                ID_DH: cart.ID_DH
             },
                 {
                     headers: {
@@ -231,7 +231,7 @@ function CartDetail(props) {
         }
         try {
             axios.put(`http://localhost:22081/api/GioHang/assign-delivery`, {
-                ID_GH: cart.ID_GH,
+                ID_DH: cart.ID_DH,
                 MA_NV_GIAO: assignedEmpID,
                 MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
             },
@@ -266,7 +266,7 @@ function CartDetail(props) {
         const accessToken = props.type === "userViewing" ? JSON.parse(localStorage.getItem('user')).accessToken : JSON.parse(localStorage.getItem('employee')).accessToken;
         try {
             axios.put(`http://localhost:22081/api/KhachHang/cancel-cart`, {
-                ID_GH: cart.ID_GH
+                ID_DH: cart.ID_DH
             },
                 {
                     headers: {
@@ -288,7 +288,7 @@ function CartDetail(props) {
         const maHD = newInvoiceIdByDate();
         //tạo hóa đơn
         axios.post(`http://localhost:22081/api/HoaDon/`, {
-            ID_GH: cart.ID_GH,
+            ID_DH: cart.ID_DH,
             MA_HD: maHD,
             MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
         },
