@@ -189,7 +189,7 @@ function CartDetailToPrint(props) {
     //--------- const approve = () => {
     //     try {
     //         axios.put(`http://localhost:22081/api/GioHang/approve`, {
-    //             ID_GH: cart.ID_GH,
+    //             ID_DH: cart.ID_DH,
     //             MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
     //         }).then(res => {
     //             const response = res.data;

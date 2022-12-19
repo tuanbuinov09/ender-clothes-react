@@ -79,7 +79,7 @@ function ProductSaleOffEdit(props) {
     //             if (item.NGAY_GIAO) {
 
     //                 item.NGAY_GIAO_TYPE_DATE = new Date(item.NGAY_GIAO);
-    //                 // console.log(item.ID_GH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
+    //                 // console.log(item.ID_DH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
 
     //                 let date = new Date(item.NGAY_GIAO);
     //                 item.NGAY_GIAO = date.toLocaleDateString('vi-VN');
@@ -494,7 +494,7 @@ function ProductSaleOffEdit(props) {
             //     return;
             // }
             // try {
-            //     axios.get(`${process.env.REACT_APP_API_URL}/api/GioHang/for-return?cartId=${selectedrecords[0].ID_GH}`).then(res => {
+            //     axios.get(`${process.env.REACT_APP_API_URL}/api/GioHang/for-return?cartId=${selectedrecords[0].ID_DH}`).then(res => {
             //         const response = res.data;
             //         console.log('res: ' + response);
             //         response.chiTietGioHang2.forEach(item => {

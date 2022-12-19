@@ -14,8 +14,10 @@ import { Query } from '@syncfusion/ej2-data';
 import CartDetailToPrint from '../CartDetail/CartDetailToPrint';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
 import { REACT_APP_API_URL } from '../../../uitilities/CONSTANT';
-
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 function UserPurchasedCart(props) {
+    let navigate = useNavigate();
     removeSyncfusionLicenseMessage();
     const [carts, setCarts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
@@ -24,6 +26,17 @@ function UserPurchasedCart(props) {
     const [rerender, setRerender] = useState();
     const [filterState, setFilterState] = useState(-2);
     const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => {
+        if (!JSON.parse(localStorage.getItem('user')) || !JSON.parse(localStorage.getItem('user')).MA_KH) {
+            toast.error("Hãy đăng nhập để truy cập trang này");
+            navigate("/user/login", true);
+        }
+        //khi unmount trả lại header
+        return () => {
+            props.changeHeader('user')
+        }
+
+    }, [])
     useEffect(() => {
         try {
             setIsLoading(true);
@@ -260,7 +273,7 @@ function UserPurchasedCart(props) {
 
                 <button onClick={() => {
                     openDialogFnc();
-                }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
+                }} className={clsx(style.viewButton, { [style.inActive]: !selectedCart.ID_DH })}><span className={clsx(style.iconSvg)}><ViewDetailIcon /></span>Xem chi tiết</button>
 
 
             </div>
@@ -299,7 +312,7 @@ function UserPurchasedCart(props) {
                 <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar, ColumnChooser]} />
             </GridComponent>
 
-            {openDialog && <CartDetail cartId={selectedCart.ID_GH} type='userViewing' rerender={toggleReRender} closeDialog={closeDialog} />}
+            {openDialog && <CartDetail cartId={selectedCart.ID_DH} type='userViewing' rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
     );
 }

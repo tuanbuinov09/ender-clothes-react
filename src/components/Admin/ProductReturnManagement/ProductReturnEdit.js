@@ -75,7 +75,7 @@ function ProductReturnEdit(props) {
                 if (item.NGAY_GIAO) {
 
                     item.NGAY_GIAO_TYPE_DATE = new Date(item.NGAY_GIAO);
-                    // console.log(item.ID_GH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
+                    // console.log(item.ID_DH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
 
                     let date = new Date(item.NGAY_GIAO);
                     item.NGAY_GIAO = date.toLocaleDateString('vi-VN');
@@ -170,7 +170,7 @@ function ProductReturnEdit(props) {
                                 if (item.NGAY_GIAO) {
 
                                     item.NGAY_GIAO_TYPE_DATE = new Date(item.NGAY_GIAO);
-                                    // console.log(item.ID_GH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
+                                    // console.log(item.ID_DH, Math.abs(DateDiff.inDays(new Date(), item.NGAY_GIAO_TYPE_DATE)))
 
                                     let date = new Date(item.NGAY_GIAO);
                                     item.NGAY_GIAO = date.toLocaleDateString('vi-VN');
@@ -192,13 +192,13 @@ function ProductReturnEdit(props) {
                                 }
                             })
                             res.data = res.data.filter(item => {
-                                return item.ID_GH === productReturnEntityFromApi.ID_GH
+                                return item.ID_DH === productReturnEntityFromApi.ID_DH
                             })
                             // console.log(a);
                             setCustomerCarts(res.data);
 
                             try {
-                                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${productReturnEntityFromApi.ID_GH}`).then(res => {
+                                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${productReturnEntityFromApi.ID_DH}`).then(res => {
                                     const response = res.data;
                                     console.log('res: ' + response);
                                     response.chiTietGioHang2.forEach(item => {
@@ -315,7 +315,7 @@ function ProductReturnEdit(props) {
             /** Get the selected records. */
             const selectedrecords = grid.current.getSelectedRecords();
 
-            _productReturnEntity.ID_GH = selectedrecords[0].ID_GH;
+            _productReturnEntity.ID_DH = selectedrecords[0].ID_DH;
         } else {
             toast.error('Bạn chưa chọn đơn cần trả')
         }
@@ -438,7 +438,7 @@ function ProductReturnEdit(props) {
                 return;
             }
             try {
-                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${selectedrecords[0].ID_GH}`).then(res => {
+                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${selectedrecords[0].ID_DH}`).then(res => {
                     const response = res.data;
                     console.log('res: ' + response);
                     response.chiTietGioHang2.forEach(item => {

@@ -13,6 +13,7 @@ import SectionTitle from '../../HomePage/SectionTitle/SectionTitle';
 import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
 import { Query } from '@syncfusion/ej2-data';
 import LoadingAnimation from '../../LoadingAnimation/LoadingAnimation'
+import { toast } from 'react-toastify';
 function CartManagement(props) {
     useEffect(() => {
 
@@ -24,6 +25,13 @@ function CartManagement(props) {
 
     props.changeHeader('employee')
     let navigate = useNavigate();
+    useEffect(() => {
+        if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
+            toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
+            navigate("/employee/login", true);
+        }
+    }, []);
+
     removeSyncfusionLicenseMessage();
     const [carts, setCarts] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
@@ -244,7 +252,7 @@ function CartManagement(props) {
         setOpenDialog(false);
     }
     const openDialogFnc = () => {
-        if (!selectedCart.ID_GH) {
+        if (!selectedCart.ID_DH) {
             return;
         }
         setOpenDialog(true);
@@ -331,6 +339,8 @@ function CartManagement(props) {
                     gridLines='Both'
                 >
                     <ColumnsDirective>
+                        <ColumnDirective field='ID_DH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã ĐH' width='130' textAlign="Left" /*isPrimaryKey={true}*/ />
+
                         <ColumnDirective field='HO_TEN' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Người nhận' width='200' textAlign="Left" />
                         <ColumnDirective field='SDT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='SĐT người nhận' width='200' editType='dropdownedit' textAlign="Left" />
                         {/* <ColumnDirective field='MA_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='MA_TL' width='100' textAlign="Right"/> */}
@@ -359,6 +369,7 @@ function CartManagement(props) {
                     gridLines='Both'
                 >
                     <ColumnsDirective>
+                        <ColumnDirective field='ID_DH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã ĐH' width='130' textAlign="Left" /*isPrimaryKey={true}*/ />
                         <ColumnDirective field='MA_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã KH' width='170' textAlign="Left" /*isPrimaryKey={true}*/ />
                         <ColumnDirective field='HO_TEN_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
                         <ColumnDirective field='SDT_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
@@ -386,7 +397,7 @@ function CartManagement(props) {
             }
 
 
-            {openDialog && <CartDetail cartId={selectedCart.ID_GH} rerender={toggleReRender} closeDialog={closeDialog} />}
+            {openDialog && <CartDetail cartId={selectedCart.ID_DH} rerender={toggleReRender} closeDialog={closeDialog} />}
         </div>
     );
 }
