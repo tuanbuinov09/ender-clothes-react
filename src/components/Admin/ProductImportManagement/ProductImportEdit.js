@@ -269,7 +269,7 @@ function ProductImportEdit(props) {
                 const response = res.data;
                 console.log('res: ' + response);
                 if (response.errorDesc) {
-                    toast.error(response.responseMessage);
+                    toast.error(response.errorDesc);
                     return
                 }
 
@@ -378,7 +378,7 @@ function ProductImportEdit(props) {
                     <div className={clsx(style.cartInfo, style.form)}>
 
 
-                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup, style.productDropdown)}>
                             <label className={clsx(style.inputLabel)}>Sản phẩm:</label>
                             <div className={clsx(style.dropdownList, style.datePickerContainer, { [style.readOnly]: props.viewMode === 'view' })}>
                                 <div className='control-section'>
@@ -439,7 +439,7 @@ function ProductImportEdit(props) {
                             {<p className={clsx(style.errorMessage)}>{errorMessage.errorGHI_CHU}</p>}
                         </div>
 
-                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup, style.marginBottom16)}>
                             <label className={clsx(style.inputLabel)}>Nhân viên tạo:</label>
                             <input type="text" placeholder="" disabled
                                 value={
@@ -447,7 +447,12 @@ function ProductImportEdit(props) {
                                 } name='HO_TEN_NV' className={clsx(style.input)} />
                         </div>
 
-
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                        </div>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                        </div>
+                        <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
+                        </div>
                         {productDetailsForImport.length > 0 ?
                             // <div className={clsx(style.detailFileUploadsContainer)}>
                             <>

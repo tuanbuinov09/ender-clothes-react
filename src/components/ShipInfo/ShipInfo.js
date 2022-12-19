@@ -104,7 +104,7 @@ function ShipInfo(props) {
                             localStorage.removeItem('shipInfo');
                             localStorage.setItem('shipInfo', JSON.stringify(shipInfo1));
                             console.log(localStorage.getItem('shipInfo', JSON.stringify(shipInfo1)));
-                            navigate("/purchase", { replace: true });
+                            navigate("/purchase", { replace: false });
                         }}>
                             <div className={clsx(style.inputGroup)}>
                                 <label className={clsx(style.inputLabel)}>Họ tên người nhận:</label>
