@@ -37,7 +37,7 @@ function CartDetail(props) {
     const grid = useRef();
     useEffect(() => {
 
-        console.log(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`);
+        console.log(`http://localhost:22081/api/DonHang?cartId=${props.cartId}`);
         try {
             axios.get(`http://localhost:22081/api/NhanVien/delivering`).then(res => {
                 const response = res.data;
@@ -48,7 +48,7 @@ function CartDetail(props) {
                 setEmployees(response);
                 try {
                     setIsLoading(true);
-                    axios.get(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`).then(res => {
+                    axios.get(`http://localhost:22081/api/DonHang?cartId=${props.cartId}`).then(res => {
                         const response = res.data;
                         response.chiTietGioHang2.forEach((resp, index) => {
                             try {
@@ -230,7 +230,7 @@ function CartDetail(props) {
             return;
         }
         try {
-            axios.put(`http://localhost:22081/api/GioHang/assign-delivery`, {
+            axios.put(`http://localhost:22081/api/DonHang/assign-delivery`, {
                 ID_DH: cart.ID_DH,
                 MA_NV_GIAO: assignedEmpID,
                 MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
