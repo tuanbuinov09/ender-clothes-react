@@ -198,7 +198,7 @@ function ProductReturnEdit(props) {
                             setCustomerCarts(res.data);
 
                             try {
-                                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${productReturnEntityFromApi.ID_DH}`).then(res => {
+                                axios.get(`${REACT_APP_API_URL}/api/DonHang/for-return?cartId=${productReturnEntityFromApi.ID_DH}`).then(res => {
                                     const response = res.data;
                                     console.log('res: ' + response);
                                     response.chiTietGioHang2.forEach(item => {
@@ -438,7 +438,7 @@ function ProductReturnEdit(props) {
                 return;
             }
             try {
-                axios.get(`${REACT_APP_API_URL}/api/GioHang/for-return?cartId=${selectedrecords[0].ID_DH}`).then(res => {
+                axios.get(`${REACT_APP_API_URL}/api/DonHang/for-return?cartId=${selectedrecords[0].ID_DH}`).then(res => {
                     const response = res.data;
                     console.log('res: ' + response);
                     response.chiTietGioHang2.forEach(item => {

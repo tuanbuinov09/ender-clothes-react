@@ -8,7 +8,9 @@ import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import loginImage from './062_Outline_OnlineShopping_MS.jpg';
 import { toast } from 'react-toastify';
 import { REACT_APP_API_URL } from '../../uitilities/CONSTANT';
-
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentCart, initCart } from "../../features/shoppingBag/shoppingBagSlice";
+import { getCurrentCartOfUser } from '../../uitilities/utilities';
 function Login(props) {
     let navigate = useNavigate();
     const [email, setEmail] = useState();
@@ -19,7 +21,10 @@ function Login(props) {
     const [showForgotPasswordFrom, setShowForgotPasswordForm] = useState(false);
 
     const [forgotPasswordModel, setForgotPasswordModel] = useState({ otp: '', password: '', email: '', confirmPassword: '' })
-
+    const bagProducts = useSelector((store) => {
+        return store.shoppingBag.bagProducts;
+    })
+    const dispatch = useDispatch();
     useEffect(() => {
         if (localStorage.getItem('user') && props.type === 'customer') {
             navigate("/user/info", { replace: true });
@@ -179,7 +184,7 @@ function Login(props) {
         axios.post(url, {
             MAT_KHAU: loginInfo.password,
             EMAIL: loginInfo.email
-        }).then(res => {
+        }).then(async res => {
             const userInfoFromRes = res.data;
             console.log(userInfoFromRes);
 
@@ -196,6 +201,10 @@ function Login(props) {
                         const listFavorite = respListFavorite.data;
                         localStorage.setItem('listFavourite', JSON.stringify(listFavorite));
                     });
+                    const a = await getCurrentCartOfUser();
+                    console.log(a, "utility")
+                    localStorage.setItem('ccart', JSON.stringify(a));
+                    dispatch(initCart(a));
                     navigate("/", { replace: true });
                 }
 

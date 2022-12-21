@@ -26,7 +26,7 @@ function CartDetailToPrint(props) {
     const grid = useRef();
     useEffect(() => {
 
-        console.log(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`);
+        console.log(`http://localhost:22081/api/DonHang?cartId=${props.cartId}`);
         try {
             axios.get(`http://localhost:22081/api/NhanVien/delivering`).then(res => {
                 const response = res.data;
@@ -40,7 +40,7 @@ function CartDetailToPrint(props) {
         } catch (error) {
             console.error(error);
         }
-        console.log(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`);
+        console.log(`http://localhost:22081/api/DonHang?cartId=${props.cartId}`);
         try {
             axios.get(`http://localhost:22081/api/HoaDon?cartId=${props.cartId}`).then(res => {
                 const response = res.data;
@@ -50,7 +50,7 @@ function CartDetailToPrint(props) {
             console.error(error);
         }
         try {
-            axios.get(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`).then(res => {
+            axios.get(`http://localhost:22081/api/DonHang?cartId=${props.cartId}`).then(res => {
                 const response = res.data;
                 response.chiTietGioHang2.forEach((resp, index) => {
                     try {
@@ -188,7 +188,7 @@ function CartDetailToPrint(props) {
 
     //--------- const approve = () => {
     //     try {
-    //         axios.put(`http://localhost:22081/api/GioHang/approve`, {
+    //         axios.put(`http://localhost:22081/api/DonHang/approve`, {
     //             ID_DH: cart.ID_DH,
     //             MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
     //         }).then(res => {

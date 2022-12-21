@@ -37,7 +37,7 @@ function CartDetail(props) {
     const grid = useRef();
     useEffect(() => {
 
-        console.log(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`);
+        console.log(`http://localhost:22081/api/DonHang?cartId=${props.cartId}`);
         try {
             axios.get(`http://localhost:22081/api/NhanVien/delivering`).then(res => {
                 const response = res.data;
@@ -48,7 +48,7 @@ function CartDetail(props) {
                 setEmployees(response);
                 try {
                     setIsLoading(true);
-                    axios.get(`http://localhost:22081/api/GioHang?cartId=${props.cartId}`).then(res => {
+                    axios.get(`http://localhost:22081/api/DonHang?cartId=${props.cartId}`).then(res => {
                         const response = res.data;
                         response.chiTietGioHang2.forEach((resp, index) => {
                             try {
@@ -230,7 +230,7 @@ function CartDetail(props) {
             return;
         }
         try {
-            axios.put(`http://localhost:22081/api/GioHang/assign-delivery`, {
+            axios.put(`http://localhost:22081/api/DonHang/assign-delivery`, {
                 ID_DH: cart.ID_DH,
                 MA_NV_GIAO: assignedEmpID,
                 MA_NV_DUYET: JSON.parse(localStorage.getItem('employee')).MA_NV
@@ -535,16 +535,16 @@ function CartDetail(props) {
                                 pageSettings={pageSettings}
                                 dataSource={cart.chiTietGioHang2} allowPaging={true} /*allowGrouping={true}*/
                                 allowSorting={true} allowFiltering={true}
-                                filterSettings={filterOptions} height={150}
+                                filterSettings={filterOptions} height={230}
                                 // rowSelected={rowSelected}
                                 gridLines='Both'
                             >
                                 <ColumnsDirective>
                                     <ColumnDirective field='STT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='STT' width='90' textAlign="Center" /*isPrimaryKey={true}*/ />
                                     <ColumnDirective field='TEN_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên SP' width='220' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                    <ColumnDirective field='TEN_MAU' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Màu' width='100' textAlign="Left" />
+                                    <ColumnDirective field='TEN_MAU' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Màu' width='120' textAlign="Left" />
                                     <ColumnDirective field='TEN_SIZE' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Size' width='100' textAlign="Left" />
-                                    <ColumnDirective field='GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá' width='150' textAlign="Right" />
+                                    <ColumnDirective field='GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá' width='130' textAlign="Right" />
                                     <ColumnDirective field='SO_LUONG' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Số lượng' width='120' editType='dropdownedit' textAlign="Right" />
                                     <ColumnDirective field='TRI_GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Trị giá' width='170' textAlign="Right" />
                                     {/* <ColumnDirective field='MA_TL'  clipMode='EllipsisWithTooltip' headerTextAlign='Center'  headerText='MA_TL' width='100' textAlign="Right"/> */}

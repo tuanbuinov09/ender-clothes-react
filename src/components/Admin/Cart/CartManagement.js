@@ -47,7 +47,7 @@ function CartManagement(props) {
             setIsLoading(true);
             let url = ((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
                 `http://localhost:22081/api/NhanVien/delivering-by-emp?deliverEmpId=${(JSON.parse(localStorage.getItem('employee'))).MA_NV}`
-                : `http://localhost:22081/api/GioHang/all?filterState=${filterState}`;
+                : `http://localhost:22081/api/DonHang/all?filterState=${filterState}`;
 
             console.log(url)
             axios.get(url).then(res => {

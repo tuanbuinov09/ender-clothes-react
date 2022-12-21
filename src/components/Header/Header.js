@@ -10,7 +10,7 @@ import clsx from "clsx";
 import OverCoat from "../SideBarComponents/OverCoat";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { caculateTotalAmountAndPrice } from "../../features/shoppingBag/shoppingBagSlice";
+import { caculateTotalAmountAndPrice, initCart } from "../../features/shoppingBag/shoppingBagSlice";
 import { store } from "../../store";
 import axios from "axios";
 // const input = [//this is what input look likes
@@ -164,7 +164,9 @@ function Header(props) {
     useEffect(() => {
         dispatch(caculateTotalAmountAndPrice());
     }, [bagProducts]);
-
+    useEffect(() => {
+        dispatch(initCart(JSON.parse(localStorage.getItem('ccart')) || []));
+    }, []);
     const [overActive, setOverActive] = useState(false);
     const toggleOverActive = () => {
         setOverActive(!overActive);
