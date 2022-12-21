@@ -11,6 +11,8 @@ import { REACT_APP_API_URL } from '../../uitilities/CONSTANT';
 import { isValidPhone } from '../../uitilities/utilities';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { clearBag, clearBagLogout } from '../../features/shoppingBag/shoppingBagSlice';
 
 function UserInfo(props) {
     const [errorMessage, setErrorMessage] = useState({ errorName: "", errorAddress: "", errorEmail: "", errorPhone: "", overAllError: "" });
@@ -18,7 +20,7 @@ function UserInfo(props) {
     const [shipInfo, setShipInfo] = useState({});
     const [isLoading, setIsLoading] = useState(false);
     const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
-
+    const dispatch = useDispatch();
     let navigate = useNavigate();
     useEffect(() => {
         // setUserInfo(JSON.parse(localStorage.getItem('user')));
@@ -179,6 +181,9 @@ function UserInfo(props) {
                     <button className={clsx(style.checkButton, style.printButton, style.logOutBtn)} onClick={() => {
                         localStorage.removeItem('user');
                         localStorage.removeItem('listFavourite');
+
+                        localStorage.removeItem('ccart');
+                        dispatch(clearBagLogout());
                         navigate("/user/login", { replace: true });
                     }}> <span className={clsx(style.iconSvg)}><LogOutIcon /></span> Đăng xuất</button>
                     <button className={clsx(style.checkButton, style.printButton, style.changePassButton)}

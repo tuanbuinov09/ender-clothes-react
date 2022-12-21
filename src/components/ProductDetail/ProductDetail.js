@@ -349,6 +349,12 @@ function ProductDetail(props) {
                     <div className={clsx(style.desc)}>{product.MO_TA ? product.MO_TA : "Không có mô tả cho sản phẩm này"}</div>
                     <div className={clsx(style.btnContainer)}
                         onClick={(e) => {
+                            const user = JSON.parse(localStorage.getItem('user'));
+                            if (!user) {
+                                toast.error("Vui lòng đăng nhập để tiếp tục", { autoClose: 1500 });
+                                navigate("/user/login", { replace: true });
+                                return;
+                            }
                             console.log("selected size, color: ", selectedProductDetail.TEN_SIZE, selectedProductDetail.TEN_MAU)
                             if (product.TONG_SL_TON <= 0) {
                                 return;
@@ -356,16 +362,18 @@ function ProductDetail(props) {
                             const quantityInCart = checkQuantity(selectedProductDetail.MA_CT_SP)
                             console.log(quantityInCart);
 
-                            if ((quantityInCart) === selectedProductDetail.SL_TON || selectedProductDetail.SL_TON === 0) {
-                                console.log("Đạt giới hạn tồn kho của sản phẩm")
-                                toast.error("Đạt giới hạn tồn kho của sản phẩm", { autoClose: 1500 });
+                            if (selectedProductDetail.SL_TON === 0) {
+                                // console.log("Không thể thêm quá số lượng tồn")
+                                // toast.error("Không thể thêm quá số lượng tồn", { autoClose: 1500 });
                                 return;
+                            } else if ((quantityInCart) === selectedProductDetail.SL_TON) {
+                                toast.error("Không thể thêm quá số lượng tồn", { autoClose: 1500 });
                             }
                             toast.success("Đã thêm sản phẩm vào giỏ", { autoClose: 1500 });
                             dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedProductDetail, SO_LUONG: 1, SO_LUONG_TON: selectedProductDetail.SL_TON }] }));
                             dispatch(caculateTotalAmountAndPrice());
                         }}>
-                        <button className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 })}>THÊM VÀO GIỎ HÀNG</button>
+                        <button className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 || selectedProductDetail.SL_TON === 0 })}>THÊM VÀO GIỎ HÀNG</button>
                     </div>
 
                 </div>

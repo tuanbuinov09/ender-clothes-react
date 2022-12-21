@@ -6,6 +6,7 @@ import style from './PayPal.module.css';
 import axios from "axios";
 import clsx from "clsx";
 import { toast } from 'react-toastify';
+import { REACT_APP_API_URL } from "../../uitilities/CONSTANT";
 export default function PayPal(props) {
     const paypal = useRef();
     let navigate = useNavigate();
@@ -105,14 +106,29 @@ export default function PayPal(props) {
                         })
                         console.log(GIO_HANG_ENTITY);
 
-                        axios.post(`http://localhost:22081/api/KhachHang/add-cart`, {
+                        // axios.post(`http://localhost:22081/api/KhachHang/add-cart`, {
+                        //     ...GIO_HANG_ENTITY
+                        // }).then(res => {
+                        //     const result = res.data;
+                        //     // console.log(productsFromApi);
+                        //     console.log(result);
+                        //     // alert(result);
+                        //     toast.success(result);
+                        // });
+
+                        axios.post(`${REACT_APP_API_URL}/api/KhachHang/purchase-cart`, {
                             ...GIO_HANG_ENTITY
                         }).then(res => {
                             const result = res.data;
                             // console.log(productsFromApi);
                             console.log(result);
                             // alert(result);
-                            toast.success(result);
+                            //toast.success(result);
+                            if (result.errorDesc) {
+                                toast.error('Đặt hàng thất bại, vui lòng liên hệ cửa hàng');
+                            } else {
+                                toast.success('Đặt hàng thành công');
+                            }
                         });
 
                         navigate("/", { replace: true });

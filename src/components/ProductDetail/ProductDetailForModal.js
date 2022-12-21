@@ -3,14 +3,18 @@ import { useParams } from 'react-router-dom';
 import style from './ProductDetail.module.css';
 import clsx from 'clsx';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import LoadingAnimation from '../LoadingAnimation/LoadingAnimation';
 import EJ2ImageCarousel from './EJ2ImageCarousel';
-import { removeSyncfusionLicenseMessage } from '../../uitilities/utilities'
+import { removeSyncfusionLicenseMessage, setupInterceptors } from '../../uitilities/utilities'
 import { caculateTotalAmountAndPrice, addItem, removeItem, increaseAmount, decreaseAmount } from '../../features/shoppingBag/shoppingBagSlice.js';
 import { REACT_APP_API_PUBLIC_IMAGE_FOLDER_URL, REACT_APP_API_URL } from '../../uitilities/CONSTANT';
+import StarRatingSize24 from '../StarRating/StarRatingSize24';
 function ProductDetailForModal(props) {
+    let navigate = useNavigate();
+    setupInterceptors(navigate, 'user');
     const dispatch = useDispatch();
     const params = useParams();
     console.log(props.productId);
@@ -237,8 +241,14 @@ function ProductDetailForModal(props) {
                     })}
                 </div>
             </div>
-            <p className={clsx(style.sizeQuantity)}>Tồn kho: {selectedProductDetail.SL_TON}</p>
+            <div className={clsx(style.rateAndQuantityContainer)}>
+                <div className={clsx(style.ratingGeneralInfo)}>
+                    <StarRatingSize24 readOnly={true} val={product.DIEM_TRUNG_BINH} />
+                    <span className={clsx(style.rateCount)}>{product.TONG_SO_LUOT_DANH_GIA} lượt đánh giá</span>
+                </div>
 
+                <p className={clsx(style.sizeQuantity)}>Tồn kho: {selectedProductDetail.SL_TON}</p>
+            </div>
             {product.PHAN_TRAM_GIAM ?
                 <>
                     <p className={clsx(style.oldPrice)}><span className={clsx(style.priceLabel)}>Giá cũ: </span><span className={clsx(style.oldPriceString)}>{oldPriceString}</span></p>
@@ -248,6 +258,12 @@ function ProductDetailForModal(props) {
             <div className={clsx(style.desc)}>{product.MO_TA ? product.MO_TA : "Không có mô tả cho sản phẩm này"}</div>
             <div className={clsx(style.btnContainer)}
                 onClick={(e) => {
+                    const user = JSON.parse(localStorage.getItem('user'));
+                    if (!user) {
+                        toast.error("Vui lòng đăng nhập để tiếp tục", { autoClose: 1500 });
+                        navigate("/user/login", { replace: true });
+                        return;
+                    }
                     console.log("selected size, color: ", selectedProductDetail.TEN_SIZE, selectedProductDetail.TEN_MAU)
                     if (product.TONG_SL_TON <= 0) {
                         return;
@@ -255,16 +271,20 @@ function ProductDetailForModal(props) {
                     const quantityInCart = checkQuantity(selectedProductDetail.MA_CT_SP)
                     console.log(quantityInCart);
 
-                    if ((quantityInCart) === selectedProductDetail.SL_TON || selectedProductDetail.SL_TON === 0) {
-                        console.log("Đạt giới hạn tồn kho của sản phẩm")
-                        toast.error("Đạt giới hạn tồn kho của sản phẩm", { autoClose: 1500 });
+                    if (selectedProductDetail.SL_TON === 0) {
+                        // console.log("Không thể thêm quá số lượng tồn")
+                        // toast.error("Không thể thêm quá số lượng tồn", { autoClose: 1500 });
+                        return;
+                    } else if ((quantityInCart) === selectedProductDetail.SL_TON) {
+                        toast.error("Không thể thêm quá số lượng tồn", { autoClose: 1500 });
                         return;
                     }
+
                     toast.success("Đã thêm sản phẩm vào giỏ", { autoClose: 1500 });
                     dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedProductDetail, SO_LUONG: 1, SO_LUONG_TON: selectedProductDetail.SL_TON }] }));
                     dispatch(caculateTotalAmountAndPrice());
                 }}>
-                <button className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 })}>THÊM VÀO GIỎ HÀNG</button>
+                <button className={clsx(style.btn, { [style.disabled]: product.TONG_SL_TON <= 0 || selectedProductDetail.SL_TON === 0 })}>THÊM VÀO GIỎ HÀNG</button>
             </div>
 
             <div className={clsx(style.top)}>

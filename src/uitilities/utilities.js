@@ -3,6 +3,7 @@ import { L10n } from '@syncfusion/ej2-base';
 import axios from 'axios';
 import emailjs from '@emailjs/browser';
 import { toast } from 'react-toastify';
+import { REACT_APP_API_URL } from './CONSTANT';
 const intToVNDCurrencyFormat = (number, withSymbol) => {
     let result;
     if (typeof number === 'string') {
@@ -240,6 +241,9 @@ const setupInterceptors = (navigateTo, typeLogin) => {
 
         if (error.response.status === 401) {
             localStorage.removeItem(typeLogin);
+            if (typeLogin === 'user') {
+                localStorage.removeItem('ccart');
+            }
             //toast.error("Phiên đăng nhập đã hết hạn")
             navigateTo('/' + typeLogin + '/login', { replace: true });
         }
@@ -288,5 +292,34 @@ const generateOTP = () => {
     return OTP;
 }
 
+const getCurrentCartOfUser = async () => {
+    if (!localStorage.getItem('user') || !JSON.parse(localStorage.getItem('user')).MA_KH) {
+        return;
+    }
+    let cart = await axios.get(`${REACT_APP_API_URL}/api/KhachHang/current-cart-of-user?customerId=${JSON.parse(localStorage.getItem('user')).MA_KH}`, {
+        headers: {
+            Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
+        }
+    });
+
+    let productsFromApi = await axios.get(`${REACT_APP_API_URL}/api/SanPham/new-arrivals`);
+    let tempBagProducts = [];
+
+    let tempd;
+    tempBagProducts = cart.data.chiTietGioHang2.map((ctgh) => {
+
+        tempd = productsFromApi.data.find(prod => {
+            return prod.MA_SP === ctgh.MA_SP;
+        });
+        console.log('prod: ', tempd, 'ctgh: ', ctgh)
+
+        const a = { ...tempd, chiTietSanPham: [] }
+        a.chiTietSanPham.push({ ...ctgh });
+        console.log('res: ', a);
+        return a;
+    });
+    return tempBagProducts;
+}
+
 export { isValidPhone, newIdByDate, DateDiff, setupInterceptors, toVNDDateFormat, toVNDDateTimeFormat, sendMailForgotPassword, generateOTP }
-export { intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion }
+export { intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion, getCurrentCartOfUser }
