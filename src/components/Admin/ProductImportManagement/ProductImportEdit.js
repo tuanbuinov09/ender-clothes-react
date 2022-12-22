@@ -465,7 +465,7 @@ function ProductImportEdit(props) {
                                     {<p className={clsx(style.errorMessage)}>{errorMessage.errorSO_LUONG_ALL}</p>}
                                 </div>
                                 <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
-                                    <label className={clsx(style.inputLabel)}>Đơn giá</label>
+                                    <label className={clsx(style.inputLabel)}>Giá nhập</label>
 
                                 </div>
                                 <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
