@@ -301,6 +301,10 @@ const getCurrentCartOfUser = async () => {
             Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('user')).accessToken,
         }
     });
+    console.log(cart.data.chiTietGioHang2)
+    if (!cart.data.chiTietGioHang2) {
+        return [];
+    }
 
     let productsFromApi = await axios.get(`${REACT_APP_API_URL}/api/SanPham/new-arrivals`);
     let tempBagProducts = [];
