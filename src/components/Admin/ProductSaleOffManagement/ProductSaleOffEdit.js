@@ -193,7 +193,7 @@ function ProductSaleOffEdit(props) {
                             item.TEN_SP = product.TEN_SP
                         })
 
-                        setProductsAndPercentages(a)
+                        setProductsAndPercentages(a);
 
                         let gridData = grid.current.dataSource;
                         console.log(gridData, 'gridData')
@@ -209,11 +209,14 @@ function ProductSaleOffEdit(props) {
                         selectedIndexes = selectedIndexes.filter(item => {
                             return item !== undefined
                         })
-                        console.log(selectedIndexes, 'selected rowindexés')
-                        grid.current.selectRows(selectedIndexes);
+                        console.log(selectedIndexes, 'selected rowindexés');
+                        //k hiểu sao phải dùng timeout, nếu k nó k cập nhật
+                        setTimeout(() => {
+                            grid.current.selectRows(selectedIndexes);
+                            setIsLoading(false);
+                        }, 500);
 
                         //
-                        setIsLoading(false);
                         return;
 
                     })
@@ -258,7 +261,7 @@ function ProductSaleOffEdit(props) {
                 const daysDiffer = DateDiff.inSeconds(new Date(), dateTimePicker.current.value);
                 console.log(daysDiffer, dateTimePicker.current)
                 if (daysDiffer < 0) {
-                    tmpErrorMsg = { ...tmpErrorMsg, errorNGAY_AP_DUNG: "*Ngày - giờ áp dụng không hợp lệ" }
+                    tmpErrorMsg = { ...tmpErrorMsg, errorNGAY_AP_DUNG: "*Ngày - giờ áp dụng phải >= ngày giờ hiện tại" }
                     hasError = true;
                 }
             } catch (e) {
@@ -269,7 +272,7 @@ function ProductSaleOffEdit(props) {
         }
 
         if (saleOffEntity.THOI_GIAN <= 0) {
-            tmpErrorMsg = { ...tmpErrorMsg, errorTHOI_GIAN: "*Thời gian áp dụng phải lớn hơn 0" }
+            tmpErrorMsg = { ...tmpErrorMsg, errorTHOI_GIAN: "*Thời gian áp dụng phải >= 1" }
             hasError = true;
         }
 
@@ -311,7 +314,7 @@ function ProductSaleOffEdit(props) {
             // }
 
         })
-        // console.log('herreeeeeeee', tmpErrorMsg)
+
         setErrorMessage(tmpErrorMsg)
 
         return hasError
@@ -520,7 +523,7 @@ function ProductSaleOffEdit(props) {
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
             </div> : <></>}
-            flag ? <div className={clsx(style.modalWrapper)}>
+            {flag ? <div className={clsx(style.modalWrapper)}>
 
                 {/* <ToastContainer /> */}
                 <div className={clsx(style.modal)}>
@@ -565,7 +568,7 @@ function ProductSaleOffEdit(props) {
                     </div> */}
                         <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
                             <label className={clsx(style.inputLabel)}>Ngày - giờ áp dụng:</label>
-                            <div className={clsx(style.datePickerContainer)}>
+                            <div className={clsx(style.datePickerContainer, { [style.readOnly]: props.viewMode === 'view' })}>
                                 <DateTimePickerComponent onChange={() => {
                                 }} ref={dateTimePicker} format={'dd/MM/yyyy - hh:mm a'} timeFormat={'hh:mm a'} locale='vi' />
                             </div>
@@ -573,7 +576,7 @@ function ProductSaleOffEdit(props) {
                         </div>
                         <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
                             <label className={clsx(style.inputLabel)}>Thời gian KM (ngày):</label>
-                            <input maxLength={1000} onChange={(e) => {
+                            <input maxLength={1000} disabled={props.viewMode === 'view'} onChange={(e) => {
                                 console.log(e.target.value)
                                 setSaleOffEntity({ ...saleOffEntity, THOI_GIAN: e.target.value })
                             }} type="number" placeholder=""
@@ -586,7 +589,7 @@ function ProductSaleOffEdit(props) {
 
                         <div className={clsx(style.inputGroup, style.quantityInputGroup)}>
                             <label className={clsx(style.inputLabel)}>Ghi chú:</label>
-                            <textarea maxLength={1000} onChange={(e) => {
+                            <textarea maxLength={1000} disabled={props.viewMode === 'view'} onChange={(e) => {
                                 console.log(e.target.value)
                                 setSaleOffEntity({ ...saleOffEntity, GHI_CHU: e.target.value })
                             }} type="text" placeholder=""
@@ -768,7 +771,7 @@ function ProductSaleOffEdit(props) {
                     </div>
 
                 </div>
-            </div> : <></></>);
+            </div> : <></>}</>);
 }
 //chỉ update lúc cần
 export default React.memo(ProductSaleOffEdit);

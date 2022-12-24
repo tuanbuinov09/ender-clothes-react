@@ -279,8 +279,8 @@ function Item({ product, type }) {
 
                                 <button className={clsx(style.buttonPlus)}
                                     onClick={(e) => {
-                                        if (quantityField.current.innerHTML.trim() >= product.chiTietSanPham[0].SO_LUONG_TON + "") {
-                                            //toast.error("Đạt giới hạn tồn kho của sản phẩm");
+                                        if (Number.parseInt(quantityField.current.innerHTML.trim()) >= product.chiTietSanPham[0].SO_LUONG_TON) {
+                                            toast.error("Không thể thêm quá số lượng tồn");
                                         } else {
                                             dispatch(increaseAmount({ id: product.chiTietSanPham[0].MA_CT_SP }));
                                             dispatch(caculateTotalAmountAndPrice());
