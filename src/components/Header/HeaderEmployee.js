@@ -101,7 +101,7 @@ function HeaderEmployee(props) {
                 {/* nested menu */}
                 <ul className={clsx(style.nav, style.navList, { [style.active]: showNavListResponsive })}
                     ref={navbar}>
-                    <NavLink to="/admin/dashboard" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Thống kê</NavLink>
+                    <NavLink to="/admin/dashboard" className={clsx(style.navItem)} activeClassName={clsx(style.active)}>Tổng quan</NavLink>
 
                     {/* <li className={clsx(style.navItem, style.active)}><Link to="/home" onClick={activeLinkStyle}>Home</Link></li> */}
                     {JSON.parse(localStorage.getItem('employee')) && JSON.parse(localStorage.getItem('employee')).MA_NV

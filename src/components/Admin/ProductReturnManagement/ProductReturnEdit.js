@@ -559,7 +559,7 @@ function ProductReturnEdit(props) {
                                     gridLines='Both'
                                 >
                                     <ColumnsDirective>
-                                        <ColumnDirective field='MA_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã KH' width='140' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                        <ColumnDirective field='MA_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Mã KH' width='160' textAlign="Left" /*isPrimaryKey={true}*/ />
                                         <ColumnDirective field='HO_TEN_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên KH' width='200' textAlign="Left" />
                                         <ColumnDirective field='SDT_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='SĐT KH' width='160' textAlign="Left" />
                                         <ColumnDirective field='EMAIL_KH' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Email KH' width='200' textAlign="Left" />

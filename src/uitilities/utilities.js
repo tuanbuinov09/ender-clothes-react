@@ -324,6 +324,8 @@ const getCurrentCartOfUser = async () => {
     });
     return tempBagProducts;
 }
-
+const addHoursToDate = (date, hours) => {
+    return new Date(new Date(date).setHours(date.getHours() + hours));
+}
 export { isValidPhone, newIdByDate, DateDiff, setupInterceptors, toVNDDateFormat, toVNDDateTimeFormat, sendMailForgotPassword, generateOTP }
 export { intToVNDCurrencyFormat, modifyKeyword, removeSyncfusionLicenseMessage, newInvoiceIdByDate, loadLocaleSyncfusion, getCurrentCartOfUser }

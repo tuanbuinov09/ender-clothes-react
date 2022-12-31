@@ -15,19 +15,21 @@ function SaleReportToPrint(props) {
     const [flag, setFlag] = useState(true);
     removeSyncfusionLicenseMessage();
     const grid = useRef();
+    const [a, setA] = useState('');
+
+    const [a3, setA3] = useState('');
     useEffect(() => {
         props.data.forEach((dat, index) => {
             dat.STT = index + 1;
 
             dat.TONG_TRI_GIA_STR = intToVNDCurrencyFormat(dat.TONG_TRI_GIA, true);
 
-
             dat.TONG_DOANH_THU_STR = intToVNDCurrencyFormat(dat.TONG_DOANH_THU, true);
             dat.TONG_GIA_NHAP_STR = intToVNDCurrencyFormat(dat.TONG_GIA_NHAP, true);
             dat.TONG_GIA_TRA_STR = intToVNDCurrencyFormat(dat.TONG_GIA_TRA, true);
             dat.TONG_LOI_NHUAN_STR = intToVNDCurrencyFormat(dat.TONG_LOI_NHUAN, true);
-
             dat.THOI_GIAN = dat.THANG;
+
             if (props.typeView === 'profit') {
                 if (props.type === "day") {
                     dat.THOI_GIAN = dat.NGAY;
@@ -43,7 +45,44 @@ function SaleReportToPrint(props) {
                 }
             }
 
+            if (props.typeView === 'profit-2') {
+                dat.GIA_BAN_TRUNG_BINH_STR = intToVNDCurrencyFormat(dat.GIA_BAN_TRUNG_BINH, true);
+                dat.GIA_NHAP_TRUNG_BINH_STR = intToVNDCurrencyFormat(dat.GIA_NHAP_TRUNG_BINH, true);
+
+
+            }
+
         })
+        if (props.typeView === 'profit-2') {
+            if (props.type2 === "day") {
+                setA(props.data.fromDate);
+            }
+            if (props.type2 === "rangeDay") {
+                setA(props.data.fromDate);
+
+
+                setA3(props.data.toDate);
+            }
+            if (props.type2 === "month") {
+                let a2 = props.data.fromDate.substr(3);
+                setA(a2);
+            }
+            if (props.type2 === "quarter") {
+                let date = new Date(props.data.fromDate);
+                console.log(date, 'dddđ')
+                let a2 = date.toLocaleString('vi-VN', 'dd/MM/yyyy');
+                console.log(new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date))
+                a2 = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short' }).format(date)
+                setA(a2);
+            }
+            if (props.type2 === "year") {
+                let a2 = props.data.fromDate.substr(6);
+                setA(a2);
+            }
+
+
+        }
+
     }, []);
 
     L10n.load({
@@ -171,66 +210,133 @@ function SaleReportToPrint(props) {
                     props.setData(null);
                 }}><XIcon /></span>
             </h1>
+            {props.typeView === 'profit-2' ?
+                <div className={clsx(style.container)} ref={componentRef}>
+                    <div className={clsx(style.modal)}>
+                        <p className={clsx(style.subtitleCompanyName)}>Công ty TNHH END_CLOTHES</p>
+                        <h1 className={clsx(style.title)}>Báo cáo doanh thu và lợi nhuận theo sản phẩm
+                            {/* nếu k có tổng giá nhập thì là xem doanh thu, xem doanh thu thì chỉ theo tháng */}
+                        </h1>
+                        <p className={clsx(style.subtitle)}>{props.type2 === 'quarter' ? ' Quý:' : props.type2 === 'year' ? ' Năm: ' : props.type2 === 'day' ? ' Ngày: ' : props.type2 === 'rangeDay' ? ' Từ ngày: ' : ' Tháng:'}
+                            <span>{a
+                            }</span> {props.type2 === 'rangeDay' ? <>    tới ngày: <span>{a3}</span></> : <></>}
+                        </p>
+                        {/* <p className={clsx(style.subtitle)}>Nhân viên xuất báo cáo: <span>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</span></p> */}
 
-            <div className={clsx(style.container)} ref={componentRef}>
-                <div className={clsx(style.modal)}>
-                    <p className={clsx(style.subtitleCompanyName)}>Công ty TNHH END_CLOTHES</p>
-                    <h1 className={clsx(style.title)}>Báo cáo {props.data.TONG_GIA_NHAP ? "lợi nhuận" : "doanh thu"} theo
-                        {/* nếu k có tổng giá nhập thì là xem doanh thu, xem doanh thu thì chỉ theo tháng */}
-                        {!props.data.TONG_GIA_NHAP ? ' tháng' : props.type === 'quarter' ? ' quý' : props.type === 'year' ? ' năm' : props.type === 'day' ? ' ngày' : ' tháng'}</h1>
-                    <p className={clsx(style.subtitle)}>Từ ngày: <span>{props.data.fromDate}</span>     tới ngày: <span>{props.data.toDate}</span></p>
-                    {/* <p className={clsx(style.subtitle)}>Nhân viên xuất báo cáo: <span>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</span></p> */}
+                        {/* detail */}
+                        <div className={clsx(style.cartDetail)}>
+                            <GridComponent ref={grid}
+                                // toolbar={toolbarOptions}
+                                //  actionComplete={actionComplete} 
+                                //  actionBegin={actionBegin}
+                                locale='vi-VN'
+                                // editSettings={editOptions}
+                                // pageSettings={pageSettings}
+                                dataSource={props.data}
+                                // allowPaging={true} /*allowGrouping={true}*/
+                                // allowSorting={true} allowFiltering={true}
+                                // filterSettings={filterOptions}
+                                // rowSelected={rowSelected}
+                                gridLines='Both'
+                            >
+                                <ColumnsDirective>
+                                    <ColumnDirective field='STT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
+                                    <ColumnDirective field='TEN_SP' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Tên SP' width='200' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                    <ColumnDirective field='GIA_NHAP_TRUNG_BINH_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá nhập TB/ cái' width='140' textAlign="Right" />
+                                    <ColumnDirective field='GIA_BAN_TRUNG_BINH_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá bán TB/ cái' width='140' textAlign="Right" />
+                                    <ColumnDirective field='SO_LUONG' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='SL đã bán' width='110' textAlign="Right" />
 
-                    {/* detail */}
-                    <div className={clsx(style.cartDetail)}>
-                        <GridComponent ref={grid}
-                            // toolbar={toolbarOptions}
-                            //  actionComplete={actionComplete} 
-                            //  actionBegin={actionBegin}
-                            locale='vi-VN'
-                            // editSettings={editOptions}
-                            // pageSettings={pageSettings}
-                            dataSource={props.data}
-                            // allowPaging={true} /*allowGrouping={true}*/
-                            // allowSorting={true} allowFiltering={true}
-                            // filterSettings={filterOptions}
-                            // rowSelected={rowSelected}
-                            gridLines='Both'
-                        >
-                            <ColumnsDirective>
-                                <ColumnDirective field='STT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='THOI_GIAN' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Thời gian' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
-                                <ColumnDirective field='TONG_TRI_GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Doanh Thu' width='180' textAlign="Right" />
-
-                                {props.data.TONG_GIA_NHAP ? <ColumnDirective field='TONG_GIA_NHAP_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá nhập' width='180' textAlign="Right" /> : <></>}
-                                {props.data.TONG_GIA_TRA ? <ColumnDirective field='TONG_GIA_TRA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá trả' width='180' textAlign="Right" /> : <></>}
-                                {props.data.TONG_LOI_NHUAN ? <ColumnDirective field='TONG_LOI_NHUAN_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Lợi nhuận' width='180' textAlign="Right" /> : <></>}
+                                    <ColumnDirective field='TONG_TRI_GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Doanh Thu' width='120' textAlign="Right" />
+                                    <ColumnDirective field='TONG_LOI_NHUAN_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Lợi nhuận' width='130' textAlign="Right" />
 
 
-                            </ColumnsDirective>
+                                </ColumnsDirective>
 
 
-                            <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
-                        </GridComponent>
-                        <div className={clsx(style.totalContainer)}>
-                            <div className={clsx(style.total)}>{intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
-                            {props.data.TONG_GIA_NHAP ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_GIA_NHAP) + " ₫"}</div> : <></>}
-                            {props.data.TONG_GIA_TRA ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_GIA_TRA) + " ₫"}</div> : <></>}
-                            {props.data.TONG_LOI_NHUAN ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_LOI_NHUAN) + " ₫"}</div> : <></>}
+                                <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
+                            </GridComponent>
+                            <div className={clsx(style.totalContainer)}>
+
+                                {props.data.TONG_SO_LUONG ? <div className={clsx(style.total2)}> {props.data.TONG_SO_LUONG}</div> : <></>}
+                                <div className={clsx(style.total2)}>{intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
+                                {props.data.TONG_LOI_NHUAN ? <div className={clsx(style.total2)}> {intToVNDCurrencyFormat(props.data.TONG_LOI_NHUAN) + " ₫"}</div> : <></>}
+
+                            </div>
 
                         </div>
 
-                    </div>
-
-                    <div className={clsx(style.saleReportFooter)}>
-                        <div className={clsx(style.signContainer)}>
-                            <p className={clsx(style.reportLocation)}>Thành phố Hồ Chí Minh, ngày {(new Date()).getUTCDate()} tháng {(new Date()).getUTCMonth() + 1} năm {(new Date()).getUTCFullYear()}</p>
-                            <p className={clsx(style.employeeNameTitle)}>Nhân viên lập báo cáo</p>
-                            <p className={clsx(style.employeeName)}>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</p>
+                        <div className={clsx(style.saleReportFooter)}>
+                            <div className={clsx(style.signContainer)}>
+                                <p className={clsx(style.reportLocation)}>Thành phố Hồ Chí Minh, ngày {(new Date()).getUTCDate()} tháng {(new Date()).getUTCMonth() + 1} năm {(new Date()).getUTCFullYear()}</p>
+                                <p className={clsx(style.employeeNameTitle)}>Nhân viên lập báo cáo</p>
+                                <p className={clsx(style.employeeName)}>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div> </div> : <></>}
+                :
+                <div className={clsx(style.container)} ref={componentRef}>
+                    <div className={clsx(style.modal)}>
+                        <p className={clsx(style.subtitleCompanyName)}>Công ty TNHH END_CLOTHES</p>
+                        <h1 className={clsx(style.title)}>Báo cáo {props.data.TONG_GIA_NHAP ? "doanh thu thực tế" : "doanh thu"} theo
+                            {/* nếu k có tổng giá nhập thì là xem doanh thu, xem doanh thu thì chỉ theo tháng */}
+                            {!props.data.TONG_GIA_NHAP ? ' tháng' : props.type === 'quarter' ? ' quý' : props.type === 'year' ? ' năm' : props.type === 'day' ? ' ngày' : ' tháng'}</h1>
+                        <p className={clsx(style.subtitle)}>Từ ngày: <span>{props.data.fromDate}</span>     tới ngày: <span>{props.data.toDate}</span></p>
+                        {/* <p className={clsx(style.subtitle)}>Nhân viên xuất báo cáo: <span>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</span></p> */}
+
+                        {/* detail */}
+                        <div className={clsx(style.cartDetail)}>
+                            <GridComponent ref={grid}
+                                // toolbar={toolbarOptions}
+                                //  actionComplete={actionComplete} 
+                                //  actionBegin={actionBegin}
+                                locale='vi-VN'
+                                // editSettings={editOptions}
+                                // pageSettings={pageSettings}
+                                dataSource={props.data}
+                                // allowPaging={true} /*allowGrouping={true}*/
+                                // allowSorting={true} allowFiltering={true}
+                                // filterSettings={filterOptions}
+                                // rowSelected={rowSelected}
+                                gridLines='Both'
+                            >
+                                <ColumnsDirective>
+                                    <ColumnDirective field='STT' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='STT' width='70' textAlign="Center" /*isPrimaryKey={true}*/ />
+                                    <ColumnDirective field='THOI_GIAN' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Thời gian' width='150' textAlign="Left" /*isPrimaryKey={true}*/ />
+                                    <ColumnDirective field='TONG_TRI_GIA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Doanh Thu' width='180' textAlign="Right" />
+
+                                    {props.data.TONG_GIA_NHAP ? <ColumnDirective field='TONG_GIA_NHAP_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá nhập' width='180' textAlign="Right" /> : <></>}
+                                    {props.data.TONG_GIA_TRA ? <ColumnDirective field='TONG_GIA_TRA_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Giá trả' width='180' textAlign="Right" /> : <></>}
+                                    {props.data.TONG_LOI_NHUAN ? <ColumnDirective field='TONG_LOI_NHUAN_STR' clipMode='EllipsisWithTooltip' headerTextAlign='Center' headerText='Doanh thu thực tế' width='180' textAlign="Right" /> : <></>}
+
+
+                                </ColumnsDirective>
+
+
+                                <Inject services={[Page, Sort, Filter, Group, Edit, Toolbar]} />
+                            </GridComponent>
+                            <div className={clsx(style.totalContainer)}>
+                                <div className={clsx(style.total)}>{intToVNDCurrencyFormat(props.data.TONG_DOANH_THU) + " ₫"}</div>
+                                {props.data.TONG_GIA_NHAP ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_GIA_NHAP) + " ₫"}</div> : <></>}
+                                {props.data.TONG_GIA_TRA ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_GIA_TRA) + " ₫"}</div> : <></>}
+                                {props.data.TONG_LOI_NHUAN ? <div className={clsx(style.total)}> {intToVNDCurrencyFormat(props.data.TONG_LOI_NHUAN) + " ₫"}</div> : <></>}
+
+                            </div>
+
+                        </div>
+
+                        <div className={clsx(style.saleReportFooter)}>
+                            <div className={clsx(style.signContainer)}>
+                                <p className={clsx(style.reportLocation)}>Thành phố Hồ Chí Minh, ngày {(new Date()).getUTCDate()} tháng {(new Date()).getUTCMonth() + 1} năm {(new Date()).getUTCFullYear()}</p>
+                                <p className={clsx(style.employeeNameTitle)}>Nhân viên lập báo cáo</p>
+                                <p className={clsx(style.employeeName)}>{JSON.parse(localStorage.getItem('employee')).HO_TEN}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div> : <></>}
 
     </>);
 }
