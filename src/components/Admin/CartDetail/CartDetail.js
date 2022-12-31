@@ -274,8 +274,14 @@ function CartDetail(props) {
                     }
                 }).then(res => {
                     const response = res.data;
+                    if (response.errorDesc) {
+                        setCart({ ...cart, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' });
+                        toast.error("Đơn hàng đã được hủy trước đó");
+                        props.rerender();
+                        return;
+                    }
                     // console.log('res: ' + response);
-                    setCart({ ...cart, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' })
+                    setCart({ ...cart, TRANG_THAI: -1, TRANG_THAI_STR: 'Đã hủy' });
                     toast.success("Hủy đơn hàng thành công");
                     props.rerender();
                 });
@@ -285,20 +291,21 @@ function CartDetail(props) {
 
     }
     const print = () => {
-        const maHD = newInvoiceIdByDate();
+        // const maHD = newInvoiceIdByDate();
         //tạo hóa đơn
-        axios.post(`http://localhost:22081/api/HoaDon/`, {
-            ID_DH: cart.ID_DH,
-            MA_HD: maHD,
-            MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
-        },
-            {
-                headers: {
-                    Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
-                }
-            }).then(res => {
-                setPreparePrint(true);
-            })
+        // axios.post(`http://localhost:22081/api/HoaDon/`, {
+        //     ID_DH: cart.ID_DH,
+        //     MA_HD: maHD,
+        //     MA_NV: JSON.parse(localStorage.getItem('employee')).MA_NV
+        // },
+        //     {
+        //         headers: {
+        //             Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('employee')).accessToken,
+        //         }
+        //     }).then(res => {
+        //         setPreparePrint(true);
+        //     })
+        setPreparePrint(true);
     }
     let fields = { text: 'HO_TEN_STR', value: 'MA_NV' };
     // filtering event handler to filter a Country
@@ -364,10 +371,10 @@ function CartDetail(props) {
                             props.closeDialog();
                         }}><XIcon /></span></h1>
 
-                        <h1 className={clsx(style.title)}>Chi tiết GH {props.cartId}</h1>
+                        <h1 className={clsx(style.title)}>Chi tiết ĐH {props.cartId}</h1>
                         <div className={clsx(style.btnCheckContainer)}>
                             {/* không duyệt nữa, assign cho nhân viên là duyệt luôn */}
-                            {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
+                            {props.type !== 'userViewing' && localStorage.getItem('employee') && JSON.parse(localStorage.getItem('employee')).MA_QUYEN !== 'Q04' ?
 
                                 <>
                                     {/* <button onClick={() => {
@@ -380,11 +387,11 @@ function CartDetail(props) {
                                         setShowConfirmDialogSave(true);
                                         setConfirmDialogTitle('Xác nhận duyệt đơn hàng');
                                     }} className={clsx(style.checkButton, style.saveButton, { [style.inActive]: cart.TRANG_THAI !== 0 })}>
-                                        <span className={clsx(style.iconSvg)}><SaveIcon /></span>Lưu
+                                        <span className={clsx(style.iconSvg)}><SaveIcon /></span>Phân NV giao hàng
                                     </button>
                                     <button onClick={() => {
                                         print();
-                                    }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 })}>
+                                    }} className={clsx(style.checkButton, style.printButton, { [style.inActive]: cart.TRANG_THAI === -1 || cart.TRANG_THAI === 0 })}>
                                         <span className={clsx(style.iconSvg)}><PrintIcon /></span>In hóa đơn
                                     </button>
                                     {props.type !== 'userViewing' && JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q02' ?
@@ -412,7 +419,7 @@ function CartDetail(props) {
                                     <span className={clsx(style.iconSvg)}><CancelIcon /></span>Hủy đơn hàng
                                 </button></> */}
                                 </>
-                                : JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' && props.type !== "userViewing" ? <>
+                                : props.type !== "userViewing" && JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ? <>
                                     <button onClick={() => {
                                         // finish();
                                         setShowConfirmDialogFinish(true);

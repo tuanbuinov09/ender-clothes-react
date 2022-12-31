@@ -23,10 +23,10 @@ function CartManagement(props) {
         }
     }, [])
 
-    props.changeHeader('employee')
+    props.changeHeader('employee');
     let navigate = useNavigate();
     useEffect(() => {
-        if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV || JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04') {
+        if (!JSON.parse(localStorage.getItem('employee')) || !JSON.parse(localStorage.getItem('employee')).MA_NV) {
             toast.error("Hãy đăng nhập với tài khoản đủ thẩm quyền để thao tác");
             navigate("/employee/login", true);
         }
@@ -286,7 +286,7 @@ function CartManagement(props) {
 
     return (
         <div className={clsx(style.cartManagement)}>
-            <SectionTitle title={((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
+            <SectionTitle title={localStorage.getItem('employee') && ((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
                 'Vận chuyển bởi bạn'
                 :
                 'Quản lý đơn hàng'} />
@@ -296,7 +296,7 @@ function CartManagement(props) {
                 }} className={clsx(style.checkButton, { [style.inActive]: selectedCart.TRANG_THAI !== 0 })}>
                     <span className={clsx(style.iconSvg)}><CheckIcon /></span>Duyệt
                 </button> */}
-                {((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
+                {localStorage.getItem('employee') && ((JSON.parse(localStorage.getItem('employee'))).MA_QUYEN === 'Q04') ?//Q04; quyền nhân viên giao hàng
                     <></>
                     : <div className={clsx(style.dropdownList)}>
                         <div className='control-section'>
@@ -322,7 +322,7 @@ function CartManagement(props) {
             {isLoading ? <div className={clsx(style.loadingOverCoat)}>
                 <LoadingAnimation />
             </div> : <></>}
-            {JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ?
+            {localStorage.getItem('employee') && JSON.parse(localStorage.getItem('employee')).MA_QUYEN === 'Q04' ?
 
                 <GridComponent ref={grid}
                     toolbar={toolbarOptions}

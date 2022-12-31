@@ -129,6 +129,7 @@ svg{
     padding-top: 8px;
     margin-bottom: -10px;
 }
+
 .cancelButton{
     width: 150px;
     background-color: #777;
@@ -191,7 +192,7 @@ svg{
 }
 .subtitleCompanyName{
     font-weight: bold;
-    margin-bottom: 0px;
+    margin-bottom: 12px;
     font-size: 18px;
 }
 .saleReportFooter{
@@ -228,4 +229,13 @@ svg{
 .totalContainer{
     display: flex;
     justify-content: flex-end;
+}
+
+.total2{
+    font-size: 15px;
+    text-align: right;
+    padding-top: 8px;
+    margin-bottom: -10px;
+    width: 138px;
+    display: inline-block;
 }

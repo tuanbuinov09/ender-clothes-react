@@ -368,6 +368,7 @@ function ProductDetail(props) {
                                 return;
                             } else if ((quantityInCart) === selectedProductDetail.SL_TON) {
                                 toast.error("Không thể thêm quá số lượng tồn", { autoClose: 1500 });
+                                return;
                             }
                             toast.success("Đã thêm sản phẩm vào giỏ", { autoClose: 1500 });
                             dispatch(addItem({ ...product, chiTietSanPham: [{ ...selectedProductDetail, SO_LUONG: 1, SO_LUONG_TON: selectedProductDetail.SL_TON }] }));
